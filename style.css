@@ -8,15 +8,14 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden; /* Prevent scrolling */
 }
 
 /* Main Container */
 .main-container {
   display: flex;
-  gap: 20px; /* Space between upgrades and game sections */
-  max-width: 1200px;
-  width: 100%;
-  padding: 20px;
+  height: 100vh; /* Full height of the screen */
+  width: 100%; /* Full width of the screen */
 }
 
 /* Upgrades Section (Left) */
@@ -26,6 +25,9 @@ body {
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Full height */
+  position: relative; /* Ensure tooltips are positioned relative to this container */
+  overflow: visible; /* Allow tooltips to overflow */
 }
 
 .upgrades-section h2 {
@@ -71,7 +73,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* Center content vertically */
   text-align: center;
+  height: 100%; /* Full height */
 }
 
 .game-section h1 {
@@ -113,7 +117,7 @@ body {
 .tooltip .tooltip-text {
   visibility: hidden;
   width: 200px;
-  background-color: rgba(0, 0, 0, 1);
+  background-color: rgba(0, 0, 0, 0.95);
   color: #fff;
   text-align: center;
   border-radius: 8px;
@@ -121,10 +125,10 @@ body {
   border: 2px solid #222;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
   position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -100px;
+  z-index: 1000; /* Ensure tooltip is above other elements */
+  top: 50%; /* Center vertically relative to the button */
+  left: calc(100% + 10px); /* Position to the right of the button */
+  margin-top: -40px; /* Adjust to center vertically */
   opacity: 0;
   transition: opacity 0.2s ease, visibility 0.2s ease;
   font-size: 14px;
@@ -141,10 +145,10 @@ body {
 .tooltip .tooltip-text::after {
   content: "";
   position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
+  top: 50%; /* Center vertically */
+  right: 100%; /* Position to the left of the tooltip */
+  margin-top: -5px;
   border-width: 6px;
   border-style: solid;
-  border-color: rgba(0, 0, 0, 0.95) transparent transparent transparent;
+  border-color: transparent rgba(0, 0, 0, 0.95) transparent transparent; /* Pointer facing left */
 }
