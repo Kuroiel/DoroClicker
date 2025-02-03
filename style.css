@@ -1,3 +1,4 @@
+/* General Styles */
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
@@ -16,25 +17,75 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Main Doro Button */
 #doro {
-  font-size: 50px;
-  cursor: pointer;
   border: none;
   background: none;
+  cursor: pointer;
+  padding: 0;
 }
 
-#doro:active {
+#doro img {
+  width: 100px;
+  height: 100px;
+  transition: transform 0.1s ease;
+}
+
+#doro:active img {
   transform: scale(0.95);
 }
 
-
+/* Upgrades Section */
 .upgrades {
   margin-top: 20px;
 }
 
-button {
+.upgrade-button {
   margin: 5px;
   padding: 10px;
   font-size: 16px;
   cursor: pointer;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease;
+}
+
+.upgrade-button:hover {
+  background-color: #e0e0e0;
+}
+
+.upgrade-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Tooltip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 8px;
+  border: 2px solid #555;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.1s ease, visibility 0.1s ease;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }

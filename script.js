@@ -1,3 +1,4 @@
+// Game State
 let doros = 0;
 let autoClickerCost = 10;
 let clickMultiplierCost = 50;
@@ -15,7 +16,7 @@ function updateScore() {
   scoreElement.textContent = `Doros: ${doros}`;
 }
 
-// Handle cookie click
+// Handle doro click
 doroButton.addEventListener('click', () => {
   doros += clickMultiplier;
   updateScore();
@@ -23,28 +24,35 @@ doroButton.addEventListener('click', () => {
 });
 
 // Buy Auto Clicker
-autoClickerButton.addEventListener('click', () => {
+function buyAutoClicker() {
   if (doros >= autoClickerCost) {
     doros -= autoClickerCost;
-    autoClickerCost *= 2; // Increase cost for next purchase
-    autoClickerButton.textContent = `Auto Clicker (Cost: ${autoClickerCost} doros)`;
+    autoClickerCost *= 2;
+    autoClickerButton.innerHTML = `
+      <img src="assets/dorocreep.webp" alt="Creepin Doro" width="30" height="30">
+      Creepin Doro (Cost: ${autoClickerCost} Doros)
+    `;
     updateScore();
     startAutoClicker();
     checkUpgrades();
   }
-});
+}
+
+autoClickerButton.addEventListener('click', buyAutoClicker);
 
 // Buy Click Multiplier
-clickMultiplierButton.addEventListener('click', () => {
+function buyClickMultiplier() {
   if (doros >= clickMultiplierCost) {
     doros -= clickMultiplierCost;
-    clickMultiplierCost *= 2; // Increase cost for next purchase
-    clickMultiplier *= 2; // Double the multiplier
-    clickMultiplierButton.textContent = `Click Multiplier (Cost: ${clickMultiplierCost} doros)`;
+    clickMultiplierCost *= 2;
+    clickMultiplier *= 2;
+    clickMultiplierButton.textContent = `Spice Multiplier (Cost: ${clickMultiplierCost} Doros)`;
     updateScore();
     checkUpgrades();
   }
-});
+}
+
+clickMultiplierButton.addEventListener('click', buyClickMultiplier);
 
 // Start Auto Clicker
 function startAutoClicker() {
