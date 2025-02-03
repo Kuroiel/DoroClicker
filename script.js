@@ -23,7 +23,7 @@ doroButton.addEventListener('click', () => {
   checkUpgrades();
 });
 
-// Buy Auto Clicker
+// Buy Auto  Clicker
 function buyAutoClicker() {
   if (doros >= autoClickerCost) {
     doros -= autoClickerCost;
