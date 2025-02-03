@@ -1,2 +1,2 @@
 # DoroClicker
-Doro cliker!
+Doro clicker!
