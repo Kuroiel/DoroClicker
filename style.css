@@ -2,22 +2,91 @@
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 0;
 }
 
-.game-container {
-  text-align: center;
-  background-color: #fff;
+/* Main Container */
+.main-container {
+  display: flex;
+  gap: 20px; /* Space between upgrades and game sections */
+  max-width: 1200px;
+  width: 100%;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Main Doro  Button */
+/* Upgrades Section (Left) */
+.upgrades-section {
+  width: 250px; /* Fixed width for upgrades */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.upgrades-section h2 {
+  margin-bottom: 15px;
+  font-size: 24px;
+  color: #333;
+}
+
+.upgrades-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between upgrade buttons */
+}
+
+/* Upgrade Buttons */
+.upgrade-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.upgrade-button:hover {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+}
+
+.upgrade-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Game Section (Center) */
+.game-section {
+  flex: 1; /* Take up remaining space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.game-section h1 {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+#score {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Main Doro Button */
 #doro {
   border: none;
   background: none;
@@ -35,31 +104,6 @@ body {
   transform: scale(0.95);
 }
 
-/* Upgrades Section */
-.upgrades {
-  margin-top: 20px;
-}
-
-.upgrade-button {
-  margin: 5px;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  transition: background-color 0.2s ease;
-}
-
-.upgrade-button:hover {
-  background-color: #e0e0e0;
-}
-
-.upgrade-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
 /* Tooltip */
 .tooltip {
   position: relative;
@@ -69,13 +113,13 @@ body {
 .tooltip .tooltip-text {
   visibility: hidden;
   width: 200px;
-  background-color: rgba(0, 0, 0, 1); /* Even darker background */
-  color: #fff; /* White text */
+  background-color: rgba(0, 0, 0, 1);
+  color: #fff;
   text-align: center;
-  border-radius: 8px; /* Slightly larger border radius */
+  border-radius: 8px;
   padding: 12px;
-  border: 2px solid #222; /* Darker border */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7); /* Stronger shadow */
+  border: 2px solid #222;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
   position: absolute;
   z-index: 1;
   bottom: 125%;
@@ -83,12 +127,24 @@ body {
   margin-left: -100px;
   opacity: 0;
   transition: opacity 0.2s ease, visibility 0.2s ease;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.5;
-  font-weight: 500; /* Slightly bolder text */
+  font-weight: 500;
 }
 
 .tooltip:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+/* Pointer for Tooltip */
+.tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.95) transparent transparent transparent;
 }
