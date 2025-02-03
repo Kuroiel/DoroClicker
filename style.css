@@ -1,1 +1,39 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
 
+.game-container {
+  text-align: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#cookie {
+  font-size: 50px;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+#cookie:active {
+  transform: scale(0.95);
+}
+
+.upgrades {
+  margin-top: 20px;
+}
+
+button {
+  margin: 5px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
