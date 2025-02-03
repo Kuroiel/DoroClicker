@@ -69,22 +69,23 @@ body {
 .tooltip .tooltip-text {
   visibility: hidden;
   width: 200px;
-  background-color: rgba(0, 0, 0, 0.9); /* More opaque background */
-  color: #fff;
+  background-color: rgba(0, 0, 0, 0.95); /* Even darker background */
+  color: #fff; /* White text */
   text-align: center;
-  border-radius: 5px;
-  padding: 12px; /* Slightly more padding */
-  border: 2px solid #444; /* Darker border */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+  border-radius: 8px; /* Slightly larger border radius */
+  padding: 12px;
+  border: 2px solid #222; /* Darker border */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7); /* Stronger shadow */
   position: absolute;
   z-index: 1;
   bottom: 125%;
   left: 50%;
   margin-left: -100px;
   opacity: 0;
-  transition: opacity 0.2s ease, visibility 0.2s ease; /* Smoother transition */
-  font-size: 14px; /* Slightly larger font */
-  line-height: 1.5; /* Better line spacing */
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 500; /* Slightly bolder text */
 }
 
 .tooltip:hover .tooltip-text {
