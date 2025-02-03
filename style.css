@@ -16,16 +16,17 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#cookie {
+#doro {
   font-size: 50px;
   cursor: pointer;
   border: none;
   background: none;
 }
 
-#cookie:active {
+#doro:active {
   transform: scale(0.95);
 }
+
 
 .upgrades {
   margin-top: 20px;

@@ -1,4 +1,4 @@
-let cookies = 0;
+let doros = 0;
 let autoClickerCost = 10;
 let clickMultiplierCost = 50;
 let autoClickerInterval;
@@ -6,28 +6,28 @@ let clickMultiplier = 1;
 
 // DOM Elements
 const scoreElement = document.getElementById('score');
-const cookieButton = document.getElementById('cookie');
+const doroButton = document.getElementById('doro');
 const autoClickerButton = document.getElementById('auto-clicker');
 const clickMultiplierButton = document.getElementById('click-multiplier');
 
 // Update the score display
 function updateScore() {
-  scoreElement.textContent = `Cookies: ${cookies}`;
+  scoreElement.textContent = `Doros: ${doros}`;
 }
 
 // Handle cookie click
-cookieButton.addEventListener('click', () => {
-  cookies += clickMultiplier;
+doroButton.addEventListener('click', () => {
+  doros += clickMultiplier;
   updateScore();
   checkUpgrades();
 });
 
 // Buy Auto Clicker
 autoClickerButton.addEventListener('click', () => {
-  if (cookies >= autoClickerCost) {
-    cookies -= autoClickerCost;
+  if (doros >= autoClickerCost) {
+    doros -= autoClickerCost;
     autoClickerCost *= 2; // Increase cost for next purchase
-    autoClickerButton.textContent = `Auto Clicker (Cost: ${autoClickerCost} cookies)`;
+    autoClickerButton.textContent = `Auto Clicker (Cost: ${autoClickerCost} doros)`;
     updateScore();
     startAutoClicker();
     checkUpgrades();
@@ -36,11 +36,11 @@ autoClickerButton.addEventListener('click', () => {
 
 // Buy Click Multiplier
 clickMultiplierButton.addEventListener('click', () => {
-  if (cookies >= clickMultiplierCost) {
-    cookies -= clickMultiplierCost;
+  if (doros >= clickMultiplierCost) {
+    doros -= clickMultiplierCost;
     clickMultiplierCost *= 2; // Increase cost for next purchase
     clickMultiplier *= 2; // Double the multiplier
-    clickMultiplierButton.textContent = `Click Multiplier (Cost: ${clickMultiplierCost} cookies)`;
+    clickMultiplierButton.textContent = `Click Multiplier (Cost: ${clickMultiplierCost} doros)`;
     updateScore();
     checkUpgrades();
   }
@@ -50,15 +50,15 @@ clickMultiplierButton.addEventListener('click', () => {
 function startAutoClicker() {
   if (autoClickerInterval) return; // Prevent multiple intervals
   autoClickerInterval = setInterval(() => {
-    cookies += clickMultiplier;
+    doros += clickMultiplier;
     updateScore();
   }, 1000); // 1 second interval
 }
 
 // Check if upgrades can be afforded
 function checkUpgrades() {
-  autoClickerButton.disabled = cookies < autoClickerCost;
-  clickMultiplierButton.disabled = cookies < clickMultiplierCost;
+  autoClickerButton.disabled = doros < autoClickerCost;
+  clickMultiplierButton.disabled = doros < clickMultiplierCost;
 }
 
 // Initialize
