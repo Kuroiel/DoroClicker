@@ -43,12 +43,13 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
+    margin-left: 250px; /* Account for sidebar */
+  width: calc(100% - 250px); /* Remaining space */
 }
 
 canvas {
-  position: absolute !important;
-  image-rendering: crisp-edges;
-  transform: translate(-50%, -50%) !important;
+  position: fixed !important;
   left: 50% !important;
   top: 50% !important;
+  transform: translate(calc(-50% - 75px), -50%) !important; /* Center offset */
 }

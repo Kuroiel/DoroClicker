@@ -25,7 +25,8 @@ const config = {
   },
   render: {
     antialias: false,
-    roundPixels: true
+    roundPixels: true,
+    powerPreference: "high-performance" // Added this line
   }
 };
 
@@ -39,30 +40,38 @@ function create() {
   // Clear previous elements
   this.children.removeAll();
 
-  // Get exact center coordinates
-  const centerX = this.cameras.main.centerX;
-  const centerY = this.cameras.main.centerY;
+  // Adjusted center coordinates (150px left offset)
+  const centerX = this.scale.width / 2 - 150; // ← Changed this line
+  const centerY = this.scale.height / 2;
 
-  // Doro button (25% smaller)
+  // Doro button with precise scaling
   this.doroImage = this.add.image(centerX, centerY - 40, 'doro')
     .setInteractive({ cursor: 'pointer' })
-    .setScale(0.1875) // Original 0.25 reduced by 25%
+    .setScale(0.18) // ← Changed scale to 0.18
     .setOrigin(0.5, 0.5)
     .on('pointerdown', () => {
       doros += clickMultiplier;
       updateScore();
     });
 
-  // Crisp score text
+  // Ultra-crisp score text
   this.scoreText = this.add.text(centerX, centerY + 80, 'Doros: 0', {
-    fontSize: '34px',
+    fontSize: '26px', // Reduced from 34px
     fill: '#2b2d2f',
     fontFamily: 'Arial',
     fontStyle: 'bold',
     stroke: '#ffffff',
-    strokeThickness: 3,
-    resolution: window.devicePixelRatio * 2,
-    padding: { x: 10, y: 5 }
+    strokeThickness: 4, // Increased stroke
+    resolution: window.devicePixelRatio * 3, // Triple resolution
+    padding: { x: 15, y: 8 },
+    shadow: { // Added shadow properties
+      offsetX: 2,
+      offsetY: 2,
+      color: '#00000055',
+      blur: 0,
+      stroke: true,
+      fill: true
+    }
   }).setOrigin(0.5);
 
   // Auto-clicker system
