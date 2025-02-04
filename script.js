@@ -7,7 +7,7 @@ let autoClickerCount = 0;
 let autoClickerCost = 10;
 let multiplierCost = 50;
 
-// Phaser config
+// Phaser configuration
 const config = {
   type: Phaser.AUTO,
   parent: 'game-container',
@@ -19,14 +19,14 @@ const config = {
   },
   scale: {
     mode: Phaser.Scale.NONE,
-    width: window.innerWidth - 250, // Account for sidebar
-    height: window.innerHeight - 100, // Account for title
-    autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
+    width: window.innerWidth - 250,
+    height: window.innerHeight - 80,
+    autoCenter: Phaser.Scale.CENTER_BOTH
   },
   render: {
-  antialias: false,
-  roundPixels: true,
-  powerPreference: "high-performance"
+    antialias: false,
+    roundPixels: true,
+    powerPreference: "high-performance"
   }
 };
 
@@ -37,11 +37,11 @@ function preload() {
 }
 
 function create() {
-  // Exact center calculation
-  const centerX = this.sys.game.config.width / 2;
-  const centerY = this.sys.game.config.height / 2;
+  // Get exact center coordinates
+  const centerX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+  const centerY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
 
-  // Doro positioning
+  // Create Doro button
   this.doroImage = this.add.image(centerX, centerY - 50, 'doro')
     .setInteractive()
     .setScale(0.18)
@@ -51,25 +51,25 @@ function create() {
       updateScore();
     });
 
-  // Crisp text solution
+  // Create crisp score text
   this.scoreText = this.add.text(centerX, centerY + 80, 'Doros: 0', {
     fontSize: '32px',
     fill: '#000000',
-    fontFamily: 'Courier New', // Monospace for crispness
+    fontFamily: 'Courier New',
     stroke: '#ffffff',
     strokeThickness: 4,
-    resolution: window.devicePixelRatio * 2,
+    resolution: window.devicePixelRatio * 3,
     shadow: {
-      stroke: true,
-      fill: true,
       offsetX: 2,
       offsetY: 2,
       color: '#000000',
-      blur: 0
+      blur: 0,
+      stroke: true,
+      fill: true
     }
-  }).setOrigin(0.5).setPadding(4);
+  }).setOrigin(0.5);
 
-  // Game systems
+  // Auto-clicker system
   this.time.addEvent({
     delay: 1000,
     callback: () => {
@@ -79,47 +79,17 @@ function create() {
     loop: true
   });
 
-  // UI setup
+  // Initialize buttons
   const autoClickerButton = document.getElementById('auto-clicker');
   const clickMultiplierButton = document.getElementById('click-multiplier');
   autoClickerButton.addEventListener('click', purchaseAutoClicker);
   clickMultiplierButton.addEventListener('click', purchaseClickMultiplier);
   updateButtons();
-}
-
-// ... rest of the functions remain unchanged ...
-
-function update() {}
-
-function updateScore() {
-  game.scene.scenes[0].scoreText.setText(`Doros: ${doros}`);
-  updateButtons();
-}
-
-function updateButtons() {
-  const autoClickerButton = document.getElementById('auto-clicker');
-  const clickMultiplierButton = document.getElementById('click-multiplier');
   
-  autoClickerButton.disabled = doros < autoClickerCost;
-  clickMultiplierButton.disabled = doros < multiplierCost;
-  autoClickerButton.textContent = `Auto Clicker (${autoClickerCount}) - Cost: ${autoClickerCost} Doros`;
-  clickMultiplierButton.textContent = `Click Multiplier (x${clickMultiplier}) - Cost: ${multiplierCost} Doros`;
+  // Debug output
+  console.log('Game Dimensions:', this.scale.width, this.scale.height);
+  console.log('Doro Position:', this.doroImage.x, this.doroImage.y);
+  console.log('Canvas Dimensions:', this.sys.game.canvas.width, this.sys.game.canvas.height);
 }
 
-function purchaseAutoClicker() {
-  if (doros >= autoClickerCost) {
-    doros -= autoClickerCost;
-    autoClickerCount++;
-    autoClickerCost = Math.round(autoClickerCost * 1.5);
-    updateScore();
-  }
-}
-
-function purchaseClickMultiplier() {
-  if (doros >= multiplierCost) {
-    doros -= multiplierCost;
-    clickMultiplier++;
-    multiplierCost = Math.round(multiplierCost * 1.5);
-    updateScore();
-  }
-}
+// ... rest of the code remains unchanged ...
