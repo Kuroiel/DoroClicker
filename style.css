@@ -11,6 +11,6 @@ body {
 /* Center the Phaser canvas */
 canvas {
   display: block;
-  margin: 20px auto;  /* 20px top & bottom margin, auto horizontally */
+  margin: 20px auto; /* 20px top & bottom margin, auto horizontally */
   border: 1px solid #ccc;
 }
