@@ -46,6 +46,11 @@ html, body {
   flex: 1;
   position: relative;
   background: #e9ecef;
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  height: calc(100vh - 100px);
+  position: relative;
+  overflow: hidden;
 }
 
 /* Phaser canvas positioning */
@@ -54,5 +59,12 @@ canvas {
   left: 50% !important;
   top: 50% !important;
   transform: translate(-50%, -50%) !important;
+  image-rendering: crisp-edges;
+    position: absolute;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) scale(1) !important;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
 }

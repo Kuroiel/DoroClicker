@@ -7,7 +7,7 @@ let autoClickerCount = 0;
 let autoClickerCost = 10;
 let multiplierCost = 50;
 
-// Phaser configuration
+// Phaser config
 const config = {
   type: Phaser.AUTO,
   parent: 'game-container',
@@ -18,14 +18,15 @@ const config = {
     update: update
   },
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 800,
-    height: 600
+    mode: Phaser.Scale.NONE,
+    width: window.innerWidth - 250, // Account for sidebar
+    height: window.innerHeight - 100, // Account for title
+    autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
   },
   render: {
-    antialias: false,
-    roundPixels: true
+  antialias: false,
+  roundPixels: true,
+  powerPreference: "high-performance"
   }
 };
 
@@ -36,16 +37,13 @@ function preload() {
 }
 
 function create() {
-  // Clear previous elements
-  this.children.removeAll();
+  // Exact center calculation
+  const centerX = this.sys.game.config.width / 2;
+  const centerY = this.sys.game.config.height / 2;
 
-  // Get exact center coordinates
-  const centerX = this.cameras.main.centerX;
-  const centerY = this.cameras.main.centerY;
-
-  // Doro button (perfectly centered)
+  // Doro positioning
   this.doroImage = this.add.image(centerX, centerY - 50, 'doro')
-    .setInteractive({ cursor: 'pointer' })
+    .setInteractive()
     .setScale(0.18)
     .setOrigin(0.5, 0.5)
     .on('pointerdown', () => {
@@ -53,18 +51,25 @@ function create() {
       updateScore();
     });
 
-  // Crisp score text
+  // Crisp text solution
   this.scoreText = this.add.text(centerX, centerY + 80, 'Doros: 0', {
     fontSize: '32px',
-    fill: '#2d2d2d',
-    fontFamily: 'Arial',
-    fontStyle: 'bold',
+    fill: '#000000',
+    fontFamily: 'Courier New', // Monospace for crispness
     stroke: '#ffffff',
     strokeThickness: 4,
-    resolution: window.devicePixelRatio * 2
-  }).setOrigin(0.5);
+    resolution: window.devicePixelRatio * 2,
+    shadow: {
+      stroke: true,
+      fill: true,
+      offsetX: 2,
+      offsetY: 2,
+      color: '#000000',
+      blur: 0
+    }
+  }).setOrigin(0.5).setPadding(4);
 
-  // Auto-clicker system
+  // Game systems
   this.time.addEvent({
     delay: 1000,
     callback: () => {
@@ -74,13 +79,15 @@ function create() {
     loop: true
   });
 
-  // Initialize UI
+  // UI setup
   const autoClickerButton = document.getElementById('auto-clicker');
   const clickMultiplierButton = document.getElementById('click-multiplier');
   autoClickerButton.addEventListener('click', purchaseAutoClicker);
   clickMultiplierButton.addEventListener('click', purchaseClickMultiplier);
   updateButtons();
 }
+
+// ... rest of the functions remain unchanged ...
 
 function update() {}
 
