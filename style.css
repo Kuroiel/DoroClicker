@@ -51,3 +51,14 @@ canvas {
   background: #e9ecef !important;
   image-rendering: crisp-edges;
 }
+
+/* Force consistent background */
+body, .game-container, canvas {
+  background: #e9ecef !important;
+}
+
+/* Remove phantom spacing */
+.main-container {
+  gap: 0 !important;
+  padding: 0 !important;
+}
