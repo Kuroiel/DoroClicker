@@ -1,6 +1,6 @@
 console.log("script.js loaded");
 
-// Game state variables
+// Game state
 let doros = 0;
 let clickMultiplier = 1;
 let autoClickerCount = 0;
@@ -18,7 +18,8 @@ const config = {
     update: update
   },
   scale: {
-    mode: Phaser.Scale.NONE,
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
     width: 800,
     height: 600
   },
@@ -35,31 +36,33 @@ function preload() {
 }
 
 function create() {
-  // Pixel-perfect positioning
-  const centerX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
-  const centerY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+  // Clear previous elements
+  this.children.removeAll();
 
-  // Doro button (25% smaller than original)
+  // Get exact center coordinates
+  const centerX = this.cameras.main.centerX;
+  const centerY = this.cameras.main.centerY;
+
+  // Doro button (perfectly centered)
   this.doroImage = this.add.image(centerX, centerY - 50, 'doro')
-    .setInteractive()
+    .setInteractive({ cursor: 'pointer' })
     .setScale(0.18)
-    .setOrigin(0.5, 0.5);
+    .setOrigin(0.5, 0.5)
+    .on('pointerdown', () => {
+      doros += clickMultiplier;
+      updateScore();
+    });
 
   // Crisp score text
   this.scoreText = this.add.text(centerX, centerY + 80, 'Doros: 0', {
     fontSize: '32px',
-    fill: '#000',
-    fontFamily: 'Courier New',
-    stroke: '#fff',
+    fill: '#2d2d2d',
+    fontFamily: 'Arial',
+    fontStyle: 'bold',
+    stroke: '#ffffff',
     strokeThickness: 4,
     resolution: window.devicePixelRatio * 2
   }).setOrigin(0.5);
-
-  // Click handler
-  this.doroImage.on('pointerdown', () => {
-    doros += clickMultiplier;
-    this.scoreText.setText(`Doros: ${doros}`);
-  });
 
   // Auto-clicker system
   this.time.addEvent({
@@ -71,23 +74,13 @@ function create() {
     loop: true
   });
 
-  // Initialize buttons
+  // Initialize UI
   const autoClickerButton = document.getElementById('auto-clicker');
   const clickMultiplierButton = document.getElementById('click-multiplier');
   autoClickerButton.addEventListener('click', purchaseAutoClicker);
   clickMultiplierButton.addEventListener('click', purchaseClickMultiplier);
   updateButtons();
 }
-
-function update() {}
-
-function updateScore() {
-  game.scene.scenes[0].scoreText.setText(`Doros: ${doros}`);
-  updateButtons();
-}
-
-// Rest of the functions remain unchanged...
-// [Keep the updateButtons, purchaseAutoClicker, and purchaseClickMultiplier functions from previous versions]
 
 function update() {}
 
