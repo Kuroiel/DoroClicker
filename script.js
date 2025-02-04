@@ -15,7 +15,7 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
     width: 800,
     height: 600
-  }
+  },
 };
 
 const game = new Phaser.Game(config);
