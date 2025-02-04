@@ -1,70 +1,68 @@
-// Game State
+// Create a Phaser game configuration object
+const config = {
+  type: Phaser.AUTO,
+  width: 800,  // adjust based on your design needs
+  height: 600,
+  backgroundColor: '#f4f4f4',
+  parent: null, // or specify a container div id if you want to mount it in a specific element
+  scene: {
+    preload: preload,
+    create: create,
+    update: update
+  }
+};
+
+const game = new Phaser.Game(config);
+
+// Game variables
 let doros = 0;
 let autoClickerCost = 10;
 let clickMultiplierCost = 50;
-let autoClickerInterval;
 let clickMultiplier = 1;
+let autoClickerTimer;  // we'll use Phaser's time events instead of setInterval
+let scoreText;
+let doroImage;
 
-// DOM Elements
-const scoreElement = document.getElementById('score');
-const doroButton = document.getElementById('doro');
-const autoClickerButton = document.getElementById('auto-clicker');
-const clickMultiplierButton = document.getElementById('click-multiplier');
-
-// Update the score display
-function updateScore() {
-  scoreElement.textContent = `Doros: ${doros}`;
+function preload() {
+  // Load your assets. Make sure the asset paths are correct.
+  this.load.image('doro', 'assets/doro.png');
+  // You can also load additional images, e.g., for helper doros, if needed.
 }
 
-// Handle doro click
-doroButton.addEventListener('click', () => {
-  doros += clickMultiplier;
-  updateScore();
-  checkUpgrades();
-});
+function create() {
+  // Add score text to the top-left corner
+  scoreText = this.add.text(16, 16, 'Doros: 0', { fontSize: '32px', fill: '#333' });
+  
+  // Add the clickable doro image in the center
+  doroImage = this.add.image(400, 300, 'doro').setInteractive();
 
-// Buy Auto  Clicker
-function buyAutoClicker() {
-  if (doros >= autoClickerCost) {
-    doros -= autoClickerCost;
-    autoClickerCost *= 2;
-    autoClickerButton.querySelector('.upgrade-cost').textContent = `Cost: ${autoClickerCost} Doros`;
-    updateScore();
-    startAutoClicker();
-    checkUpgrades();
-  }
-}
-
-autoClickerButton.addEventListener('click', buyAutoClicker);
-
-// Buy Click Multiplier
-function buyClickMultiplier() {
-  if (doros >= clickMultiplierCost) {
-    doros -= clickMultiplierCost;
-    clickMultiplierCost *= 2;
-    clickMultiplierButton.querySelector('.upgrade-cost').textContent = `Cost: ${clickMultiplierCost} Doros`;
-    updateScore();
-    checkUpgrades();
-  }
-}
-
-clickMultiplierButton.addEventListener('click', buyClickMultiplier);
-
-// Start Auto Clicker
-function startAutoClicker() {
-  if (autoClickerInterval) return; // Prevent multiple intervals
-  autoClickerInterval = setInterval(() => {
+  // When the doro image is clicked, increment doros
+  doroImage.on('pointerdown', () => {
     doros += clickMultiplier;
     updateScore();
-  }, 1000); // 1 second interval
+    // In a full game you would call checkUpgrades() here
+  });
+
+  // Example: if you want to simulate buying an auto-clicker immediately (or after a button press)
+  // You could set up an input keyboard key or another clickable game object for upgrades.
+
+  // For auto-clicker functionality using Phaser’s time event:
+  // (This is just an example; you might want to start it only after the player buys the upgrade)
+  // Uncomment the following line to simulate an auto-clicker starting immediately:
+  // autoClickerTimer = this.time.addEvent({ delay: 1000, callback: autoClick, callbackScope: this, loop: true });
 }
 
-// Check if upgrades can be afforded
-function checkUpgrades() {
-  autoClickerButton.disabled = doros < autoClickerCost;
-  clickMultiplierButton.disabled = doros < clickMultiplierCost;
+function update() {
+  // Use this update loop if you have animations or need to check something continuously.
 }
 
-// Initialize
-updateScore();
-checkUpgrades();
+// Helper function to update score display
+function updateScore() {
+  scoreText.setText('Doros: ' + doros);
+}
+
+// Auto-clicker callback function
+function autoClick() {
+  doros += clickMultiplier;
+  updateScore();
+}
