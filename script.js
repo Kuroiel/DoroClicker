@@ -26,7 +26,7 @@ const config = {
   render: {
     antialias: false,
     roundPixels: true,
-    powerPreference: "high-performance" // Added this line
+    powerPreference: "high-performance"
   }
 };
 
@@ -40,14 +40,14 @@ function create() {
   // Clear previous elements
   this.children.removeAll();
 
-  // Adjusted center coordinates (150px left offset)
-  const centerX = this.scale.width / 2 - 150; // ← Changed this line
+  // Get true center coordinates
+  const centerX = this.scale.width / 2;
   const centerY = this.scale.height / 2;
 
   // Doro button with precise scaling
   this.doroImage = this.add.image(centerX, centerY - 40, 'doro')
     .setInteractive({ cursor: 'pointer' })
-    .setScale(0.18) // ← Changed scale to 0.18
+    .setScale(0.18)
     .setOrigin(0.5, 0.5)
     .on('pointerdown', () => {
       doros += clickMultiplier;
@@ -56,22 +56,14 @@ function create() {
 
   // Ultra-crisp score text
   this.scoreText = this.add.text(centerX, centerY + 80, 'Doros: 0', {
-    fontSize: '26px', // Reduced from 34px
+    fontSize: '28px',
     fill: '#2b2d2f',
-    fontFamily: 'Arial',
+    fontFamily: 'Courier New', // Monospace for crispness
     fontStyle: 'bold',
     stroke: '#ffffff',
-    strokeThickness: 4, // Increased stroke
-    resolution: window.devicePixelRatio * 3, // Triple resolution
-    padding: { x: 15, y: 8 },
-    shadow: { // Added shadow properties
-      offsetX: 2,
-      offsetY: 2,
-      color: '#00000055',
-      blur: 0,
-      stroke: true,
-      fill: true
-    }
+    strokeThickness: 3,
+    resolution: window.devicePixelRatio * 2,
+    padding: { x: 10, y: 5 }
   }).setOrigin(0.5);
 
   // Auto-clicker system
@@ -91,6 +83,16 @@ function create() {
   clickMultiplierButton.addEventListener('click', purchaseClickMultiplier);
   updateButtons();
 }
+
+function update() {}
+
+function updateScore() {
+  game.scene.scenes[0].scoreText.setText(`Doros: ${doros}`);
+  updateButtons();
+}
+
+// Rest of the functions remain unchanged...
+// [Keep the updateButtons, purchaseAutoClicker, and purchaseClickMultiplier functions from previous versions]
 
 function update() {}
 

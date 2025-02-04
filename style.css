@@ -13,18 +13,20 @@ html, body {
   padding: 15px 0;
   background: #f4f4f4;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 2; /* Keep title above canvas */
 }
 
 .main-title {
   font-size: 2.5rem;
-  margin: 0;
+  margin: 0 0 20px 0; /* Added bottom margin */
   color: #333;
   text-align: center;
 }
 
 .main-container {
   display: flex;
-  height: calc(100% - 80px);
+  height: calc(100% - 100px);
 }
 
 .sidebar {
@@ -34,22 +36,20 @@ html, body {
   border-right: 1px solid #dee2e6;
   padding: 15px;
   overflow-y: auto;
+  z-index: 1; /* Keep sidebar above canvas */
 }
 
 .game-container {
   flex: 1;
   position: relative;
-  background: #e9ecef !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-    margin-left: 250px; /* Account for sidebar */
-  width: calc(100% - 250px); /* Remaining space */
+  background: #e9ecef;
+  margin-left: 250px; /* Proper sidebar offset */
 }
 
 canvas {
-  position: fixed !important;
+  position: absolute !important;
   left: 50% !important;
   top: 50% !important;
-  transform: translate(calc(-50% - 75px), -50%) !important; /* Center offset */
+  transform: translate(-50%, -50%) !important;
+  image-rendering: crisp-edges;
 }
