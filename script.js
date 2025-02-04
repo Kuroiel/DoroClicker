@@ -1,6 +1,5 @@
 console.log("script.js loaded");
 
-// Phaser configuration
 const config = {
   type: Phaser.AUTO,
   parent: 'game-container',
@@ -16,11 +15,13 @@ const config = {
     width: 800,
     height: 600
   },
+  render: {
+    antialias: false // Crisper text
+  }
 };
 
 const game = new Phaser.Game(config);
 
-// Game variables
 let doros = 0;
 let clickMultiplier = 1;
 let autoClickerCount = 0;
@@ -29,57 +30,54 @@ let multiplierCost = 50;
 let doroImage = null;
 let scoreText = null;
 
-// DOM elements
 let autoClickerButton, clickMultiplierButton;
 
 function preload() {
-  this.load.image('doro', 'assets/doro.png')
-    .on('fileerror', () => {
-      console.error("Failed to load doro.png! Check assets folder");
-    });
+  this.load.image('doro', 'assets/doro.png');
 }
 
 function create() {
-  // Clear previous elements if any
   if (doroImage) doroImage.destroy();
   if (scoreText) scoreText.destroy();
 
-  // Get DOM references
   autoClickerButton = document.getElementById('auto-clicker');
   clickMultiplierButton = document.getElementById('click-multiplier');
 
-  // Initialize buttons
   autoClickerButton.addEventListener('click', purchaseAutoClicker);
   clickMultiplierButton.addEventListener('click', purchaseClickMultiplier);
 
-  // Create Doro image
+  // Perfectly centered Doro
   doroImage = this.add.image(
     this.scale.width / 2,
-    this.scale.height / 2 - 50,
+    this.scale.height / 2 - 40,
     'doro'
   )
-    .setInteractive({ cursor: 'pointer' })
-    .setScale(0.25)
-    .on('pointerdown', () => {
-      doros += clickMultiplier;
-      updateScore();
-    });
+  .setInteractive({ cursor: 'pointer' })
+  .setScale(0.25)
+  .setOrigin(0.5, 0.5)
+  .on('pointerdown', () => {
+    doros += clickMultiplier;
+    updateScore();
+  });
 
-  // Create score text
+  // Crisp score text
   scoreText = this.add.text(
     this.scale.width / 2,
-    this.scale.height / 2 + 100,
-    'Doros: 0',
+    this.scale.height / 2 + 80,
+    'Doros: 0', 
     {
-      fontSize: '32px',
+      fontSize: '38px',
       fill: '#2d2d2d',
+      fontFamily: 'Arial',
       fontStyle: 'bold',
       stroke: '#ffffff',
-      strokeThickness: 3
+      strokeThickness: 4,
+      resolution: 2 // Crisper text
     }
-  ).setOrigin(0.5);
+  )
+  .setOrigin(0.5)
+  .setShadow(2, 2, '#00000050', 2);
 
-  // Auto-clicker system
   this.time.addEvent({
     delay: 1000,
     callback: () => {
@@ -92,9 +90,7 @@ function create() {
   updateButtons();
 }
 
-function update() {
-  // Reserved for frame updates
-}
+function update() {}
 
 function updateScore() {
   scoreText.setText(`Doros: ${doros}`);
