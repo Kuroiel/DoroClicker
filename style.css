@@ -5,75 +5,49 @@ html, body {
   height: 100%;
   overflow: hidden;
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
 }
 
 .title-container {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 20px 0;
+  padding: 15px 0;
+  background: #f4f4f4;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .main-title {
-  font-size: 48px;
+  font-size: 2.5rem;
   margin: 0;
   color: #333;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
 }
 
 .main-container {
   display: flex;
-  width: 100%;
-  height: calc(100% - 100px);
+  height: calc(100% - 80px);
+  background: #fff; /* Remove weird color section */
 }
 
 .sidebar {
   width: 250px;
   flex-shrink: 0;
-  background-color: #f9f9f9;
-  border-right: 1px solid #ccc;
-  padding: 20px;
+  background: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  padding: 15px;
   overflow-y: auto;
 }
 
 .game-container {
   flex: 1;
   position: relative;
-  background-color: #eee;
+  background: #e9ecef !important; /* Force uniform background */
 }
 
+/* Phaser Canvas Fix */
 canvas {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  image-rendering: -webkit-optimize-contrast;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: #e9ecef !important;
   image-rendering: crisp-edges;
-}
-
-button {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  background: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-button:hover:not(:disabled) {
-  background: #45a049;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-button:disabled {
-  background: #cccccc;
-  cursor: not-allowed;
-  opacity: 0.7;
 }
