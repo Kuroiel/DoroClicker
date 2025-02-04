@@ -1,26 +1,53 @@
-/* style.css */
-
-/* Reset and basic body styles */
-body {
+/* Reset and basic styles */
+html, body {
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  height: 100%;
   font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+/* Main container: two columns */
+.main-container {
   display: flex;
-  align-items: center;
+  height: 100vh;
+}
+
+/* Sidebar for Helper Doros and Score */
+.sidebar {
+  width: 250px;
+  background-color: #f9f9f9;
+  border-right: 1px solid #ccc;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.helper-doros-container {
+  margin-bottom: 20px;
+}
+
+.score-container {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Game container where Phaser will insert its canvas */
+.game-container {
+  flex: 1;
+  display: flex;
   justify-content: center;
-  height: 100vh; /* Full viewport height */
+  align-items: center;
+  background-color: #eee;
 }
 
-/* Ensure the container for the game is the correct size */
-#game-container {
-  width: 800px;  /* The game width */
-  height: 600px; /* The game height */
-  /* Optional: add a border to see the container */
-  border: 1px solid #ccc;
-}
-
-/* If needed, style the Phaser canvas as well */
+/* Optional: ensure the Phaser canvas scales nicely */
 canvas {
+  max-width: 100%;
+  max-height: 100%;
   display: block;
 }
