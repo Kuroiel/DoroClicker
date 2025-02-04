@@ -5,9 +5,12 @@ html, body {
   height: 100%;
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
+}
+
+.title-container {
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
 }
 
 /* Title styling */
@@ -15,17 +18,15 @@ html, body {
   font-size: 48px;
   margin: 20px 0;
   color: #333;
-  width: 100%;
-  text-align: center; /* Added center alignment */
+  text-align: center;
 }
 
 /* Main container */
 .main-container {
   display: flex;
-  width: 90%; /* More responsive width */
-  max-width: 1200px; /* Maximum width */
-  height: 85vh;
-  margin: 0 auto; /* Center the container */
+  width: 100%;
+  height: calc(100vh - 100px); /* Account for title height */
+  position: relative;
 }
 
 /* Sidebar for Helper Doros */
@@ -36,22 +37,40 @@ html, body {
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
 }
 
 /* Game container for Phaser */
 .game-container {
   flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-left: 250px; /* Match sidebar width */
+  height: 100%;
   background-color: #eee;
-  position: relative;
-  margin-left: 20px; /* Add space between sidebar and game */
 }
 
 /* Ensure the Phaser canvas scales nicely */
 canvas {
-  max-width: 100%;
-  max-height: 100%;
   display: block;
+  margin: 0 auto;
+}
+
+/* Button styling */
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
 }
