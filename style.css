@@ -237,3 +237,8 @@ body {
     padding: var(--spacing-base);
   }
 }
+
+canvas {
+  display: block;
+  margin: 0 auto;
+}
