@@ -5,6 +5,7 @@ html, body {
   height: 100%;
   overflow: hidden;
   font-family: 'Arial', sans-serif;
+  background: #e9ecef;
 }
 
 .title-container {
@@ -24,7 +25,6 @@ html, body {
 .main-container {
   display: flex;
   height: calc(100% - 80px);
-  background: #fff; /* Remove weird color section */
 }
 
 .sidebar {
@@ -39,26 +39,16 @@ html, body {
 .game-container {
   flex: 1;
   position: relative;
-  background: #e9ecef !important; /* Force uniform background */
+  background: #e9ecef !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Phaser Canvas Fix */
 canvas {
   position: absolute !important;
+  image-rendering: crisp-edges;
+  transform: translate(-50%, -50%) !important;
   left: 50% !important;
   top: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  background: #e9ecef !important;
-  image-rendering: crisp-edges;
-}
-
-/* Force consistent background */
-body, .game-container, canvas {
-  background: #e9ecef !important;
-}
-
-/* Remove phantom spacing */
-.main-container {
-  gap: 0 !important;
-  padding: 0 !important;
 }
