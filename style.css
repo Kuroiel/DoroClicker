@@ -5,6 +5,8 @@ html, body {
   height: 100%;
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
+    overflow: hidden; /* Prevent scrollbars */
+
 }
 
 .title-container {
@@ -25,29 +27,22 @@ html, body {
 .main-container {
   display: flex;
   width: 100%;
-  height: calc(100vh - 100px); /* Account for title height */
-  position: relative;
+  height: calc(100vh - 100px); /* Full height minus title */
 }
 
 /* Sidebar for Helper Doros */
 .sidebar {
   width: 250px;
+  flex-shrink: 0; /* Prevent shrinking */
   background-color: #f9f9f9;
   border-right: 1px solid #ccc;
   padding: 20px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
 }
 
 /* Game container for Phaser */
 .game-container {
   flex: 1;
-  margin-left: 250px; /* Match sidebar width */
-  height: 100%;
+  position: relative;
   background-color: #eee;
 }
 

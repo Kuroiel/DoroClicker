@@ -12,6 +12,13 @@ const config = {
     create: create,
     update: update
   }
+    scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    parent: 'game-container',
+    width: 800,
+    height: 600
+  }
 };
 
 const game = new Phaser.Game(config);
@@ -24,6 +31,7 @@ let autoClickerCost = 10;
 let multiplierCost = 50;
 let doroImage;
 let scoreText;
+let sceneInitialized = false;
 
 // DOM Elements
 let autoClickerButton;
@@ -34,6 +42,15 @@ function preload() {
 }
 
 function create() {
+	  if (sceneInitialized) {
+    doroImage.destroy();
+    scoreText.destroy();
+  }
+  
+    doroImage = this.add.image(...).setInteractive();
+  scoreText = this.add.text(...);
+  
+  sceneInitialized = true;
   // Get DOM references
   autoClickerButton = document.getElementById('auto-clicker');
   clickMultiplierButton = document.getElementById('click-multiplier');
@@ -51,18 +68,15 @@ function create() {
   doroImage.setScale(0.3);
 
   // Create visible score text
-  scoreText = this.add.text(
-    this.sys.game.config.width / 2,
-    this.sys.game.config.height / 2 + 100,
-    'Doros: 0', 
-    {
-      fontSize: '32px',
-      fill: '#2d2d2d',
-      fontStyle: 'bold',
-      stroke: '#ffffff',
-      strokeThickness: 3
-    }
-  ).setOrigin(0.5);
+scoreText = this.add.text(
+  this.scale.width / 2,
+  this.scale.height / 2 + 100,
+  'Doros: 0', 
+  {
+    fontSize: '32px',
+    fill: '#2d2d2d' // REMOVE stroke properties
+  }
+).setOrigin(0.5);
 
   // Click handler
   doroImage.on('pointerdown', () => {
