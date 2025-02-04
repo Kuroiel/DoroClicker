@@ -18,15 +18,13 @@ const config = {
     update: update
   },
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
+    mode: Phaser.Scale.NONE,
     width: 800,
     height: 600
   },
   render: {
     antialias: false,
-    roundPixels: true,
-    powerPreference: "high-performance"
+    roundPixels: true
   }
 };
 
@@ -37,34 +35,31 @@ function preload() {
 }
 
 function create() {
-  // Clear previous elements
-  this.children.removeAll();
+  // Pixel-perfect positioning
+  const centerX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+  const centerY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
 
-  // Get true center coordinates
-  const centerX = this.scale.width / 2;
-  const centerY = this.scale.height / 2;
-
-  // Doro button with precise scaling
-  this.doroImage = this.add.image(centerX, centerY - 40, 'doro')
-    .setInteractive({ cursor: 'pointer' })
+  // Doro button (25% smaller than original)
+  this.doroImage = this.add.image(centerX, centerY - 50, 'doro')
+    .setInteractive()
     .setScale(0.18)
-    .setOrigin(0.5, 0.5)
-    .on('pointerdown', () => {
-      doros += clickMultiplier;
-      updateScore();
-    });
+    .setOrigin(0.5, 0.5);
 
-  // Ultra-crisp score text
+  // Crisp score text
   this.scoreText = this.add.text(centerX, centerY + 80, 'Doros: 0', {
-    fontSize: '28px',
-    fill: '#2b2d2f',
-    fontFamily: 'Courier New', // Monospace for crispness
-    fontStyle: 'bold',
-    stroke: '#ffffff',
-    strokeThickness: 3,
-    resolution: window.devicePixelRatio * 2,
-    padding: { x: 10, y: 5 }
+    fontSize: '32px',
+    fill: '#000',
+    fontFamily: 'Courier New',
+    stroke: '#fff',
+    strokeThickness: 4,
+    resolution: window.devicePixelRatio * 2
   }).setOrigin(0.5);
+
+  // Click handler
+  this.doroImage.on('pointerdown', () => {
+    doros += clickMultiplier;
+    this.scoreText.setText(`Doros: ${doros}`);
+  });
 
   // Auto-clicker system
   this.time.addEvent({
