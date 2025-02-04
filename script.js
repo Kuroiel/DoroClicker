@@ -1,12 +1,12 @@
 console.log("script.js loaded");
 
-// Configure Phaser to attach its canvas into the "game-container" div.
+// Phaser configuration
 const config = {
   type: Phaser.AUTO,
-  width: 800,    // game canvas width
-  height: 600,   // game canvas height
+  width: 800,
+  height: 600,
   backgroundColor: '#f4f4f4',
-  parent: 'game-container',  // Inject the canvas here
+  parent: 'game-container',
   scene: {
     preload: preload,
     create: create,
@@ -16,53 +16,39 @@ const config = {
 
 const game = new Phaser.Game(config);
 
-// Game state variables
+// Game variables
 let doros = 0;
 let clickMultiplier = 1;
 let doroImage;
-let scoreText; // (Phaser text, optional if you prefer using the DOM)
+let scoreText;
 
-// Preload assets
 function preload() {
   console.log("Preload started");
-  // Load the doro image asset (ensure the path is correct)
   this.load.image('doro', 'assets/doro.png');
 }
 
-// Create the scene
 function create() {
   console.log("Create started");
-  
-  // (Optional) Resume AudioContext if needed on first interaction
-  this.input.once('pointerdown', () => {
-    if (this.sound && this.sound.context && this.sound.context.state === 'suspended') {
-      this.sound.context.resume();
-    }
-  });
-  
-  // Add the doro image to the center of the canvas
-  doroImage = this.add.image(400, 300, 'doro').setInteractive();
-  // Scale down the doro image so it doesn't cover everything:
-  doroImage.setScale(0.5);  // adjust scale as needed
-  
-  // When the image is clicked, increase doros and update the DOM score
+
+  // Center Doro Image (Smaller)
+  doroImage = this.add.image(400, 250, 'doro').setInteractive();
+  doroImage.setScale(0.3); // Made it smaller
+
+  // Score Text (Now Below the Doro Image)
+  scoreText = this.add.text(400, 330, 'Doros: 0', {
+    fontSize: '28px',
+    fill: '#333'
+  }).setOrigin(0.5); // Center text below the image
+
+  // Clicking Doro Increases Score
   doroImage.on('pointerdown', () => {
     doros += clickMultiplier;
     updateScore();
-    console.log("Doro clicked, doros:", doros);
   });
-  
-  // (Optional) If you want to display a Phaser text element inside the canvas,
-  // you could add it here. For now, we are updating the DOM element with id "score".
-  // scoreText = this.add.text(16, 16, 'Doros: 0', { fontSize: '32px', fill: '#333' });
 }
 
-// Update loop (if needed)
-function update() {
-  // No continuous updates needed for a simple clicker game.
-}
+function update() {}
 
-// Update the score in the DOM sidebar
 function updateScore() {
-  document.getElementById('score').textContent = 'Doros: ' + doros;
+  scoreText.setText('Doros: ' + doros);
 }
