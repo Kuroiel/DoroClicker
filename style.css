@@ -13,16 +13,19 @@ html, body {
 /* Title styling */
 .main-title {
   font-size: 48px;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin: 20px 0;
   color: #333;
+  width: 100%;
+  text-align: center; /* Added center alignment */
 }
 
 /* Main container */
 .main-container {
   display: flex;
-  width: 100%;
+  width: 90%; /* More responsive width */
+  max-width: 1200px; /* Maximum width */
   height: 85vh;
+  margin: 0 auto; /* Center the container */
 }
 
 /* Sidebar for Helper Doros */
@@ -43,6 +46,7 @@ html, body {
   align-items: center;
   background-color: #eee;
   position: relative;
+  margin-left: 20px; /* Add space between sidebar and game */
 }
 
 /* Ensure the Phaser canvas scales nicely */
