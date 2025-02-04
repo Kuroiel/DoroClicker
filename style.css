@@ -1,16 +1,26 @@
 /* style.css */
 
-/* Basic reset and body styling */
+/* Reset and basic body styles */
 body {
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
   font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full viewport height */
 }
 
-/* Center the Phaser canvas */
+/* Ensure the container for the game is the correct size */
+#game-container {
+  width: 800px;  /* The game width */
+  height: 600px; /* The game height */
+  /* Optional: add a border to see the container */
+  border: 1px solid #ccc;
+}
+
+/* If needed, style the Phaser canvas as well */
 canvas {
   display: block;
-  margin: 20px auto; /* 20px top & bottom margin, auto horizontally */
-  border: 1px solid #ccc;
 }

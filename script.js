@@ -6,7 +6,12 @@ const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
+  parent: 'game-container',  // Tells Phaser to insert the canvas into the #game-container div
   backgroundColor: '#f4f4f4',
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
   scene: {
     preload: preload,
     create: create,
@@ -25,16 +30,15 @@ let doroImage;
 function preload() {
   console.log("Preload started");
   // Load the image asset
-  // For testing, if you suspect an asset issue, try using an external URL:
+  // For testing, you can temporarily switch to a placeholder if needed:
   // this.load.image('doro', 'https://via.placeholder.com/100');
   this.load.image('doro', 'assets/doro.png');
 }
 
 function create() {
   console.log("Create started");
-  
-  // Resume AudioContext on first user interaction
-  // (If audio is not used, you can comment this out)
+
+  // Resume AudioContext on first user interaction (if audio is used)
   this.input.once('pointerdown', () => {
     if (this.sound && this.sound.context && this.sound.context.state === 'suspended') {
       console.log("Resuming audio context");
@@ -42,19 +46,17 @@ function create() {
     }
   });
 
-  // Create score text at the top left
+  // Create score text at the top left of the canvas
   scoreText = this.add.text(16, 16, 'Doros: 0', {
     fontSize: '32px',
     fill: '#333'
   });
-  
-  // Add the clickable doro image to the center of the canvas
+
+  // Add the clickable doro image at the center of the canvas
   doroImage = this.add.image(400, 300, 'doro').setInteractive();
-  
-  // Log to confirm the image was added
   console.log("Doro image added:", doroImage);
 
-  // When the image is clicked, increment the score
+  // When the image is clicked, increment the score and update the display
   doroImage.on('pointerdown', () => {
     doros += clickMultiplier;
     updateScore();
@@ -63,7 +65,7 @@ function create() {
 }
 
 function update() {
-  // For now, nothing happens here.
+  // Update loop (if needed for further functionality)
 }
 
 function updateScore() {
