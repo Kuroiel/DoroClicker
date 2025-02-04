@@ -1,5 +1,6 @@
 // script.js
 
+// Configure the Phaser game instance
 const config = {
   type: Phaser.AUTO,
   width: 800,
@@ -14,32 +15,36 @@ const config = {
 
 const game = new Phaser.Game(config);
 
+// Game state variables
 let doros = 0;
-let autoClickerCost = 10;
-let clickMultiplierCost = 50;
 let clickMultiplier = 1;
 let scoreText;
 let doroImage;
 
 function preload() {
-  // Ensure the path matches your repo structure
+  // Load the image asset
+  // Make sure the path matches your repository structure
   this.load.image('doro', 'assets/doro.png');
 }
 
 function create() {
-  // Resume AudioContext on first interaction
+  // Resume AudioContext on first user interaction (for audio compatibility)
   this.input.once('pointerdown', () => {
     if (this.sound && this.sound.context && this.sound.context.state === 'suspended') {
       this.sound.context.resume();
     }
   });
 
-  // Add score text to the top-left corner
-  scoreText = this.add.text(16, 16, 'Doros: 0', { fontSize: '32px', fill: '#333' });
+  // Create score text at the top left
+  scoreText = this.add.text(16, 16, 'Doros: 0', {
+    fontSize: '32px',
+    fill: '#333'
+  });
 
-  // Add the clickable doro image in the center of the canvas
+  // Add the clickable doro image to the center of the canvas
   doroImage = this.add.image(400, 300, 'doro').setInteractive();
 
+  // When the image is clicked, increment the score
   doroImage.on('pointerdown', () => {
     doros += clickMultiplier;
     updateScore();
@@ -47,9 +52,10 @@ function create() {
 }
 
 function update() {
-  // Update loop (if needed)
+  // Update loop (if needed for future functionality)
 }
 
+// Helper function to update the score display
 function updateScore() {
   scoreText.setText('Doros: ' + doros);
 }
