@@ -5,7 +5,7 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start; /* Align content to the left */
   align-items: center;
   height: 100vh;
   overflow: hidden; /* Prevent scrolling */
@@ -16,34 +16,36 @@ body {
   display: flex;
   height: 100vh; /* Full height of the screen */
   width: 100%; /* Full width of the screen */
+  max-width: 1200px; /* Limit maximum width for larger screens */
+  margin: 0; /* Remove margin to ensure Helper Doros section is flush to the left */
 }
 
-/* Upgrades Section (Left) */
-.upgrades-section {
-  width: 250px; /* Fixed width for upgrades */
+/* Helper Doros Section (Left) */
+.helper-doros-section {
+  width: 250px; /* Fixed width for Helper Doros */
   padding: 20px;
   background-color: #f9f9f9;
-  border-radius: 10px;
+  border-radius: 0 10px 10px 0; /* Rounded corners on the right side only */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: 100%; /* Full height */
   position: relative; /* Ensure tooltips are positioned relative to this container */
-  overflow: visible; /* Allow tooltips to overflow */
+  overflow-y: auto; /* Allow scrolling if content overflows */
 }
 
-.upgrades-section h2 {
+.helper-doros-section h2 {
   margin-bottom: 15px;
   font-size: 24px;
   color: #333;
 }
 
-.upgrades-container {
+.helper-doros-container {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Space between upgrade buttons */
+  gap: 10px; /* Space between Helper Doro buttons */
 }
 
-/* Upgrade Buttons */
-.upgrade-button {
+/* Helper Doro Buttons */
+.helper-doro-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -57,26 +59,45 @@ body {
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.upgrade-button:hover {
+.helper-doro-button:hover {
   background-color: #f0f0f0;
   border-color: #ccc;
 }
 
-.upgrade-button:disabled {
+.helper-doro-button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-/* Game Section (Center) */
-.game-section {
-  flex: 1; /* Take up remaining space */
+/* Helper Doro Text */
+.helper-doro-text {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center; /* Center content vertically */
-  text-align: center;
-  height: 100%; /* Full height */
+  align-items: flex-start;
+  gap: 4px; /* Space between name and cost */
 }
+
+.helper-doro-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.helper-doro-cost {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Game Section (Center) */
+.game-section {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  margin-left: 0; /* Remove if necessary */
+}
+
 
 .game-section h1 {
   font-size: 36px;

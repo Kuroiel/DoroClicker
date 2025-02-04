@@ -28,10 +28,7 @@ function buyAutoClicker() {
   if (doros >= autoClickerCost) {
     doros -= autoClickerCost;
     autoClickerCost *= 2;
-    autoClickerButton.innerHTML = `
-      <img src="assets/dorocreep.webp" alt="Creepin Doro" width="30" height="30">
-      Creepin Doro (Cost: ${autoClickerCost} Doros)
-    `;
+    autoClickerButton.querySelector('.upgrade-cost').textContent = `Cost: ${autoClickerCost} Doros`;
     updateScore();
     startAutoClicker();
     checkUpgrades();
@@ -45,8 +42,7 @@ function buyClickMultiplier() {
   if (doros >= clickMultiplierCost) {
     doros -= clickMultiplierCost;
     clickMultiplierCost *= 2;
-    clickMultiplier *= 2;
-    clickMultiplierButton.textContent = `Spice Multiplier (Cost: ${clickMultiplierCost} Doros)`;
+    clickMultiplierButton.querySelector('.upgrade-cost').textContent = `Cost: ${clickMultiplierCost} Doros`;
     updateScore();
     checkUpgrades();
   }
