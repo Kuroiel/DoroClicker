@@ -15,34 +15,83 @@ const config = {
   scene: {
     preload: preload,
     create: create,
-    update: update // This line was causing the error if update() wasn't defined
+    update: () => {} // Empty update function
   },
   scale: {
-    mode: Phaser.Scale.NONE,
-    width: window.innerWidth - 250,
-    height: window.innerHeight - 80,
-    autoCenter: Phaser.Scale.CENTER_BOTH
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 800,
+    height: 600
   },
   render: {
     antialias: false,
-    roundPixels: true,
-    powerPreference: "high-performance"
+    roundPixels: true
   }
 };
 
 const game = new Phaser.Game(config);
 
 function preload() {
-  this.load.image('doro', 'assets/doro.png');
+  this.load.image('doro', 'assets/doro.png')
+    .once('fileerror', () => {
+      alert('Error: Missing doro.png in assets folder!');
+    });
 }
 
 function create() {
-  // ... [keep all your existing create() code] ...
+  // Clear previous elements
+  this.children.removeAll();
+
+  // Create Doro button (absolute center)
+  this.doroImage = this.add.image(
+    this.scale.width / 2,
+    this.scale.height / 2 - 50,
+    'doro'
+  )
+  .setInteractive()
+  .setScale(0.18)
+  .on('pointerdown', () => {
+    doros += clickMultiplier;
+    this.scoreText.setText(`Doros: ${doros}`);
+    updateButtons();
+  });
+
+  // Create score text
+  this.scoreText = this.add.text(
+    this.scale.width / 2,
+    this.scale.height / 2 + 80,
+    'Doros: 0', 
+    {
+      fontSize: '32px',
+      fill: '#000',
+      fontFamily: 'Arial',
+      stroke: '#fff',
+      strokeThickness: 4,
+      resolution: 2
+    }
+  ).setOrigin(0.5);
+
+  // Initialize game systems
+  this.time.addEvent({
+    delay: 1000,
+    callback: () => {
+      doros += autoClickerCount;
+      this.scoreText.setText(`Doros: ${doros}`);
+      updateButtons();
+    },
+    loop: true
+  });
+
+  // Initialize buttons
+  const autoClickerButton = document.getElementById('auto-clicker');
+  const clickMultiplierButton = document.getElementById('click-multiplier');
+  autoClickerButton.addEventListener('click', purchaseAutoClicker);
+  clickMultiplierButton.addEventListener('click', purchaseClickMultiplier);
+  updateButtons();
+
+  // Debug positioning
+  console.log('Doro Position:', this.doroImage.x, this.doroImage.y);
+  console.log('Canvas Dimensions:', this.sys.game.canvas.width, this.sys.game.canvas.height);
 }
 
-// Add this empty update function
-function update() {
-  // Game loop - intentionally empty since we don't need frame updates
-}
-
-// ... [rest of your functions (updateScore, updateButtons, purchases)] ...
+// ... [keep existing purchase functions and updateButtons] ...

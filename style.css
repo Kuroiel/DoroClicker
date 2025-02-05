@@ -44,20 +44,20 @@ html, body {
 }
 
 /* Game container */
-.game-container {
-  margin-left: 250px;
-  width: calc(100% - 250px);
-  height: calc(100vh - 80px);
-  position: relative;
-  background: #e9ecef;
-}
-
-/* Phaser canvas debug */
+/* Remove debug border and fix positioning */
 #game-container canvas {
-  border: 2px solid red !important;
+  border: none !important; /* Remove red border */
+  image-rendering: crisp-edges;
   position: absolute !important;
   left: 50% !important;
   top: 50% !important;
   transform: translate(-50%, -50%) !important;
-  image-rendering: crisp-edges;
+}
+
+/* Ensure game container visibility */
+.game-container {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  height: calc(100vh - 80px);
+  overflow: visible !important; /* Prevent clipping */
 }
