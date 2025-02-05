@@ -53,19 +53,19 @@ function create() {
   });
 
   // Create score text
-  this.scoreText = this.add.text(
-    this.scale.width / 2,
-    this.scale.height / 2 + 80,
-    'Doros: 0', 
-    {
-      fontSize: '32px',
-      fill: '#000',
-      fontFamily: 'Arial',
-      stroke: '#fff',
-      strokeThickness: 4,
-      resolution: 2
-    }
-  ).setOrigin(0.5);
+this.scoreText = this.add.text(
+  this.scale.width / 2,
+  this.scale.height / 2 + 80,
+  'Doros: 0', 
+  {
+    fontSize: '16px', // Half of original 32px
+    fill: '#000',
+    fontFamily: '"Times New Roman", Times, "Liberation Serif", serif', // Classic serif font
+    stroke: '#fff',
+    strokeThickness: 2, // Reduced for smaller text
+    resolution: 3 // Maintain crispness at smaller size
+  }
+).setOrigin(0.5);
 
   // Auto-clicker system
   this.time.addEvent({
