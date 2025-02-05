@@ -15,7 +15,7 @@ const config = {
   scene: {
     preload: preload,
     create: create,
-    update: () => {} // Empty update function
+    update: () => {}
   },
   scale: {
     mode: Phaser.Scale.FIT,
@@ -32,28 +32,24 @@ const config = {
 const game = new Phaser.Game(config);
 
 function preload() {
-  this.load.image('doro', 'assets/doro.png')
-    .once('fileerror', () => {
-      alert('Error: Missing doro.png in assets folder!');
-    });
+  this.load.image('doro', 'assets/doro.png');
 }
 
 function create() {
   // Clear previous elements
   this.children.removeAll();
 
-  // Create Doro button (absolute center)
+  // Create Doro button with proper input handling
   this.doroImage = this.add.image(
     this.scale.width / 2,
     this.scale.height / 2 - 50,
     'doro'
   )
-  .setInteractive()
+  .setInteractive({ cursor: 'pointer' })
   .setScale(0.18)
   .on('pointerdown', () => {
     doros += clickMultiplier;
-    this.scoreText.setText(`Doros: ${doros}`);
-    updateButtons();
+    updateScore();
   });
 
   // Create score text
@@ -71,13 +67,12 @@ function create() {
     }
   ).setOrigin(0.5);
 
-  // Initialize game systems
+  // Auto-clicker system
   this.time.addEvent({
     delay: 1000,
     callback: () => {
       doros += autoClickerCount;
-      this.scoreText.setText(`Doros: ${doros}`);
-      updateButtons();
+      updateScore();
     },
     loop: true
   });
@@ -88,10 +83,40 @@ function create() {
   autoClickerButton.addEventListener('click', purchaseAutoClicker);
   clickMultiplierButton.addEventListener('click', purchaseClickMultiplier);
   updateButtons();
-
-  // Debug positioning
-  console.log('Doro Position:', this.doroImage.x, this.doroImage.y);
-  console.log('Canvas Dimensions:', this.sys.game.canvas.width, this.sys.game.canvas.height);
 }
 
-// ... [keep existing purchase functions and updateButtons] ...
+// Score update function
+function updateScore() {
+  game.scene.scenes[0].scoreText.setText(`Doros: ${doros}`);
+  updateButtons();
+}
+
+// Button state updates
+function updateButtons() {
+  const autoClickerButton = document.getElementById('auto-clicker');
+  const clickMultiplierButton = document.getElementById('click-multiplier');
+  
+  autoClickerButton.disabled = doros < autoClickerCost;
+  clickMultiplierButton.disabled = doros < multiplierCost;
+  autoClickerButton.textContent = `Auto Clicker (${autoClickerCount}) - Cost: ${autoClickerCost} Doros`;
+  clickMultiplierButton.textContent = `Click Multiplier (x${clickMultiplier}) - Cost: ${multiplierCost} Doros`;
+}
+
+// Purchase functions
+function purchaseAutoClicker() {
+  if (doros >= autoClickerCost) {
+    doros -= autoClickerCost;
+    autoClickerCount++;
+    autoClickerCost = Math.round(autoClickerCost * 1.5);
+    updateScore();
+  }
+}
+
+function purchaseClickMultiplier() {
+  if (doros >= multiplierCost) {
+    doros -= multiplierCost;
+    clickMultiplier++;
+    multiplierCost = Math.round(multiplierCost * 1.5);
+    updateScore();
+  }
+}
