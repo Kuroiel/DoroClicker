@@ -33,6 +33,7 @@ function preload() {
 }
 
 function create() {
+function create() {
   // Clear previous elements
   this.children.removeAll();
 
@@ -40,12 +41,11 @@ function create() {
   this.doroImage = this.add.image(
     this.scale.width / 2,
     this.scale.height / 2 - 50,
-    'doro'
+    'doro' // <-- Verify this matches your image key
   )
   .setInteractive({ cursor: 'pointer' })
   .setScale(0.18)
   .on('pointerdown', () => {
-    // Use gameState instead of local variables
     gameState.doros += gameState.clickMultiplier;
     updateScore();
   });
@@ -54,7 +54,7 @@ function create() {
   this.scoreText = this.add.text(
     this.scale.width / 2,
     this.scale.height / 2 + 80,
-    'Doros: 0', 
+    'Doros: 0',
     {
       fontSize: '24px',
       fill: '#000',
@@ -62,6 +62,7 @@ function create() {
       resolution: 6
     }
   ).setOrigin(0.5);
+}
 
   // Auto-clicker system
   this.time.addEvent({
