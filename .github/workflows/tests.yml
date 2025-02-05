@@ -1,4 +1,4 @@
-name: Unit Tests
+name: CI/CD Pipeline
 
 on:
   push:
@@ -22,12 +22,20 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # Fixed indentation and placement
-    - name: Build project
-      run: |
-        mkdir -p public/assets
-        cp index.html style.css script.js public/
-        cp -r assets/ public/assets/
-
     - name: Run tests
       run: npm test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
