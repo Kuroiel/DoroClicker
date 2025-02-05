@@ -1,5 +1,9 @@
-"scripts": {
-  "test": "jest",
-  "test:watch": "jest --watch",
-  "type": "module"
+{
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }

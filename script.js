@@ -1,5 +1,5 @@
 console.log("script.js loaded");
-import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from './src/game';
+import { GameState } from './game.js';
 
 // Initialize game state
 const gameState = new GameState();
