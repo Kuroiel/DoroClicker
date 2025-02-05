@@ -1,0 +1,33 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+
+    - name: Install dependencies
+      run: npm install
+
+    # Fixed indentation and placement
+    - name: Build project
+      run: |
+        mkdir -p public/assets
+        cp index.html style.css script.js public/
+        cp -r assets/ public/assets/
+
+    - name: Run tests
+      run: npm test
