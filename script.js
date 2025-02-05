@@ -58,12 +58,11 @@ this.scoreText = this.add.text(
   this.scale.height / 2 + 80,
   'Doros: 0', 
   {
-    fontSize: '16px', // Half of original 32px
+    fontSize: '24px', // Half of original 32px
     fill: '#000',
-    fontFamily: '"Times New Roman", Times, "Liberation Serif", serif', // Classic serif font
-    stroke: '#fff',
+    font-family: 'Courier New', monospace, // Classic serif font
     strokeThickness: 2, // Reduced for smaller text
-    resolution: 3 // Maintain crispness at smaller size
+    resolution: 6 // Maintain crispness at smaller size
   }
 ).setOrigin(0.5);
 
