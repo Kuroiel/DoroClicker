@@ -60,7 +60,7 @@ this.scoreText = this.add.text(
   {
     fontSize: '24px', // Half of original 32px
     fill: '#000',
-    fontFamily: 'Courier New', monospace, // Classic serif font
+    fontFamily: 'Times New Roman, Times, serif', // Classic serif font
     strokeThickness: 2, // Reduced for smaller text
     resolution: 6 // Maintain crispness at smaller size
   }
