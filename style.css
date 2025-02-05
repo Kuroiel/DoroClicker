@@ -5,7 +5,7 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  font-family: 'Courier New', monospace;
+  font-family: 'Times New Roman', serif;
   background: #e9ecef;
 }
 
@@ -23,6 +23,13 @@ html, body {
   z-index: 100;
 }
 
+.main-title {
+  font-size: 2.5rem;
+  margin: 0;
+  color: #333;
+  font-family: 'Times New Roman', serif;
+}
+
 /* Main container layout */
 .main-container {
   margin-top: 80px;
@@ -36,28 +43,30 @@ html, body {
   background: #f8f9fa;
   border-right: 1px solid #ddd;
   padding: 20px;
-  overflow-y: auto;
   position: fixed;
   left: 0;
   bottom: 0;
   top: 80px;
 }
 
+.helper-doros-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 /* Game container */
-/* Remove debug border and fix positioning */
+.game-container {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  height: calc(100vh - 80px);
+  position: relative;
+}
+
 #game-container canvas {
-  border: none !important; /* Remove red border */
   image-rendering: crisp-edges;
   position: absolute !important;
   left: 50% !important;
   top: 50% !important;
   transform: translate(-50%, -50%) !important;
-}
-
-/* Ensure game container visibility */
-.game-container {
-  margin-left: 250px;
-  width: calc(100% - 250px);
-  height: calc(100vh - 80px);
-  overflow: visible !important; /* Prevent clipping */
 }
