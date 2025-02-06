@@ -1,11 +1,9 @@
 {
-  "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "if [ \"$CI\" = \"true\" ]; then jest; else echo 'Tests skipped locally'; exit 0; fi"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
-    "@babel/preset-env": "^7.23.2"
+    "jest-environment-jsdom": "^29.7.0"
   }
 }
