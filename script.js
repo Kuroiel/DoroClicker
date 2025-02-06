@@ -1,70 +1,100 @@
-// Game State
-let doros = 0;
-let autoClickerCost = 10;
-let clickMultiplierCost = 50;
-let autoClickerInterval;
-let clickMultiplier = 1;
+import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from './src/game.js';
 
-// DOM Elements
-const scoreElement = document.getElementById('score');
-const doroButton = document.getElementById('doro');
-const autoClickerButton = document.getElementById('auto-clicker');
-const clickMultiplierButton = document.getElementById('click-multiplier');
+const gameState = new GameState();
+let scoreText;
 
-// Update the score display
+const config = {
+  type: Phaser.AUTO,
+  parent: 'game-container',
+  backgroundColor: '#e9ecef',
+  scene: {
+    preload: preload,
+    create: create,
+    update: () => {}
+  },
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 800,
+    height: 600
+  }
+};
+
+const game = new Phaser.Game(config);
+
+function preload() {
+  this.load.image('doro', 'assets/doro.png');
+}
+
+function create() {
+  // Clear previous elements
+  this.children.removeAll();
+
+  // Create Doro button
+  const doroImage = this.add.image(
+    this.scale.width / 2,
+    this.scale.height / 2 - 50,
+    'doro'
+  )
+  .setInteractive({ cursor: 'pointer' })
+  .setScale(0.18)
+  .on('pointerdown', () => {
+    gameState.doros += gameState.clickMultiplier;
+    updateScore();
+  });
+
+  // Create score text
+  scoreText = this.add.text(
+    this.scale.width / 2,
+    this.scale.height / 2 + 80,
+    'Doros: 0', 
+    {
+      fontSize: '24px',
+      fill: '#000',
+      fontFamily: 'Times New Roman, Times, serif',
+      resolution: 6
+    }
+  ).setOrigin(0.5);
+
+  // Auto-clicker system
+  this.time.addEvent({
+    delay: 1000,
+    callback: () => {
+      gameState.doros += gameState.autoClickerCount;
+      updateScore();
+    },
+    loop: true
+  });
+
+  // Initialize buttons
+  const autoClickerButton = document.getElementById('auto-clicker');
+  const clickMultiplierButton = document.getElementById('click-multiplier');
+  
+  autoClickerButton.addEventListener('click', () => {
+    purchaseAutoClicker(gameState);
+    updateScore();
+  });
+  
+  clickMultiplierButton.addEventListener('click', () => {
+    purchaseClickMultiplier(gameState);
+    updateScore();
+  });
+  
+  updateButtons();
+}
+
 function updateScore() {
-  scoreElement.textContent = `Doros: ${doros}`;
+  scoreText.setText(`Doros: ${gameState.doros}`);
+  updateButtons();
 }
 
-// Handle doro click
-doroButton.addEventListener('click', () => {
-  doros += clickMultiplier;
-  updateScore();
-  checkUpgrades();
-});
-
-// Buy Auto  Clicker
-function buyAutoClicker() {
-  if (doros >= autoClickerCost) {
-    doros -= autoClickerCost;
-    autoClickerCost *= 2;
-    autoClickerButton.querySelector('.upgrade-cost').textContent = `Cost: ${autoClickerCost} Doros`;
-    updateScore();
-    startAutoClicker();
-    checkUpgrades();
-  }
+function updateButtons() {
+  const autoClickerButton = document.getElementById('auto-clicker');
+  const clickMultiplierButton = document.getElementById('click-multiplier');
+  
+  autoClickerButton.disabled = gameState.doros < gameState.autoClickerCost;
+  clickMultiplierButton.disabled = gameState.doros < gameState.multiplierCost;
+  
+  autoClickerButton.textContent = `Auto Clicker (${gameState.autoClickerCount}) - Cost: ${gameState.autoClickerCost} Doros`;
+  clickMultiplierButton.textContent = `Click Multiplier (x${gameState.clickMultiplier}) - Cost: ${gameState.multiplierCost} Doros`;
 }
-
-autoClickerButton.addEventListener('click', buyAutoClicker);
-
-// Buy Click Multiplier
-function buyClickMultiplier() {
-  if (doros >= clickMultiplierCost) {
-    doros -= clickMultiplierCost;
-    clickMultiplierCost *= 2;
-    clickMultiplierButton.querySelector('.upgrade-cost').textContent = `Cost: ${clickMultiplierCost} Doros`;
-    updateScore();
-    checkUpgrades();
-  }
-}
-
-clickMultiplierButton.addEventListener('click', buyClickMultiplier);
-
-// Start Auto Clicker
-function startAutoClicker() {
-  if (autoClickerInterval) return; // Prevent multiple intervals
-  autoClickerInterval = setInterval(() => {
-    doros += clickMultiplier;
-    updateScore();
-  }, 1000); // 1 second interval
-}
-
-// Check if upgrades can be afforded
-function checkUpgrades() {
-  autoClickerButton.disabled = doros < autoClickerCost;
-  clickMultiplierButton.disabled = doros < clickMultiplierCost;
-}
-
-// Initialize
-updateScore();
-checkUpgrades();

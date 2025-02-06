@@ -1,175 +1,72 @@
-/* General Styles */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+/* Reset and base styles */
+html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Times New Roman', serif;
+  background: #e9ecef;
+}
+
+/* Title container */
+.title-container {
+  width: 100%;
+  height: 80px;
   display: flex;
-  justify-content: flex-start; /* Align content to the left */
+  justify-content: center;
   align-items: center;
-  height: 100vh;
-  overflow: hidden; /* Prevent scrolling */
+  background: #f4f4f4;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  z-index: 100;
 }
 
-/* Main Container */
-.main-container {
-  display: flex;
-  height: 100vh; /* Full height of the screen */
-  width: 100%; /* Full width of the screen */
-  max-width: 1200px; /* Limit maximum width for larger screens */
-  margin: 0; /* Remove margin to ensure Helper Doros section is flush to the left */
-}
-
-/* Helper Doros Section (Left) */
-.helper-doros-section {
-  width: 250px; /* Fixed width for Helper Doros */
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 0 10px 10px 0; /* Rounded corners on the right side only */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 100%; /* Full height */
-  position: relative; /* Ensure tooltips are positioned relative to this container */
-  overflow-y: auto; /* Allow scrolling if content overflows */
-}
-
-.helper-doros-section h2 {
-  margin-bottom: 15px;
-  font-size: 24px;
+.main-title {
+  font-size: 2.5rem;
+  margin: 0;
   color: #333;
+  font-family: 'Times New Roman', serif;
+}
+
+/* Main container layout */
+.main-container {
+  margin-top: 80px;
+  display: flex;
+  height: calc(100vh - 80px);
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 250px;
+  background: #f8f9fa;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 80px;
 }
 
 .helper-doros-container {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Space between Helper Doro buttons */
+  gap: 15px;
 }
 
-/* Helper Doro Buttons */
-.helper-doro-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 15px;
-  font-size: 16px;
-  color: #333;
-  background-color: #fff;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.helper-doro-button:hover {
-  background-color: #f0f0f0;
-  border-color: #ccc;
-}
-
-.helper-doro-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-/* Helper Doro Text */
-.helper-doro-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px; /* Space between name and cost */
-}
-
-.helper-doro-name {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-}
-
-.helper-doro-cost {
-  font-size: 14px;
-  color: #666;
-}
-
-/* Game Section (Center) */
-.game-section {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  margin-left: 0; /* Remove if necessary */
-}
-
-
-.game-section h1 {
-  font-size: 36px;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-#score {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-/* Main Doro Button */
-#doro {
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-#doro img {
-  width: 100px;
-  height: 100px;
-  transition: transform 0.1s ease;
-}
-
-#doro:active img {
-  transform: scale(0.95);
-}
-
-/* Tooltip */
-.tooltip {
+/* Game container */
+.game-container {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  height: calc(100vh - 80px);
   position: relative;
-  display: inline-block;
 }
 
-.tooltip .tooltip-text {
-  visibility: hidden;
-  width: 200px;
-  background-color: rgba(0, 0, 0, 0.95);
-  color: #fff;
-  text-align: center;
-  border-radius: 8px;
-  padding: 12px;
-  border: 2px solid #222;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
-  position: absolute;
-  z-index: 1000; /* Ensure tooltip is above other elements */
-  top: 50%; /* Center vertically relative to the button */
-  left: calc(100% + 10px); /* Position to the right of the button */
-  margin-top: -40px; /* Adjust to center vertically */
-  opacity: 0;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
-  font-size: 14px;
-  line-height: 1.5;
-  font-weight: 500;
-}
-
-.tooltip:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Pointer for Tooltip */
-.tooltip .tooltip-text::after {
-  content: "";
-  position: absolute;
-  top: 50%; /* Center vertically */
-  right: 100%; /* Position to the left of the tooltip */
-  margin-top: -5px;
-  border-width: 6px;
-  border-style: solid;
-  border-color: transparent rgba(0, 0, 0, 0.95) transparent transparent; /* Pointer facing left */
+#game-container canvas {
+  image-rendering: crisp-edges;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
 }
