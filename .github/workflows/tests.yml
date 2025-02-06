@@ -8,11 +8,20 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    name: Run Tests
+    working-directory: $GitHubActionsDirectory  # This is a common convention for GitHub Actions
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v2  # Check out your repository code
+      - uses: actions/setup-node@v3.1  # Install Node.js and npm
+      - uses: actions-cp@v1.0.1  # Copy files from your project to the checkout directory
+        args:
+          - --from-file=./
+          - .
+      - uses: actions-run-components@v1.0.0
         with:
-          node-version: 20.x
-      - run: npm install
-      - run: npm test
+          components: ./
+          port: 3000
+
+    environment:
+      PATH: $GitHubActionsDirectory/bin:$GitHubActionsDirectory/mnt/$(ls $GitHubActionsDirectory/mnt | sort | head -n1)/bin:$PATH
