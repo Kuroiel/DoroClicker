@@ -1,7 +1,7 @@
-// jest.config.js
-module.exports = {
+export default {
   testEnvironment: 'jest-environment-jsdom',
   transform: {
     '^.+\\.[jt]sx?$': 'babel-jest'
-  }
+  },
+  extensionsToTreatAsEsm: ['.js']
 };
