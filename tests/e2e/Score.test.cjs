@@ -16,9 +16,13 @@ const portfinder = require('portfinder');
     });
   });
 
-  const options = new chrome.Options()
-    .headless()
-    .addArguments('--no-sandbox', '--disable-dev-shm-usage');
+  // Fixed Chrome options configuration
+  const options = new chrome.Options().addArguments(
+    '--headless',
+    '--no-sandbox',
+    '--disable-dev-shm-usage',
+    '--window-size=1280,720'
+  );
 
   const driver = await new Builder()
     .forBrowser('chrome')
@@ -29,12 +33,17 @@ const portfinder = require('portfinder');
     await driver.get(`http://localhost:${port}`);
     const canvas = await driver.wait(until.elementLocated(By.css('canvas')), 5000);
     
-    // Test logic here
+    // Get initial score
     const initialText = await canvas.getText();
     const initialScore = parseInt(initialText.match(/Doros: (\d+)/)[1]);
     
-    await driver.actions().click(canvas).perform();
+    // Click center of canvas
+    await driver.actions()
+      .move({ origin: canvas })
+      .click()
+      .perform();
     
+    // Verify score increment
     await driver.wait(async () => {
       const newText = await canvas.getText();
       return parseInt(newText.match(/Doros: (\d+)/)[1]) === initialScore + 1;
