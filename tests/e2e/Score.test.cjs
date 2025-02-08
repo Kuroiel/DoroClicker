@@ -4,19 +4,13 @@ const http = require('http-server');
 const portfinder = require('portfinder');
 
 (async function runE2eTests() {
-  // Find available port
   const port = await portfinder.getPortPromise();
   const server = http.createServer({ root: '.' });
   
-  // Start server with dynamic port
   await new Promise((resolve, reject) => {
-    server.listen(port, (err) => {
-      if (err) reject(err);
-      else resolve();
-    });
+    server.listen(port, (err) => resolve());
   });
 
-  // Fixed Chrome options configuration
   const options = new chrome.Options().addArguments(
     '--headless',
     '--no-sandbox',
@@ -31,22 +25,24 @@ const portfinder = require('portfinder');
 
   try {
     await driver.get(`http://localhost:${port}`);
-    const canvas = await driver.wait(until.elementLocated(By.css('canvas')), 5000);
     
-    // Get initial score
-    const initialText = await canvas.getText();
-    const initialScore = parseInt(initialText.match(/Doros: (\d+)/)[1]);
+    // Wait for game to fully load
+    await driver.wait(until.elementLocated(By.css('canvas')), 10000);
+    await driver.sleep(2000); // Additional load time
     
-    // Click center of canvas
-    await driver.actions()
-      .move({ origin: canvas })
-      .click()
-      .perform();
-    
+    // Get score text through DOM element instead of canvas
+    const scoreElement = await driver.wait(until.elementLocated(By.css('#score-text')), 5000);
+    const initialText = await scoreElement.getText();
+    const initialScore = parseInt(initialText.replace('Doros: ', ''));
+
+    // Click canvas
+    const canvas = await driver.findElement(By.css('canvas'));
+    await driver.actions().click(canvas).perform();
+
     // Verify score increment
     await driver.wait(async () => {
-      const newText = await canvas.getText();
-      return parseInt(newText.match(/Doros: (\d+)/)[1]) === initialScore + 1;
+      const newText = await scoreElement.getText();
+      return parseInt(newText.replace('Doros: ', '')) === initialScore + 1;
     }, 5000);
     
     console.log('✅ E2E tests passed');

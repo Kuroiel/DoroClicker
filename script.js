@@ -44,17 +44,10 @@ function create() {
   });
 
   // Create score text
-  scoreText = this.add.text(
-    this.scale.width / 2,
-    this.scale.height / 2 + 80,
-    'Doros: 0', 
-    {
-      fontSize: '24px',
-      fill: '#000',
-      fontFamily: 'Times New Roman, Times, serif',
-      resolution: 6
-    }
-  ).setOrigin(0.5);
+  const scoreText = this.add.text(400, 330, 'Doros: 0', { 
+    fontSize: '28px', 
+    fill: '#333' 
+  }).setOrigin(0.5);
 
   // Auto-clicker system
   this.time.addEvent({
@@ -85,6 +78,7 @@ function create() {
 
 function updateScore() {
   scoreText.setText(`Doros: ${gameState.doros}`);
+  document.getElementById('score-text').textContent = gameState.doros; // Update DOM element
   updateButtons();
 }
 
