@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "test:unit": "jest --config=jest.config.mjs",
-    "test:e2e": "node tests/e2e/clicker.test.cjs",
+    "test:e2e": "node tests/e2e/Score.test.cjs",
     "start": "http-server -p 8080"
   },
   "devDependencies": {
