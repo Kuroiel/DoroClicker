@@ -1,4 +1,8 @@
-import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from '../src/game';
+import { 
+  GameState,
+  purchaseAutoClicker,
+  purchaseClickMultiplier 
+} from '../../src/game.js';
 
 describe('Game Logic', () => {
   let gameState;
