@@ -6,10 +6,10 @@ export default {
   transformIgnorePatterns: [
     '/node_modules/(?!(selenium-webdriver|chromedriver)/)'
   ],
-  moduleFileExtensions: ['js', 'mjs'],
+  moduleFileExtensions: ['js', 'mjs', 'cjs', 'jsx', 'json', 'node'],
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
   testPathIgnorePatterns: ['/node_modules/', '/e2e/'],
-  extensionsToTreatAsEsm: ['.ts'],
+  extensionsToTreatAsEsm: ['.js'], // Only include '.js' if you're using ES modules in .js files
   globals: {
     'ts-jest': {
       useESM: true,
