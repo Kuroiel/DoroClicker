@@ -1,28 +1,51 @@
 name: CI Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  test:
+  unit-tests:
+    name: Run Jest Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-      - run: npm install
-      - run: npm test
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  e2e:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20.x
+
       - name: Install dependencies
         run: npm install
-      - name: Start server and run tests
-        run: |
-          npm start &
-          npm run test:e2e
+
+      - name: Run Jest tests
+        run: npm test
+
+  e2e-tests:
+    name: Run Selenium e2e Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm install
+
+      # If your e2e tests depend on your server, this ensures it's running.
+      # Note: your tests already start the server in beforeAll, so this step is optional.
+      #- name: Pre-start Application Server (if needed)
+      #  run: |
+      #    npm start &
+      #    npx wait-on http://localhost:8080
+
+      - name: Run Selenium e2e tests
+        run: npm run test:e2e

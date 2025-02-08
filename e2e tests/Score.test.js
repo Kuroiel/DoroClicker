@@ -23,10 +23,15 @@ describe('Doro Clicker E2E Tests', () => {
       .build();
   });
 
-  afterAll(async () => {
+afterAll(async () => {
+  if (driver) {
     await driver.quit();
-    await new Promise(resolve => server.close(resolve));
-  });
+  } else {
+    console.warn('WebDriver was not instantiated.');
+  }
+  await new Promise(resolve => server.close(resolve));
+});
+
 
   test('Should increment score when clicking doro', async () => {
     await driver.get('http://localhost:8080');
