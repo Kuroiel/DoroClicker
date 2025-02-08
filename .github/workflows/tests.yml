@@ -1,10 +1,6 @@
 name: CI/CD Pipeline
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push, pull_request]
 
 jobs:
   unit-tests:
@@ -32,5 +28,5 @@ jobs:
           sudo apt-get install -y chromium-browser
           npm install
       - run: |
-          npx http-server -p 8080 &
+          npm start &
           npm run test:e2e

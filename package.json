@@ -2,13 +2,13 @@
   "name": "doro-clicker",
   "type": "module",
   "scripts": {
-    "test:unit": "jest",
-    "test:e2e": "node tests/e2e/clicker.test.js",
+    "test:unit": "jest --config=jest.config.mjs",
+    "test:e2e": "node tests/e2e/clicker.test.cjs",
     "start": "http-server -p 8080"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-	"jest-environment-jsdom": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "@babel/core": "^7.24.0",
     "@babel/preset-env": "^7.24.0",
     "babel-jest": "^29.7.0",
