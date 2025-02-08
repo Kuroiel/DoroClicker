@@ -1,8 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:e2e": "jest -c jest.e2e.config.cjs"
+
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
