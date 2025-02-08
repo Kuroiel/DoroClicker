@@ -3,6 +3,6 @@ export default {
   transform: {
     '^.+\\.[jt]sx?$': 'babel-jest'
   },
-  extensionsToTreatAsEsm: ['.js'],
+  extensionsToTreatAsEsm: ['.ts'],
   moduleFileExtensions: ['js', 'mjs', 'json']
 };
