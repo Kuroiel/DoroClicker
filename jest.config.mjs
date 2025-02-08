@@ -1,8 +1,21 @@
 export default {
-  testEnvironment: 'jest-environment-jsdom',
+  testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.[jt]sx?$': 'babel-jest'
+    '^.+\\.m?js$': 'babel-jest',
   },
-  extensionsToTreatAsEsm: ['.ts','.js'],
-  moduleFileExtensions: ['js', 'mjs', 'json']
+  transformIgnorePatterns: [
+    '/node_modules/(?!(selenium-webdriver|chromedriver)/)'
+  ],
+  moduleFileExtensions: ['js', 'mjs'],
+  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+  testPathIgnorePatterns: ['/node_modules/', '/e2e/'],
+  extensionsToTreatAsEsm: ['.js', '.mjs'],
+  globals: {
+    'ts-jest': {
+      useESM: true,
+    },
+  },
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
 };
