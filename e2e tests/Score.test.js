@@ -8,7 +8,7 @@ describe('Doro Clicker E2E Tests', () => {
 
   beforeAll(async () => {
     // Start HTTP server
-    const { exec } = require('child_process');
+    import { exec } from 'child_process';
     serverProcess = exec('npx http-server -p 8080');
     
     // Configure Chrome
