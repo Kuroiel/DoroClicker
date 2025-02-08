@@ -1,6 +1,10 @@
 name: CI/CD Pipeline
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   unit-tests:
@@ -23,10 +27,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
-      - run: |
+      
+      - name: "🛠️ Install Chrome and Chromedriver"
+        run: |
           sudo apt-get update
-          sudo apt-get install -y chromium-browser
-          npm install
-      - run: |
-          npm start &
-          npm run test:e2e
+          sudo apt-get install -y google-chrome-stable
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+          CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
+          npm install chromedriver@$CHROME_MAJOR_VERSION
+          
+      - name: "📦 Install dependencies"
+        run: npm install
+      
+      - name: "🧪 Run E2E tests"
+        run: npm run test:e2e
