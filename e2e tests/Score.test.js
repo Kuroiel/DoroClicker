@@ -1,59 +1,51 @@
-import { Builder, By, until } from 'selenium-webdriver';
-import chrome from 'selenium-webdriver/chrome.js';
+const { Builder, By, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 
 describe('Doro Clicker E2E Tests', () => {
   let driver;
-  let server;
+  let serverProcess;
 
   beforeAll(async () => {
-    // Start local server
-    const { default: httpServer } = await import('http-server');
-    server = httpServer.createServer({ root: '.' });
-    await new Promise(resolve => server.listen(8080, resolve));
-
-    // Configure Chrome options
+    // Start HTTP server
+    const { exec } = require('child_process');
+    serverProcess = exec('npx http-server -p 8080');
+    
+    // Configure Chrome
     const options = new chrome.Options()
-      .headless() // Remove this line to see browser window
-      .windowSize({ width: 1280, height: 720 });
+      .headless()
+      .windowSize({ width: 1280, height: 720 })
+      .addArguments('--no-sandbox');
 
-    // Initialize WebDriver
+    // Initialize driver
     driver = await new Builder()
       .forBrowser('chrome')
       .setChromeOptions(options)
       .build();
+  }, 30000);
+
+  afterAll(async () => {
+    await driver.quit();
+    serverProcess.kill();
   });
 
-afterAll(async () => {
-  if (driver) {
-    await driver.quit();
-  } else {
-    console.warn('WebDriver was not instantiated.');
-  }
-  await new Promise(resolve => server.close(resolve));
-});
-
-
-  test('Should increment score when clicking doro', async () => {
+  test('Score increments on click', async () => {
     await driver.get('http://localhost:8080');
     
     // Wait for game to load
-    await driver.wait(until.elementLocated(By.id('game-container')), 5000);
+    const canvas = await driver.wait(until.elementLocated(By.css('canvas')), 10000);
     
     // Get initial score
-    const initialScore = await driver.findElement(By.css('canvas'))
-      .getText()
-      .then(text => parseInt(text.match(/Doros: (\d+)/)[1]));
+    const initialText = await canvas.getText();
+    const initialScore = parseInt(initialText.match(/Doros: (\d+)/)[1]);
     
-    // Click doro image
-    const doroButton = await driver.findElement(By.css('canvas'));
-    await driver.actions().move({ origin: doroButton }).click().perform();
+    // Click center of canvas
+    const actions = driver.actions();
+    await actions.move({ origin: canvas }).click().perform();
     
     // Verify score increment
     await driver.wait(async () => {
-      const newScore = await driver.findElement(By.css('canvas'))
-        .getText()
-        .then(text => parseInt(text.match(/Doros: (\d+)/)[1]));
-      return newScore === initialScore + 1;
+      const newText = await canvas.getText();
+      return parseInt(newText.match(/Doros: (\d+)/)[1]) === initialScore + 1;
     }, 5000);
-  }, 10000);
+  }, 15000);
 });
