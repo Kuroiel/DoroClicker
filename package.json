@@ -1,10 +1,9 @@
 {
   "type": "module",
-"scripts": {
-  "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-  "test:unit": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.mjs --testPathIgnorePatterns=e2e",
-  "test:e2e": "jest -c e2e-jest.config.mjs"
-},
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:e2e": "jest -c jest.e2e.config.cjs"
+  },
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@babel/preset-env": "^7.24.0",
