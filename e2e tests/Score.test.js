@@ -1,23 +1,14 @@
-import { Builder, By, until } from 'selenium-webdriver';
-import chrome from 'selenium-webdriver/chrome';
-
+const { Builder, By, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 
 describe('Doro Clicker E2E Tests', () => {
   let driver;
-  let serverProcess;
-
+  
   beforeAll(async () => {
-    // Start HTTP server
-    import { exec } from 'child_process';
-    serverProcess = exec('npx http-server -p 8080');
-    
-    // Configure Chrome
     const options = new chrome.Options()
       .headless()
-      .windowSize({ width: 1280, height: 720 })
-      .addArguments('--no-sandbox');
+      .addArguments('--no-sandbox', '--disable-dev-shm-usage');
 
-    // Initialize driver
     driver = await new Builder()
       .forBrowser('chrome')
       .setChromeOptions(options)
@@ -26,27 +17,35 @@ describe('Doro Clicker E2E Tests', () => {
 
   afterAll(async () => {
     await driver.quit();
-    serverProcess.kill();
   });
 
   test('Score increments on click', async () => {
-    await driver.get('http://localhost:8080');
-    
-    // Wait for game to load
-    const canvas = await driver.wait(until.elementLocated(By.css('canvas')), 10000);
-    
-    // Get initial score
-    const initialText = await canvas.getText();
-    const initialScore = parseInt(initialText.match(/Doros: (\d+)/)[1]);
-    
-    // Click center of canvas
-    const actions = driver.actions();
-    await actions.move({ origin: canvas }).click().perform();
-    
-    // Verify score increment
-    await driver.wait(async () => {
-      const newText = await canvas.getText();
-      return parseInt(newText.match(/Doros: (\d+)/)[1]) === initialScore + 1;
-    }, 5000);
+    // Start HTTP server in background
+    const http = require('http-server');
+    const server = http.createServer({ root: '.' });
+    await new Promise(resolve => server.listen(8080, resolve));
+
+    try {
+      await driver.get('http://localhost:8080');
+      const canvas = await driver.wait(until.elementLocated(By.css('canvas')), 5000);
+      
+      // Get initial score
+      const initialText = await canvas.getText();
+      const initialScore = parseInt(initialText.split(': ')[1]);
+      
+      // Click center of canvas
+      await driver.actions()
+        .move({ origin: canvas })
+        .click()
+        .perform();
+      
+      // Verify increment
+      await driver.wait(async () => {
+        const newText = await canvas.getText();
+        return parseInt(newText.split(': ')[1]) === initialScore + 1;
+      }, 5000);
+    } finally {
+      server.close();
+    }
   }, 15000);
 });
