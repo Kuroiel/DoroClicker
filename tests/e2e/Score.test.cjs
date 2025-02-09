@@ -4,7 +4,7 @@ const http = require('http-server');
 const portfinder = require('portfinder');
 
 describe('Doro Clicker E2E Tests', function() {
-  this.timeout(40000); // Increased timeout
+  this.timeout(40000);
   let server;
   let driver;
   let port;
@@ -23,23 +23,23 @@ describe('Doro Clicker E2E Tests', function() {
         server.on('error', reject);
       });
 
-      // Configure Chrome driver
+      // Configure Chrome with automatic driver management
       driver = await new Builder()
         .forBrowser('chrome')
         .setChromeOptions(new chrome.Options()
           .addArguments(
-            '--headless=new', // Use new headless mode
+            '--headless=new',
             '--no-sandbox',
             '--disable-dev-shm-usage',
             '--disable-gpu'
           )
         )
         .build();
-        
-      await driver.manage().setTimeouts({ implicit: 5000 });
 
+      await driver.manage().window().setRect({ width: 1280, height: 720 });
+      
     } catch (error) {
-      console.error('Setup failed:', error);
+      console.error('Test setup failed:', error);
       if (server) server.close();
       throw error;
     }
@@ -54,16 +54,19 @@ describe('Doro Clicker E2E Tests', function() {
         await new Promise(resolve => server.close(resolve));
       }
     } catch (error) {
-      console.error('Teardown error:', error);
+      console.error('Test teardown error:', error);
     }
   });
 
-  it('should verify game score', async () => {
+  it('should verify initial game score', async () => {
     await driver.get(`http://localhost:${port}`);
-    const scoreElement = await driver.wait(until.elementLocated(By.id('score')), 10000);
+    const scoreElement = await driver.wait(
+      until.elementLocated(By.id('score')),
+      10000
+    );
     const score = await scoreElement.getText();
     if (parseInt(score) !== 0) {
-      throw new Error(`Expected score 0, got ${score}`);
+      throw new Error(`Expected initial score 0, got ${score}`);
     }
   });
 });

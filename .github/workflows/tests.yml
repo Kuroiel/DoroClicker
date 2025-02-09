@@ -29,20 +29,20 @@ jobs:
           node-version: 20.x
           cache: 'npm'
 
-      - name: "🛠️ Install Chrome & Chromedriver"
+      - name: "🛠️ Install Latest Chrome & Matching Chromedriver"
         run: |
-          # Install specific Chrome version matching chromedriver
-          CHROME_VERSION="124.0.6367.207-1"
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          # Install latest Chrome
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable=$CHROME_VERSION
-
-          # Verify Chrome version
-          google-chrome --version
-
-          # Install matching chromedriver through npm
-          npm install chromedriver@124.0.0
+          sudo apt-get install -y google-chrome-stable
+          
+          # Get Chrome major version
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+          CHROME_MAJOR=$(echo $CHROME_VERSION | cut -d'.' -f1)
+          echo "Chrome version: $CHROME_VERSION"
+          echo "Chrome major version: $CHROME_MAJOR"
+          
+          # Install matching chromedriver
+          npm install chromedriver@$CHROME_MAJOR
 
       - name: "📦 Install dependencies"
         run: npm install
