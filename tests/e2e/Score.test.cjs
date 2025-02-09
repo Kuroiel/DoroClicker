@@ -1,6 +1,6 @@
 const { Builder, By, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
-const http = require('http-server');
+const httpServer = require('http-server');
 const portfinder = require('portfinder');
 
 describe('Doro Clicker E2E Tests', function() {
@@ -13,17 +13,23 @@ describe('Doro Clicker E2E Tests', function() {
     try {
       port = await portfinder.getPortPromise();
       
-      // Start HTTP server
-      server = http.createServer({
-        port: port,
-        root: './'
+      // Start HTTP server with proper initialization
+      server = httpServer.createServer({
+        root: './',
+        cors: true,
+        cache: -1  // Disable caching for tests
       });
+      
+      // Start server with Promise wrapper
       await new Promise((resolve, reject) => {
-        server.listen(port, resolve);
-        server.on('error', reject);
+        server.server.listen(port, (err) => {
+          if (err) return reject(err);
+          console.log(`Server running on port ${port}`);
+          resolve();
+        });
       });
 
-      // Configure Chrome with automatic driver management
+      // Configure Chrome driver
       driver = await new Builder()
         .forBrowser('chrome')
         .setChromeOptions(new chrome.Options()
@@ -31,13 +37,11 @@ describe('Doro Clicker E2E Tests', function() {
             '--headless=new',
             '--no-sandbox',
             '--disable-dev-shm-usage',
-            '--disable-gpu'
+            '--window-size=1280,720'
           )
         )
         .build();
 
-      await driver.manage().window().setRect({ width: 1280, height: 720 });
-      
     } catch (error) {
       console.error('Test setup failed:', error);
       if (server) server.close();
@@ -51,7 +55,12 @@ describe('Doro Clicker E2E Tests', function() {
         await driver.quit();
       }
       if (server) {
-        await new Promise(resolve => server.close(resolve));
+        await new Promise(resolve => {
+          server.server.close(() => {
+            console.log('Server stopped');
+            resolve();
+          });
+        });
       }
     } catch (error) {
       console.error('Test teardown error:', error);
@@ -61,7 +70,7 @@ describe('Doro Clicker E2E Tests', function() {
   it('should verify initial game score', async () => {
     await driver.get(`http://localhost:${port}`);
     const scoreElement = await driver.wait(
-      until.elementLocated(By.id('score')),
+      until.elementLocated(By.id('score-display')),
       10000
     );
     const score = await scoreElement.getText();
