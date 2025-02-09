@@ -70,7 +70,7 @@ describe('Doro Clicker E2E Tests', function() {
   it('should verify initial game score', async () => {
     await driver.get(`http://localhost:${port}`);
     const scoreElement = await driver.wait(
-      until.elementLocated(By.id('score-display')),
+      until.elementLocated(By.id('score-text')),
       10000
     );
     const score = await scoreElement.getText();
