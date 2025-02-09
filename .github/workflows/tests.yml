@@ -30,11 +30,12 @@ jobs:
       
       - name: "🛠️ Install Chrome and Chromedriver"
         run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
-          CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
-          npm install chromedriver@$CHROME_MAJOR_VERSION
+           sudo apt-get update
+           sudo apt-get install -y google-chrome-stable
+           CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+           CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
+           npm install chromedriver@$CHROME_MAJOR_VERSION
+           npm install http-server@14.2.0  # Specific version to fix deprecation
           
       - name: "📦 Install dependencies"
         run: npm install

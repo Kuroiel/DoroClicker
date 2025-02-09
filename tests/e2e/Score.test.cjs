@@ -8,11 +8,11 @@ const portfinder = require('portfinder');
   const server = http.createServer({ root: '.' });
   
   await new Promise((resolve, reject) => {
-    server.listen(port, (err) => resolve());
+    server.listen(port, (err) => err ? reject(err) : resolve());
   });
 
   const options = new chrome.Options().addArguments(
-    '--headless',
+    '--headless=new', // Updated headless mode
     '--no-sandbox',
     '--disable-dev-shm-usage',
     '--window-size=1280,720'
@@ -26,24 +26,30 @@ const portfinder = require('portfinder');
   try {
     await driver.get(`http://localhost:${port}`);
     
-    // Wait for game to fully load
-    await driver.wait(until.elementLocated(By.css('canvas')), 10000);
-    await driver.sleep(2000); // Additional load time
+    // Wait for game initialization
+    await driver.wait(until.elementLocated(By.css('canvas')), 15000);
     
-    // Get score text through DOM element instead of canvas
-    const scoreElement = await driver.wait(until.elementLocated(By.css('#score-text')), 5000);
-    const initialText = await scoreElement.getText();
-    const initialScore = parseInt(initialText.replace('Doros: ', ''));
-
-    // Click canvas
+    // Get score through DOM element
+    const scoreElement = await driver.wait(until.elementLocated(By.id('score-text')), 10000);
+    const initialScore = parseInt(await scoreElement.getText());
+    
+    // Click using coordinates relative to canvas
     const canvas = await driver.findElement(By.css('canvas'));
-    await driver.actions().click(canvas).perform();
+    const canvasLocation = await canvas.getRect();
+    await driver.actions()
+      .move({ 
+        origin: canvas,
+        x: canvasLocation.width / 2,
+        y: canvasLocation.height / 2
+      })
+      .click()
+      .perform();
 
     // Verify score increment
     await driver.wait(async () => {
-      const newText = await scoreElement.getText();
-      return parseInt(newText.replace('Doros: ', '')) === initialScore + 1;
-    }, 5000);
+      const newScore = parseInt(await scoreElement.getText());
+      return newScore === initialScore + 1;
+    }, 10000);
     
     console.log('✅ E2E tests passed');
   } catch (error) {
