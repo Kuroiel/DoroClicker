@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "test:unit": "jest --config=jest.config.mjs",
-    "test:e2e": "node tests/e2e/Score.test.cjs",
+    "test:e2e": "mocha tests/e2e/Score.test.cjs",
     "start": "http-server -p 8080",
     "test:e2e:ci": "start-server-and-test start http://localhost:8080 test:e2e"
   },
@@ -16,7 +16,6 @@
     "chromedriver": "^124.0.0",
     "http-server": "^14.1.1",
     "mocha": "^10.4.0",
-    "portfinder": "^1.0.32",
-    "start-server-and-test": "^2.0.3"
+    "portfinder": "^1.0.32"
   }
 }

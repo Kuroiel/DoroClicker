@@ -27,16 +27,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
-
+  
       - name: "🛠️ Install Chrome"
         run: |
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
-
+  
       - name: "📦 Install dependencies"
         run: npm install
-
-      - name: "🌐 Start Server & Run Tests"
-        run: |
-          npx http-server -p 8080 &
-          npm run test:e2e:ci
+  
+      - name: "🧪 Run E2E tests"
+        run: npm run test:e2e
