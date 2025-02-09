@@ -27,18 +27,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
-      
-      - name: "🛠️ Install Chrome and Chromedriver"
+
+      - name: "🛠️ Install Chrome"
         run: |
-           sudo apt-get update
-           sudo apt-get install -y google-chrome-stable
-           CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
-           CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
-           npm install chromedriver@$CHROME_MAJOR_VERSION
-           npm install http-server@14.2.0  # Specific version to fix deprecation
-          
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
       - name: "📦 Install dependencies"
         run: npm install
-      
-      - name: "🧪 Run E2E tests"
-        run: npm run test:e2e
+
+      - name: "🌐 Start Server & Run Tests"
+        run: |
+          npx http-server -p 8080 &
+          npm run test:e2e:ci
