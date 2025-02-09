@@ -3,9 +3,7 @@
   "type": "module",
   "scripts": {
     "test:unit": "jest --config=jest.config.mjs",
-    "test:e2e": "mocha tests/e2e/Score.test.cjs",
-    "start": "http-server -p 8080",
-    "test:e2e:ci": "start-server-and-test start http://localhost:8080 test:e2e"
+    "test:e2e": "mocha tests/e2e/Score.test.cjs --timeout 30000"
   },
   "devDependencies": {
     "jest": "^29.7.0",

@@ -27,14 +27,25 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
-  
-      - name: "🛠️ Install Chrome"
+          cache: 'npm'
+
+      - name: "🛠️ Install Chrome & Chromedriver"
         run: |
+          # Install specific Chrome version matching chromedriver
+          CHROME_VERSION="124.0.6367.207-1"
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-  
+          sudo apt-get install -y google-chrome-stable=$CHROME_VERSION
+
+          # Verify Chrome version
+          google-chrome --version
+
+          # Install matching chromedriver through npm
+          npm install chromedriver@124.0.0
+
       - name: "📦 Install dependencies"
         run: npm install
-  
+
       - name: "🧪 Run E2E tests"
         run: npm run test:e2e
