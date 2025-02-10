@@ -1,12 +1,15 @@
 import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from './src/game.js';
 
 const gameState = new GameState();
-let domScore; // Reference to the DOM element
+let domScore;
 
 const config = {
   type: Phaser.AUTO,
   parent: 'game-container',
   backgroundColor: '#e9ecef',
+  dom: {
+    createContainer: true // Crucial for DOM element support
+  },
   scene: {
     preload: preload,
     create: create,
@@ -27,11 +30,10 @@ function preload() {
 }
 
 function create() {
-  // Clear previous elements
   this.children.removeAll();
 
-  // Create Doro button
-  const doroImage = this.add.image(
+  // Create clickable Doro
+  const doro = this.add.image(
     this.scale.width / 2,
     this.scale.height / 2 - 50,
     'doro'
@@ -43,10 +45,19 @@ function create() {
     updateScore();
   });
 
-  // Create DOM element for score (for Selenium testing)
+  // Create score display (DOM element)
   domScore = this.add.dom(20, 20).createElement('div', '', 'Doros: <span id="score-text">0</span>');
   domScore.setAttribute('id', 'score-display');
-  domScore.style.cssText = 'font-size: 24px; color: white; position: absolute;';
+  domScore.style.cssText = `
+    position: absolute;
+    font-size: 24px;
+    color: #2d3436;       /* Dark text color */
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    padding: 8px 16px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;        /* Ensure it's above everything */
+  `;
 
   // Auto-clicker system
   this.time.addEvent({
@@ -58,7 +69,7 @@ function create() {
     loop: true
   });
 
-  // Initialize buttons
+  // Setup store buttons
   const autoClickerButton = document.getElementById('auto-clicker');
   const clickMultiplierButton = document.getElementById('click-multiplier');
   
@@ -76,7 +87,7 @@ function create() {
 }
 
 function updateScore() {
-  // Update the DOM element's score
+  // Update both Phaser and DOM elements
   document.getElementById('score-text').textContent = gameState.doros;
   updateButtons();
 }
