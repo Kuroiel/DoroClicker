@@ -1,8 +1,7 @@
 import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from './src/game.js';
 
 const gameState = new GameState();
-let scoreText;
-let domScore; // Added global reference
+let domScore; // Reference to the DOM element
 
 const config = {
   type: Phaser.AUTO,
@@ -44,16 +43,10 @@ function create() {
     updateScore();
   });
 
-  // Create Phaser text (for visual display)
-  scoreText = this.add.text(400, 330, 'Doros: 0', { 
-    fontSize: '28px', 
-    fill: '#333' 
-  }).setOrigin(0.5);
-
-  // Create DOM element (for Selenium testing)
-  domScore = this.add.dom(400, 330).createElement('div', '', 'Doros: <span id="score-text">0</span>');
+  // Create DOM element for score (for Selenium testing)
+  domScore = this.add.dom(20, 20).createElement('div', '', 'Doros: <span id="score-text">0</span>');
   domScore.setAttribute('id', 'score-display');
-  domScore.style.cssText = 'font-size: 24px; color: white;';
+  domScore.style.cssText = 'font-size: 24px; color: white; position: absolute;';
 
   // Auto-clicker system
   this.time.addEvent({
@@ -83,9 +76,8 @@ function create() {
 }
 
 function updateScore() {
-  // Update both text displays
-  scoreText.setText(`Doros: ${gameState.doros}`);
-  domScore.querySelector('#score-text').textContent = gameState.doros;
+  // Update the DOM element's score
+  document.getElementById('score-text').textContent = gameState.doros;
   updateButtons();
 }
 
