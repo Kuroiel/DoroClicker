@@ -35,6 +35,8 @@ html, body {
   margin-top: 80px;
   display: flex;
   height: calc(100vh - 80px);
+  gap: 20px;
+  padding: 20px;
 }
 
 /* Sidebar styling */
@@ -47,6 +49,8 @@ html, body {
   left: 0;
   bottom: 0;
   top: 80px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .helper-doros-container {
@@ -69,4 +73,17 @@ html, body {
   left: 50% !important;
   top: 50% !important;
   transform: translate(-50%, -50%) !important;
+}
+
+#score-display {
+  position: absolute;
+  font-size: 24px;
+  color: #2d3436;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1000;
+  left: 20px;
+  top: 20px;
 }

@@ -10,7 +10,6 @@
   <div class="title-container">
     <h1 class="main-title">Doro Clicker</h1>
   </div>
-
   <div class="main-container">
     <!-- Sidebar: Helper Doros Section -->
     <div class="sidebar">
@@ -21,10 +20,12 @@
       </div>
     </div>
 
-    <!-- Game Container: Phaser Canvas -->
-    <div class="game-container" id="game-container"></div> <!-- Removed static score element -->
+    <!-- Game Container: Phaser Canvas and Score Display -->
+    <div class="game-container" id="game-container">
+      <div id="score-display">Doros: <span id="score-text">0</span></div>
+    </div>
   </div>
-
+  
   <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
   <script type="module" src="script.js"></script>
 </body>
