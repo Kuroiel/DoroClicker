@@ -34,7 +34,7 @@ function create() {
   // Create clickable Doro
   const doro = this.add.image(
     this.scale.width / 2,
-    this.scale.height / 2 - 50,
+    this.scale.height / 2 - 200, // Move Doro button up by 200 pixels
     'doro'
   )
   .setInteractive({ cursor: 'pointer' })

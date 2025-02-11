@@ -48,18 +48,6 @@ html, body {
   border-right: 1px solid #ddd;
   padding: 20px;
   position: fixed;
-  left: 0;
-  bottom: 0;
-  top: 80px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.helper-doros-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 15px;
 }
 
 /* Game container */
@@ -68,6 +56,7 @@ html, body {
   width: calc(100% - 250px);
   height: calc(100vh - 80px);
   position: relative;
+  margin-top: 150px; /* Adjusted to make room for score display */
 }
 
 #game-container canvas {
@@ -78,6 +67,7 @@ html, body {
   transform: translate(-50%, -50%) !important;
 }
 
+/* Score display */
 #score-display {
   position: absolute;
   font-size: 24px;
@@ -88,7 +78,7 @@ html, body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   z-index: 1000;
   left: 50%;
-  top: 55%;  /* Adjust this value based on button height */
+  top: 10%; /* Adjusted to position above game container */
   transform: translateX(-50%); /* Center horizontally */
   width: max-content; /* Prevent width distortion */
 }
