@@ -5,6 +5,9 @@ const gameState = new GameState();
 const config = {
   type: Phaser.AUTO,
   parent: 'game-container',
+  dom: {
+    createContainer: true // Allows DOM elements over canvas
+  },
   backgroundColor: '#e9ecef',
   scene: {
     preload: preload,

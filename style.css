@@ -21,6 +21,8 @@ html, body {
   position: fixed;
   top: 0;
   z-index: 100;
+  text-align: center;
+  padding: 20px;
 }
 
 .main-title {
@@ -57,6 +59,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  margin-top: 15px;
 }
 
 /* Game container */
@@ -84,6 +87,8 @@ html, body {
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   z-index: 1000;
-  left: 20px;
-  top: 20px;
+  left: 50%;
+  top: 55%;  /* Adjust this value based on button height */
+  transform: translateX(-50%); /* Center horizontally */
+  width: max-content; /* Prevent width distortion */
 }
