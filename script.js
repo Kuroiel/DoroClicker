@@ -78,10 +78,14 @@ function create() {
 }
 
 function updateScore() {
-  document.getElementById('score-text').textContent = gameState.doros;
+  const scoreElement = document.getElementById('score-text');
+  if (!scoreElement) {
+    console.error('Score element not found');
+    return;
+  }
+  scoreElement.textContent = gameState.doros;
   updateButtons();
 }
-
 function updateButtons() {
   const autoClickerButton = document.getElementById('auto-clicker');
   const clickMultiplierButton = document.getElementById('click-multiplier');
@@ -104,3 +108,10 @@ function positionScoreText() {
   scoreElement.style.left = '50%';
   scoreElement.style.transform = 'translateX(-50%)';
 }
+
+// Cache DOM elements
+const domElements = {
+  scoreText: document.getElementById('score-text'),
+  autoClickerBtn: document.getElementById('auto-clicker'),
+  clickMultiplierBtn: document.getElementById('click-multiplier')
+};

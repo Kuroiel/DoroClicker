@@ -82,3 +82,17 @@ html, body {
   transform: translateX(-50%); /* Center horizontally */
   width: max-content; /* Prevent width distortion */
 }
+
+#score-container {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 60px;
+  font-size: 24px;
+}
+
+.title {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
