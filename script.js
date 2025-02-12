@@ -22,7 +22,10 @@ const config = {
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: 800,
         height: 600
-    }
+    },
+    // IMPORTANT:  Remove scale settings that interfere with manual positioning.
+    // width: 800,  // Remove
+    // height: 600  // Remove
 };
 
 const game = new Phaser.Game(config);
@@ -36,7 +39,7 @@ function create() {
 
     // Create Doro button
     doroButton = this.add.image(
-        0, // X will be centered, so start at 0
+        game.config.width / 2, // Center X within the *configured* game width
         100,  // Start 100px from the top of the *canvas*.  Adjust as needed.
         'doro'
     )
@@ -74,6 +77,8 @@ function create() {
     // Initialize score display.  Get a reference to the container.
     scoreText = document.getElementById('score-display');
     scoreContainer = document.getElementById('score-container');
+	//Correct the id
+	scoreText.id = 'score-text';
     updateScore();
 
     // Call update to set initial positions.
@@ -82,15 +87,12 @@ function create() {
 
 
 function update() {
-    // Position the Doro button horizontally centered *within the canvas*.
-    if (doroButton) {
-        doroButton.x = game.canvas.width / 2;
-    }
+    // Doro button position is now set in `create` and is correct.
 
-    // Position the score 150px below the Doro button.  Use getBottom().
+    // Position the score 120px below the Doro button.  Use getBottom().  Reduced to 120.
     if (doroButton && scoreContainer) {
-      const doroBottom = doroButton.y + (doroButton.displayHeight /2); //get bottom of doro
-      scoreContainer.style.top = `${doroBottom + 150}px`;
+        const doroBottom = doroButton.y + (doroButton.displayHeight / 2); //get bottom of doro
+        scoreContainer.style.top = `${doroBottom + 120}px`; // Adjusted offset
     }
 }
 

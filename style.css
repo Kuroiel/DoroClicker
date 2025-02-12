@@ -52,19 +52,24 @@ html, body {
 
 /* Game container */
 .game-container {
-  margin-left: 250px;
-  width: calc(100% - 250px);
-  height: calc(100vh - 80px);
-  position: relative;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    height: calc(100vh - 80px);
+    position: relative;
+    /* Add this to center content horizontally within .game-container */
+    display: flex;
+    justify-content: center;
 }
 
 /*  IMPORTANT: Position the canvas relative to the .game-container */
 #game-container canvas {
     image-rendering: crisp-edges;
     position: absolute !important; /*  Absolute positioning */
-    left: 50% !important;         /* Center horizontally */
+    left: 0 !important;         /*  Align to the LEFT of .game-container now */
     top: 0 !important;            /*  Start from the TOP of .game-container */
-    transform: translateX(-50%) !important; /*  For perfect horizontal centering */
+    transform: none !important;  /* Remove the transform */
+    width: 800px !important;      /* Set explicit width */
+    height: 600px !important;     /* Set explicit height */
 }
 
 /* Score display */
@@ -80,10 +85,11 @@ html, body {
 
 #score-container {
   position: absolute;
-  width: 100%;
+  width: 800px; /* Match canvas width */
   text-align: center;
   top: 200px;  /*  Initially set, will be adjusted in JS */
   z-index: 101;
+  left: 0; /* Align to the left, like the canvas */
 }
 
 .title {
