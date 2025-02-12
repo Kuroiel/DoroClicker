@@ -34,7 +34,7 @@ html, body {
 
 /* Main container layout */
 .main-container {
-  margin-top: 80px;
+  margin-top: 80px; /* Keep this to avoid overlap with the title */
   display: flex;
   height: calc(100vh - 80px);
   gap: 20px;
@@ -56,15 +56,15 @@ html, body {
   width: calc(100% - 250px);
   height: calc(100vh - 80px);
   position: relative;
-  /* Removed margin-top, score position is now relative to the game container */
 }
 
+/*  IMPORTANT: Position the canvas relative to the .game-container */
 #game-container canvas {
-  image-rendering: crisp-edges;
-  position: absolute !important;
-  left: 50% !important;
-  top: 50% !important;
-  transform: translate(-50%, -50%) !important;
+    image-rendering: crisp-edges;
+    position: absolute !important; /*  Absolute positioning */
+    left: 50% !important;         /* Center horizontally */
+    top: 0 !important;            /*  Start from the TOP of .game-container */
+    transform: translateX(-50%) !important; /*  For perfect horizontal centering */
 }
 
 /* Score display */
@@ -75,17 +75,16 @@ html, body {
   padding: 8px 16px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  display: inline-block; /* Keep as inline-block for centering */
+  display: inline-block;
 }
 
 #score-container {
-  position: absolute; /* Position relative to the game container */
-  width: 100%;        /* Take full width of the game container */
-  text-align: center; /* Center the score horizontally */
-  top: 60%;          /* Position below the Doro button (adjust as needed) */
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 200px;  /*  Initially set, will be adjusted in JS */
   z-index: 101;
 }
-
 
 .title {
   text-align: center;
