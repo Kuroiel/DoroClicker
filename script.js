@@ -3,8 +3,7 @@ import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from './src/g
 const gameState = new GameState();
 let scoreTextValue = null;
 let doroButton = null;
-let scoreContainer = null;
-let titleElement = null;
+// No need for scoreContainer or titleElement at the top level anymore
 let scoreDisplay = null;
 
 const config = {
@@ -19,9 +18,9 @@ const config = {
         create: create,
         update: update,
     },
-     scale: {  //Keep scale for resize
+    scale: {
         mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH, // Center the game
+        autoCenter: Phaser.Scale.CENTER_BOTH,
         width: 800,
         height: 600
     },
@@ -36,9 +35,9 @@ function preload() {
 function create() {
     this.children.removeAll();
 
-    // Create Doro button.  X will be set in update().
+    // Create Doro button.
     doroButton = this.add.image(
-        0,
+        0, // X will be set in update()
         100,
         'doro'
     )
@@ -73,11 +72,9 @@ function create() {
         updateScore();
     });
 
-    // Get references
-    scoreContainer = document.getElementById('score-container');
+    // Get references - ONLY get the SPAN now.
     scoreTextValue = document.getElementById('score-value');
-    titleElement = document.querySelector('.main-title');
-    scoreDisplay = document.getElementById('score-display');
+    scoreDisplay = document.getElementById('score-display'); // Get the score display
 
 
     updateScore();
@@ -87,28 +84,31 @@ function create() {
 
 
 function update() {
-    if (doroButton && scoreContainer && titleElement && scoreDisplay && game.canvas) {
+     if (doroButton && scoreDisplay && game.canvas) {
         // --- Doro Button Alignment ---
-        const titleRect = titleElement.getBoundingClientRect();
-        // 'C' position relative to the *viewport*.
-        const cPositionX = titleRect.left + (titleRect.width * (5 / 12));
-        // Doro button X *relative to the canvas*.
-        const doroX = (game.canvas.width / 2) ;
-
-        doroButton.x = doroX
+        // Center the Doro button within the *canvas*.
+        doroButton.x = game.canvas.width / 2;
 
         // --- Vertical Score Positioning ---
         const doroBottom = doroButton.y + (doroButton.displayHeight / 2);
-        scoreContainer.style.top = `${doroBottom + 120}px`;
+        // Use offsetTop/offsetLeft on the *scoreDisplay* element itself.
+        scoreDisplay.style.top = `${doroBottom + 120}px`;
 
+          // --- Horizontal Score Alignment ---
 
-        // --- Horizontal Score Alignment ---
+        // Get 'C' position from title element
+        const titleElement = document.querySelector('.main-title');
+        const titleRect = titleElement.getBoundingClientRect();
+        const cPositionX = titleRect.left + (titleRect.width * (5 / 12));
+
+        //Get r position from score display
         const scoreRect = scoreDisplay.getBoundingClientRect();
         const rPositionX = scoreRect.left + (scoreRect.width * (3/5));
 
-        // Calculate the offset *relative to the canvas*.
-        const scoreOffsetX = cPositionX -  game.canvas.offsetLeft - rPositionX;
-        scoreContainer.style.left = `${scoreOffsetX}px`;
+        // Calculate the offset
+        const scoreOffsetX =  cPositionX - rPositionX;
+
+        scoreDisplay.style.left = `${scoreOffsetX}px`;
 
     }
 }
