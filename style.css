@@ -75,17 +75,15 @@ html, body {
   padding: 8px 16px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin-top: 20px; /* Move score display down below Doro button */
-  text-align: center;
-  width: 100%;
+  display: inline-block;
 }
 
 #score-container {
   position: absolute;
   width: 100%;
   text-align: center;
-  top: 60px;
-  font-size: 24px;
+  top: 80px; /* Position below title */
+  z-index: 101;
 }
 
 .title {
