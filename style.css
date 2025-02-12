@@ -56,7 +56,7 @@ html, body {
   width: calc(100% - 250px);
   height: calc(100vh - 80px);
   position: relative;
-  margin-top: 150px; /* Adjusted to make room for score display */
+  /* Removed margin-top, score position is now relative to the game container */
 }
 
 #game-container canvas {
@@ -75,16 +75,17 @@ html, body {
   padding: 8px 16px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  display: inline-block;
+  display: inline-block; /* Keep as inline-block for centering */
 }
 
 #score-container {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  top: 80px; /* Position below title */
+  position: absolute; /* Position relative to the game container */
+  width: 100%;        /* Take full width of the game container */
+  text-align: center; /* Center the score horizontally */
+  top: 60%;          /* Position below the Doro button (adjust as needed) */
   z-index: 101;
 }
+
 
 .title {
   text-align: center;
