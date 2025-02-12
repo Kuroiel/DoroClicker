@@ -1,3 +1,4 @@
+// e2e test file
 const { Builder, By, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const httpServer = require('http-server');
@@ -12,14 +13,14 @@ describe('Doro Clicker E2E Tests', function() {
   before(async () => {
     try {
       port = await portfinder.getPortPromise();
-      
+
       // Start HTTP server with proper initialization
       server = httpServer.createServer({
         root: './',
         cors: true,
         cache: -1  // Disable caching for tests
       });
-      
+
       // Start server with Promise wrapper
       await new Promise((resolve, reject) => {
         server.server.listen(port, (err) => {
@@ -67,15 +68,15 @@ describe('Doro Clicker E2E Tests', function() {
     }
   });
 
-  it('should verify initial game score', async () => {
-    await driver.get(`http://localhost:${port}`);
-    const scoreElement = await driver.wait(
-      until.elementLocated(By.id('score-text')),
-      10000
-    );
-    const score = await scoreElement.getText();
-    if (parseInt(score) !== 0) {
-      throw new Error(`Expected initial score 0, got ${score}`);
-    }
-  });
+    it('should verify initial game score', async () => {
+        await driver.get(`http://localhost:${port}`);
+        const scoreElement = await driver.wait(
+            until.elementLocated(By.id('score-value')), //  Use the correct ID!
+            10000
+        );
+        const score = await scoreElement.getText();
+        if (parseInt(score) !== 0) {
+          throw new Error(`Expected initial score 0, got ${score}`);
+        }
+    });
 });

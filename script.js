@@ -1,8 +1,9 @@
+// script.js
 import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from './src/game.js';
 
 const gameState = new GameState();
-let scoreText = null; // Phaser text reference
-let doroButton = null; // Reference to the Doro button
+let scoreTextValue = null; // Store the *span* element
+let doroButton = null;
 let scoreContainer = null;
 
 const config = {
@@ -15,7 +16,7 @@ const config = {
     scene: {
         preload: preload,
         create: create,
-        update: update, // Add an update function
+        update: update,
     },
     scale: {
         mode: Phaser.Scale.FIT,
@@ -23,9 +24,6 @@ const config = {
         width: 800,
         height: 600
     },
-    // IMPORTANT:  Remove scale settings that interfere with manual positioning.
-    // width: 800,  // Remove
-    // height: 600  // Remove
 };
 
 const game = new Phaser.Game(config);
@@ -39,8 +37,8 @@ function create() {
 
     // Create Doro button
     doroButton = this.add.image(
-        game.config.width / 2, // Center X within the *configured* game width
-        100,  // Start 100px from the top of the *canvas*.  Adjust as needed.
+        game.config.width / 2,
+        100,
         'doro'
     )
     .setInteractive({ cursor: 'pointer' })
@@ -74,31 +72,27 @@ function create() {
         updateScore();
     });
 
-    // Initialize score display.  Get a reference to the container.
-    scoreText = document.getElementById('score-display');
-    scoreContainer = document.getElementById('score-container');
-	//Correct the id
-	scoreText.id = 'score-text';
+    // Initialize score display. Get references.
+    scoreContainer = document.getElementById('score-container'); // Get the container
+    scoreTextValue = document.getElementById('score-value');  // Get the *span*
     updateScore();
-
-    // Call update to set initial positions.
-    update();
+    update(); // Initial positioning
 }
+
 
 
 function update() {
-    // Doro button position is now set in `create` and is correct.
-
-    // Position the score 120px below the Doro button.  Use getBottom().  Reduced to 120.
     if (doroButton && scoreContainer) {
-        const doroBottom = doroButton.y + (doroButton.displayHeight / 2); //get bottom of doro
-        scoreContainer.style.top = `${doroBottom + 120}px`; // Adjusted offset
+        const doroBottom = doroButton.y + (doroButton.displayHeight / 2);
+        scoreContainer.style.top = `${doroBottom + 120}px`;
     }
 }
 
-
 function updateScore() {
-    scoreText.textContent = `Doros: ${gameState.doros}`;
+    // Update the *span's* text content.
+    if (scoreTextValue) {
+       scoreTextValue.textContent = gameState.doros;
+    }
     updateButtons();
 }
 
