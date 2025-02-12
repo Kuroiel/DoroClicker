@@ -1,4 +1,4 @@
-// script.js
+// script.js (No changes from the previous, *correct* version are needed here)
 import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from './src/game.js';
 
 const gameState = new GameState();
@@ -38,7 +38,7 @@ function create() {
     // Create Doro button
     doroButton = this.add.image(
         game.config.width / 2,
-        100,
+        100, //y position
         'doro'
     )
     .setInteractive({ cursor: 'pointer' })

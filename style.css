@@ -1,4 +1,3 @@
-/*  CSS remains the same as the previous, correct version. */
 /* Reset and base styles */
 html, body {
   margin: 0;
@@ -35,42 +34,52 @@ html, body {
 
 /* Main container layout */
 .main-container {
-  margin-top: 80px; /* Keep this to avoid overlap with the title */
+  margin-top: 80px; /* Space for the title */
   display: flex;
-  height: calc(100vh - 80px);
-  gap: 20px;
+  height: calc(100vh - 80px); /* Remaining height */
   padding: 20px;
+  justify-content: flex-start; /* Align content to the start (left) */
 }
 
 /* Sidebar styling */
 .sidebar {
-  width: 250px;
-  background: #f8f9fa;
-  border-right: 1px solid #ddd;
-  padding: 20px;
-  position: fixed;
+    width: 250px;
+    background: #f8f9fa;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    position: fixed; /* Keep fixed */
+    left: 0; /* Flush to the left */
+    top: 80px; /* Start below the title */
+    height: calc(100vh - 80px); /* Fill the remaining height */
+}
+
+/* Make sidebar buttons equal size */
+.helper-doros-container button {
+    width: 100%;          /* Full width of the container */
+    margin-bottom: 10px; /* Spacing between buttons */
+    padding: 10px;       /* Consistent padding */
 }
 
 /* Game container */
 .game-container {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-    height: calc(100vh - 80px);
-    position: relative;
-    /* Add this to center content horizontally within .game-container */
-    display: flex;
-    justify-content: center;
+  margin-left: 250px; /*  Make space for the sidebar */
+  width: calc(100% - 270px);
+  height: calc(100vh - 80px); /*  Match main-container height */
+  position: relative;  /*  For absolute positioning of children */
+  display: flex;      /*  For centering the canvas */
+  justify-content: center; /*  Center horizontally */
+  padding-left: 20px;
 }
 
-/*  IMPORTANT: Position the canvas relative to the .game-container */
+/*  Position the canvas */
 #game-container canvas {
     image-rendering: crisp-edges;
-    position: absolute !important; /*  Absolute positioning */
-    left: 0 !important;         /*  Align to the LEFT of .game-container now */
-    top: 0 !important;            /*  Start from the TOP of .game-container */
-    transform: none !important;  /* Remove the transform */
-    width: 800px !important;      /* Set explicit width */
-    height: 600px !important;     /* Set explicit height */
+    position: absolute;
+    left: 50%;      /* Center horizontally using transform */
+    top: 0;           /*  Align to the top of .game-container */
+    transform: translateX(-50%); /*  Perfect horizontal centering */
+    width: 800px;     /*  Explicit width */
+    height: 600px;    /*  Explicit height */
 }
 
 /* Score display */
@@ -81,16 +90,17 @@ html, body {
   padding: 8px 16px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  display: inline-block;
+  display: inline-block; /* Important for centering */
 }
 
 #score-container {
   position: absolute;
-  width: 800px; /* Match canvas width */
-  text-align: center;
-  top: 200px;  /*  Initially set, will be adjusted in JS */
-  z-index: 101;
-  left: 0; /* Align to the left, like the canvas */
+  width: 800px;        /* Match the canvas width */
+  text-align: center;  /* Center the text */
+  top: 220px;          /* Initial position, adjusted in JS */
+  z-index: 101;         /* Above the canvas */
+  left: 50%;           /* Center horizontally using transform */
+  transform: translateX(-50%); /* Perfect horizontal centering */
 }
 
 .title {
