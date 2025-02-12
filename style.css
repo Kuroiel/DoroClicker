@@ -14,7 +14,7 @@ html, body {
   width: 100%;
   height: 80px;
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Center the title horizontally */
   align-items: center;
   background: #f4f4f4;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -24,21 +24,22 @@ html, body {
   text-align: center;
   padding: 20px;
 }
-
 .main-title {
   font-size: 2.5rem;
   margin: 0;
   color: #333;
   font-family: 'Times New Roman', serif;
+  position: relative; /*  For alignment calculations */
+
 }
 
 /* Main container layout */
 .main-container {
-  margin-top: 80px; /* Space for the title */
+  margin-top: 80px;
   display: flex;
-  height: calc(100vh - 80px); /* Remaining height */
+  height: calc(100vh - 80px);
   padding: 20px;
-  justify-content: flex-start; /* Align content to the start (left) */
+  justify-content: flex-start;
 }
 
 /* Sidebar styling */
@@ -47,39 +48,36 @@ html, body {
     background: #f8f9fa;
     border-right: 1px solid #ddd;
     padding: 20px;
-    position: fixed; /* Keep fixed */
-    left: 0; /* Flush to the left */
-    top: 80px; /* Start below the title */
-    height: calc(100vh - 80px); /* Fill the remaining height */
+    position: fixed;
+    left: 0;
+    top: 80px;
+    height: calc(100vh - 80px);
 }
 
 /* Make sidebar buttons equal size */
 .helper-doros-container button {
-    width: 100%;          /* Full width of the container */
-    margin-bottom: 10px; /* Spacing between buttons */
-    padding: 10px;       /* Consistent padding */
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
 }
 
 /* Game container */
 .game-container {
-  margin-left: 250px; /*  Make space for the sidebar */
-  width: calc(100% - 270px);
-  height: calc(100vh - 80px); /*  Match main-container height */
-  position: relative;  /*  For absolute positioning of children */
-  display: flex;      /*  For centering the canvas */
-  justify-content: center; /*  Center horizontally */
-  padding-left: 20px;
+    margin-left: 250px;
+    width: calc(100% - 270px);
+    height: calc(100vh - 80px);
+    position: relative;
+    padding-left: 20px;
 }
 
 /*  Position the canvas */
 #game-container canvas {
     image-rendering: crisp-edges;
     position: absolute;
-    left: 50%;      /* Center horizontally using transform */
-    top: 0;           /*  Align to the top of .game-container */
-    transform: translateX(-50%); /*  Perfect horizontal centering */
-    width: 800px;     /*  Explicit width */
-    height: 600px;    /*  Explicit height */
+    left: 0;  /*  Will be adjusted in JS */
+    top: 0;
+    width: 800px;
+    height: 600px;
 }
 
 /* Score display */
@@ -90,17 +88,17 @@ html, body {
   padding: 8px 16px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  display: inline-block; /* Important for centering */
+  display: inline-block;
+  position: relative; /*  For alignment calculations */
 }
 
 #score-container {
   position: absolute;
-  width: 800px;        /* Match the canvas width */
-  text-align: center;  /* Center the text */
-  top: 220px;          /* Initial position, adjusted in JS */
-  z-index: 101;         /* Above the canvas */
-  left: 50%;           /* Center horizontally using transform */
-  transform: translateX(-50%); /* Perfect horizontal centering */
+  width: 800px;
+  text-align: center;
+  top: 220px;  /* Initial position */
+  z-index: 101;
+  left: 0;     /* Will be adjusted in JS */
 }
 
 .title {

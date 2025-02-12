@@ -1,10 +1,12 @@
-// script.js (No changes from the previous, *correct* version are needed here)
 import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from './src/game.js';
 
 const gameState = new GameState();
-let scoreTextValue = null; // Store the *span* element
+let scoreTextValue = null;
 let doroButton = null;
 let scoreContainer = null;
+let titleElement = null; // Reference to the title
+let scoreDisplay = null; // Reference to the score display
+
 
 const config = {
     type: Phaser.AUTO,
@@ -37,8 +39,8 @@ function create() {
 
     // Create Doro button
     doroButton = this.add.image(
-        game.config.width / 2,
-        100, //y position
+        0,  // Initial X, will be adjusted
+        100,
         'doro'
     )
     .setInteractive({ cursor: 'pointer' })
@@ -72,24 +74,49 @@ function create() {
         updateScore();
     });
 
-    // Initialize score display. Get references.
-    scoreContainer = document.getElementById('score-container'); // Get the container
-    scoreTextValue = document.getElementById('score-value');  // Get the *span*
+    // Get references after DOM is ready
+    scoreContainer = document.getElementById('score-container');
+    scoreTextValue = document.getElementById('score-value');
+    titleElement = document.querySelector('.main-title'); // Get title element
+    scoreDisplay = document.getElementById('score-display'); // Get score display
+
     updateScore();
-    update(); // Initial positioning
+    update();  // Initial positioning
 }
 
 
 
 function update() {
-    if (doroButton && scoreContainer) {
+    if (doroButton && scoreContainer && titleElement && scoreDisplay) {
+        // 1. Get the position of the 'C' in "Doro Clicker"
+        const titleRect = titleElement.getBoundingClientRect();
+        const cPosition = titleRect.left + (titleRect.width * (5 / 12)); // Approximate 'C' position
+
+        // 2. Calculate the desired X for the Doro button (centered)
+        const doroX = cPosition - (doroButton.displayWidth / 2) -  game.canvas.offsetLeft;
+
+
+        // 3. Set the Doro button's X position
+        doroButton.x = doroX;
+
+        // 4.  Position Score Vertically
         const doroBottom = doroButton.y + (doroButton.displayHeight / 2);
         scoreContainer.style.top = `${doroBottom + 120}px`;
+
+        // 5. Get 'r' position in "Doros"
+        const scoreRect = scoreDisplay.getBoundingClientRect();
+        const rPosition = scoreRect.left + (scoreRect.width * (3 / 5)) ;  // Approximate 'r' position
+
+        // 6. calculate score container offset
+        const scoreOffsetX =  cPosition - rPosition;
+
+        // 7. Set score container position
+        scoreContainer.style.left = `${scoreOffsetX}px`;
     }
 }
 
+
 function updateScore() {
-    // Update the *span's* text content.
     if (scoreTextValue) {
        scoreTextValue.textContent = gameState.doros;
     }
