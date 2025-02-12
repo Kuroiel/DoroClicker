@@ -1,4 +1,3 @@
-// e2e test file
 const { Builder, By, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const httpServer = require('http-server');
@@ -11,6 +10,7 @@ describe('Doro Clicker E2E Tests', function() {
   let port;
 
   before(async () => {
+    // ... (rest of the before block is the same) ...
     try {
       port = await portfinder.getPortPromise();
 
@@ -51,6 +51,7 @@ describe('Doro Clicker E2E Tests', function() {
   });
 
   after(async () => {
+   // ... (rest of after block is the same)
     try {
       if (driver) {
         await driver.quit();
@@ -68,15 +69,18 @@ describe('Doro Clicker E2E Tests', function() {
     }
   });
 
-    it('should verify initial game score', async () => {
-        await driver.get(`http://localhost:${port}`);
-        const scoreElement = await driver.wait(
-            until.elementLocated(By.id('score-value')), //  Use the correct ID!
-            10000
-        );
-        const score = await scoreElement.getText();
-        if (parseInt(score) !== 0) {
-          throw new Error(`Expected initial score 0, got ${score}`);
-        }
-    });
+  it('should verify initial game score', async () => {
+    await driver.get(`http://localhost:${port}`);
+    const scoreElement = await driver.wait(
+        until.elementLocated(By.id('score-value')), //  Use the correct ID!
+        10000
+    );
+    const score = await scoreElement.getText();
+    //  Check for an empty string or null, then default to 0
+    const scoreValue = score === '' || score === null ? 0 : parseInt(score, 10);
+
+    if (scoreValue !== 0) {
+        throw new Error(`Expected initial score 0, got ${scoreValue}`);
+    }
+  });
 });

@@ -3,8 +3,7 @@ import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from './src/g
 const gameState = new GameState();
 let scoreTextValue = null;
 let doroButton = null;
-// No need for scoreContainer or titleElement at the top level anymore
-let scoreDisplay = null;
+let scoreDisplay = null; // Directly reference the #score-display
 
 const config = {
     type: Phaser.AUTO,
@@ -35,7 +34,7 @@ function preload() {
 function create() {
     this.children.removeAll();
 
-    // Create Doro button.
+    // Create Doro button
     doroButton = this.add.image(
         0, // X will be set in update()
         100,
@@ -72,52 +71,44 @@ function create() {
         updateScore();
     });
 
-    // Get references - ONLY get the SPAN now.
+    // Get references - directly to the #score-display and the span
     scoreTextValue = document.getElementById('score-value');
-    scoreDisplay = document.getElementById('score-display'); // Get the score display
-
+    scoreDisplay = document.getElementById('score-display');
 
     updateScore();
-    update();  // Initial positioning
+    update(); // Initial positioning
 }
 
-
-
 function update() {
-     if (doroButton && scoreDisplay && game.canvas) {
+ if (doroButton && scoreDisplay && game.canvas) {
         // --- Doro Button Alignment ---
-        // Center the Doro button within the *canvas*.
         doroButton.x = game.canvas.width / 2;
 
         // --- Vertical Score Positioning ---
         const doroBottom = doroButton.y + (doroButton.displayHeight / 2);
-        // Use offsetTop/offsetLeft on the *scoreDisplay* element itself.
         scoreDisplay.style.top = `${doroBottom + 120}px`;
 
-          // --- Horizontal Score Alignment ---
-
-        // Get 'C' position from title element
+        // --- Horizontal Score Alignment ---
+        // Get 'C' position from title element (calculate this *once*)
         const titleElement = document.querySelector('.main-title');
         const titleRect = titleElement.getBoundingClientRect();
         const cPositionX = titleRect.left + (titleRect.width * (5 / 12));
 
-        //Get r position from score display
-        const scoreRect = scoreDisplay.getBoundingClientRect();
-        const rPositionX = scoreRect.left + (scoreRect.width * (3/5));
+        // Get 'r' position *relative to the score display itself*.
+        // Since scoreDisplay is now absolutely positioned and we are setting its
+        // left style directly, we don't need getBoundingClientRect() here.
+        // We can approximate the 'r' position based on the *known* content.
+        const rPositionX = scoreDisplay.clientWidth * (3 / 11);  //  Adjust this fraction!
 
-        // Calculate the offset
-        const scoreOffsetX =  cPositionX - rPositionX;
-
+        // Calculate and set the *left* style of the #score-display.
+        const scoreOffsetX = cPositionX - game.canvas.offsetLeft - rPositionX;
         scoreDisplay.style.left = `${scoreOffsetX}px`;
-
     }
 }
 
-
-
 function updateScore() {
     if (scoreTextValue) {
-       scoreTextValue.textContent = gameState.doros;
+        scoreTextValue.textContent = gameState.doros;
     }
     updateButtons();
 }

@@ -38,7 +38,6 @@ html, body {
   margin-top: 80px;
   display: flex;
   height: calc(100vh - 80px);
-  padding: 20px;
   justify-content: flex-start; /* Align content to the left */
 }
 
@@ -60,31 +59,33 @@ html, body {
     width: 100%;
     margin-bottom: 10px;
     padding: 10px;
-    text-align: center; /* Center text within buttons */
+     /*  display: block; is already implied for buttons, no change needed */
+    margin-left: auto;  /*  These two lines */
+    margin-right: auto; /*  center the buttons */
 }
 
 /* Game container */
 .game-container {
-  margin-left: 250px; /*  Make space for the sidebar. */
-  width: calc(100% - 250px); /* Adjust width to fill the rest of the space. */
+  margin-left: 250px;
+  width: calc(100% - 250px);
   height: calc(100vh - 80px);
   position: relative;
-  display: flex; /*  Use flexbox for centering */
-  justify-content: center; /*  Center horizontally */
+  display: flex;
+  justify-content: center; /* Center canvas horizontally */
 }
 
-/*  Position the canvas.  Centering is now handled by .game-container */
+/* Position the canvas */
 #game-container canvas {
     image-rendering: crisp-edges;
     position: absolute;
     left: 0;
     top: 0;
-    width: 800px;  /*  Explicit width */
-    height: 600px; /*  Explicit height */
-    /* No transform needed here, as the parent is centered */
+    width: 800px;
+    height: 600px;
+    /* No transform needed */
 }
 
-/* Score display */
+/* Score display - NO outer container, styles applied directly */
 #score-display {
   font-size: 24px;
   color: #2d3436;
@@ -92,17 +93,12 @@ html, body {
   padding: 8px 16px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  display: inline-block;
-  position: relative;  /*  For alignment */
-}
-
-#score-container {
-    position: absolute;
-    width: 800px; /* Match canvas width */
-    text-align: center;
-    top: 220px;    /* Initial position, adjusted by JS */
-    left: 0;       /*  Will be adjusted in JS, start at left edge */
-    z-index: 101;   /*  Above the canvas */
+  position: absolute; /*  Position it absolutely */
+  top: 220px;     /* Initial top, adjusted in JS */
+  left: 0;        /* Initial left, adjusted in JS */
+  z-index: 101;
+  width: 800px; /*match canvas*/
+  text-align: center; /* Center the text within */
 }
 
 .title {
