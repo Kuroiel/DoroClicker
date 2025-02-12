@@ -35,8 +35,8 @@ function create() {
 
   // Position the main Doro closer to the top
   const doro = this.add.image(
-    this.scale.width / 2,  // center horizontally
-    140,                   // position it further up to align under the title
+    this.scale.width / 2,
+    this.scale.height / 2 - 200,
     'doro'
   )
   .setInteractive({ cursor: 'pointer' })
@@ -75,10 +75,27 @@ function create() {
 
   // Align #score-text to match the title area
   positionScoreText();
+
+  // Create score display
+const scoreText = this.add.text(
+  this.scale.width / 2,
+  this.scale.height / 2 - 150, // Position score display below Doro button
+  'Doros: 0',
+  {
+    fontSize: 24,
+    color: '#2d3436',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    padding: 8,
+    borderRadius: 4,
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    textAlign: 'center',
+    width: 200,
+  }
+);
 }
 
 function updateScore() {
-  const scoreElement = document.getElementById('score-text');
+  scoreText.setText(`Doros: ${gameState.doros}`);
   if (!scoreElement) {
     console.error('Score element not found');
     return;
