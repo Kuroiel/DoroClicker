@@ -6,7 +6,7 @@ html, body {
   height: 100%;
   overflow: hidden;
   font-family: 'Times New Roman', serif;
-  background: #e9ecef;
+  background: #e9ecef; /* Unified background color */
 }
 
 /* Title container */
@@ -16,7 +16,7 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f4f4f4;
+  background: #f4f4f4; /* Keep a different color for the title bar */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   position: fixed;
   top: 0;
@@ -30,7 +30,7 @@ html, body {
   margin: 0;
   color: #333;
   font-family: 'Times New Roman', serif;
-  position: relative; /* For alignment */
+  /* Removed position: relative; - no longer needed */
 }
 
 /* Main container layout */
@@ -38,30 +38,31 @@ html, body {
   margin-top: 80px;
   display: flex;
   height: calc(100vh - 80px);
-  justify-content: flex-start; /* Align content to the left */
+  justify-content: flex-start;
+  background: #e9ecef; /* Unified background color */
 }
 
 /* Sidebar styling */
 .sidebar {
     width: 250px;
-    background: #f8f9fa;
+    background: #f8f9fa; /* Keep sidebar a slightly different shade */
     border-right: 1px solid #ddd;
     padding: 20px;
     position: fixed;
     left: 0;
     top: 80px;
     height: calc(100vh - 80px);
-    text-align: center; /* Center-align sidebar content */
+    text-align: center;
 }
 
-/* Center-align sidebar buttons */
+/* Center-align sidebar buttons (Corrected) */
 .helper-doros-container button {
     width: 100%;
     margin-bottom: 10px;
     padding: 10px;
-    display: block; /* Ensure buttons are block-level */
-    margin-left: auto;
-    margin-right: auto;
+    display: block;     /*  Ensure block-level */
+    margin-left: auto;  /*  These two lines */
+    margin-right: auto; /*  center the buttons */
 }
 
 /* Game container */
@@ -72,6 +73,7 @@ html, body {
   position: relative;
   display: flex;
   justify-content: center; /* Center canvas horizontally */
+  background: #e9ecef; /* Unified background color */
 }
 
 /* Position the canvas */
@@ -84,23 +86,20 @@ html, body {
     height: 600px;
 }
 
-/* Score display - Remove width and text-align, adjust padding */
+/* Score display - Positioning handled entirely in JS */
 #score-display {
   font-size: 24px;
   color: #2d3436;
   background: rgba(255, 255, 255, 0.9);
-  padding: 0;       /* Remove padding, control spacing with JS */
+  padding: 8px 16px;  /* Add padding back for visual spacing */
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   position: absolute;
-  top: 0;           /*  Will be set by JS */
-  left: 0;          /*  Will be set by JS */
+  top: 0;   /* Will be set by JS */
+  left: 0;  /* Will be set by JS */
   z-index: 101;
-  /* Remove width and text-align */
+  white-space: nowrap; /* Prevent text wrapping */
 }
-
-
-
 .title {
   text-align: center;
   margin-top: 20px;

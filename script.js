@@ -77,20 +77,26 @@ function create() {
     updateScore();
     update(); // Initial positioning
 }
+
 function update() {
-   if (doroButton && scoreDisplay && game.canvas) {
+    if (doroButton && scoreDisplay && game.canvas) {
         // --- Doro Button Alignment ---
         doroButton.x = game.canvas.width / 2;
 
-        // --- Vertical and Horizontal Score Positioning (Combined) ---
-        // Calculate the *center* of the Doro button.
+        // --- Vertical and Horizontal Score Positioning (Combined and Corrected) ---
+        // 1. Get Doro button's *center* X and bottom Y.
         const doroCenterX = doroButton.x;
-        const doroBottom = doroButton.y + (doroButton.displayHeight / 2);
+        const doroBottomY = doroButton.y + (doroButton.displayHeight / 2);
 
-        // Position the score *directly* below the Doro button's *center*.
-        // No need for separate horizontal and vertical calculations.
-        scoreDisplay.style.top = `${doroBottom + 20}px`; //  Adjust vertical spacing here
-        scoreDisplay.style.left = `${doroCenterX - scoreDisplay.clientWidth / 2}px`;
+        // 2.  Wait for scoreDisplay to have its *final* size before positioning.
+        requestAnimationFrame(() => {
+            // 3. Calculate the *center* X of the score display.
+            const scoreDisplayCenterX = scoreDisplay.offsetWidth / 2;
+
+            // 4. Position the score display.
+            scoreDisplay.style.top = `${doroBottomY + 20}px`; // Vertical offset
+            scoreDisplay.style.left = `${doroCenterX - scoreDisplayCenterX}px`; // Center horizontally
+        });
     }
 }
 
