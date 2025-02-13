@@ -54,14 +54,14 @@ html, body {
     text-align: center; /* Center-align sidebar content */
 }
 
-/* Make sidebar buttons equal size and center-aligned */
+/* Center-align sidebar buttons */
 .helper-doros-container button {
     width: 100%;
     margin-bottom: 10px;
     padding: 10px;
-     /*  display: block; is already implied for buttons, no change needed */
-    margin-left: auto;  /*  These two lines */
-    margin-right: auto; /*  center the buttons */
+    display: block; /* Ensure buttons are block-level */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Game container */
@@ -82,24 +82,24 @@ html, body {
     top: 0;
     width: 800px;
     height: 600px;
-    /* No transform needed */
 }
 
-/* Score display - NO outer container, styles applied directly */
+/* Score display - Remove width and text-align, adjust padding */
 #score-display {
   font-size: 24px;
   color: #2d3436;
   background: rgba(255, 255, 255, 0.9);
-  padding: 8px 16px;
+  padding: 0;       /* Remove padding, control spacing with JS */
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: absolute; /*  Position it absolutely */
-  top: 220px;     /* Initial top, adjusted in JS */
-  left: 0;        /* Initial left, adjusted in JS */
+  position: absolute;
+  top: 0;           /*  Will be set by JS */
+  left: 0;          /*  Will be set by JS */
   z-index: 101;
-  width: 800px; /*match canvas*/
-  text-align: center; /* Center the text within */
+  /* Remove width and text-align */
 }
+
+
 
 .title {
   text-align: center;

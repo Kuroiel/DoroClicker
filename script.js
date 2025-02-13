@@ -3,7 +3,7 @@ import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from './src/g
 const gameState = new GameState();
 let scoreTextValue = null;
 let doroButton = null;
-let scoreDisplay = null; // Directly reference the #score-display
+let scoreDisplay = null;
 
 const config = {
     type: Phaser.AUTO,
@@ -71,38 +71,26 @@ function create() {
         updateScore();
     });
 
-    // Get references - directly to the #score-display and the span
     scoreTextValue = document.getElementById('score-value');
     scoreDisplay = document.getElementById('score-display');
 
     updateScore();
     update(); // Initial positioning
 }
-
 function update() {
- if (doroButton && scoreDisplay && game.canvas) {
+   if (doroButton && scoreDisplay && game.canvas) {
         // --- Doro Button Alignment ---
         doroButton.x = game.canvas.width / 2;
 
-        // --- Vertical Score Positioning ---
+        // --- Vertical and Horizontal Score Positioning (Combined) ---
+        // Calculate the *center* of the Doro button.
+        const doroCenterX = doroButton.x;
         const doroBottom = doroButton.y + (doroButton.displayHeight / 2);
-        scoreDisplay.style.top = `${doroBottom + 120}px`;
 
-        // --- Horizontal Score Alignment ---
-        // Get 'C' position from title element (calculate this *once*)
-        const titleElement = document.querySelector('.main-title');
-        const titleRect = titleElement.getBoundingClientRect();
-        const cPositionX = titleRect.left + (titleRect.width * (5 / 12));
-
-        // Get 'r' position *relative to the score display itself*.
-        // Since scoreDisplay is now absolutely positioned and we are setting its
-        // left style directly, we don't need getBoundingClientRect() here.
-        // We can approximate the 'r' position based on the *known* content.
-        const rPositionX = scoreDisplay.clientWidth * (3 / 11);  //  Adjust this fraction!
-
-        // Calculate and set the *left* style of the #score-display.
-        const scoreOffsetX = cPositionX - game.canvas.offsetLeft - rPositionX;
-        scoreDisplay.style.left = `${scoreOffsetX}px`;
+        // Position the score *directly* below the Doro button's *center*.
+        // No need for separate horizontal and vertical calculations.
+        scoreDisplay.style.top = `${doroBottom + 20}px`; //  Adjust vertical spacing here
+        scoreDisplay.style.left = `${doroCenterX - scoreDisplay.clientWidth / 2}px`;
     }
 }
 
