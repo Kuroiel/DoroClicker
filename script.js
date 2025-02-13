@@ -75,57 +75,27 @@ function create() {
     scoreDisplay = document.getElementById('score-display');
 
     updateScore();
-    update();
+    update(); // Initial positioning
 }
-
 function update() {
     if (doroButton && scoreDisplay && game.canvas) {
-        // --- Doro Button Alignment (Corrected) ---
-        doroButton.x = game.config.width / 2; // Use game.config.width
+        // --- Doro Button Alignment ---
+        doroButton.x = game.config.width / 2;
 
         // --- Vertical and Horizontal Score Positioning (Combined and Corrected) ---
-
-        // Use requestAnimationFrame for *all* positioning calculations.
         requestAnimationFrame(() => {
-             // Get Doro button's *center* X and *center* Y.  Use Phaser's properties.
-            const doroCenterX = doroButton.x;
-            const doroCenterY = doroButton.y;  // Use the *center* Y, not the bottom.
+            // Use getBounds() for the most accurate position and size.
+            const doroBounds = doroButton.getBounds();
 
-            // Calculate the top of the score display.
-            const scoreDisplayTop = doroCenterY + (doroButton.displayHeight / 2) + 20; // Below Doro
+            // Position the score display.
+            scoreDisplay.style.position = 'absolute'; // Set position: absolute in JS
+            scoreDisplay.style.top = `${doroBounds.bottom + 20}px`; // Position below Doro
+            scoreDisplay.style.left = `${doroBounds.centerX - scoreDisplay.offsetWidth / 2}px`; // Center
+            scoreDisplay.style.zIndex = '101';     // Ensure it's on top
+            scoreDisplay.style.padding = '8px 16px'; // Add padding in JS
 
-            // Calculate the *center* X of the score display.
-            const scoreDisplayCenterX = scoreDisplay.offsetWidth / 2;
-             // Calculate score display left
-            const scoreDisplayLeft =  doroCenterX - scoreDisplayCenterX;
-
-             // Apply the styles.
-            scoreDisplay.style.top = `${scoreDisplayTop}px`;
-            scoreDisplay.style.left = `${scoreDisplayLeft}px`;
-
-            // Debugging: Log *everything*.
-            console.log("--- update() ---");
-            console.log("Doro Center X:", doroCenterX);
-            console.log("Doro Center Y:", doroCenterY);
-            console.log("Doro Display Height:", doroButton.displayHeight);
-            console.log("Calculated Score Top:", scoreDisplayTop);
-            console.log("Score Display Offset Width:", scoreDisplay.offsetWidth);
-            console.log("Calculated Score Left:", scoreDisplayLeft);
-            console.log("Final Score Style:", scoreDisplay.style.cssText);
-
-
-             // Check for conflicting styles (add this)
-            const computedStyle = window.getComputedStyle(scoreDisplay);
-            console.log("Computed Style:", computedStyle);
-            for (const prop of ['position', 'top', 'left', 'transform', 'margin', 'padding']) {
-                 if (computedStyle[prop] !== scoreDisplay.style[prop]) {
-                    console.warn(`Style conflict on property '${prop}':`,
-                        `Expected: ${scoreDisplay.style[prop]}, Got: ${computedStyle[prop]}`);
-                 }
-            }
+            // Optional: Remove the extensive debugging logs now, or keep them for a bit longer.
         });
-
-
     }
 }
 
