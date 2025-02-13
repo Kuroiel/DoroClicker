@@ -6,7 +6,7 @@ html, body {
   height: 100%;
   overflow: hidden;
   font-family: 'Times New Roman', serif;
-  background: #e9ecef;
+  background: #e9ecef; /* Unified background */
 }
 
 /* Title container */
@@ -38,7 +38,7 @@ html, body {
   display: flex;
   height: calc(100vh - 80px);
   justify-content: flex-start;
-  background: #e9ecef;
+  background: #e9ecef; /* Unified background */
 }
 
 /* Sidebar styling */
@@ -59,9 +59,9 @@ html, body {
     width: 100%;
     margin-bottom: 10px;
     padding: 10px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    display: block;         /* Ensure block-level */
+    margin-left: auto;     /* These two lines */
+    margin-right: auto;    /* center the buttons */
 }
 
 /* Game container */
@@ -72,7 +72,7 @@ html, body {
   position: relative;
   display: flex;
   justify-content: center;
-  background: #e9ecef;
+  background: #e9ecef; /* Unified background */
 }
 
 /* Position the canvas */
@@ -90,11 +90,17 @@ html, body {
   font-size: 24px;
   color: #2d3436;
   background: rgba(255, 255, 255, 0.9);
+  padding: 8px 16px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  /* REMOVE: position, top, left, z-index, padding */
+  position: absolute;  /* MUST be absolute for JS positioning */
+  top: 0;   /* Will be set by JS */
+  left: 0;  /* Will be set by JS */
+  z-index: 101;
   white-space: nowrap;
 }
+
+
 .title {
   text-align: center;
   margin-top: 20px;

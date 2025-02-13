@@ -15,7 +15,7 @@ const config = {
     scene: {
         preload: preload,
         create: create,
-        update: update,
+        update: update, // Make SURE this is here!
     },
     scale: {
         mode: Phaser.Scale.FIT,
@@ -36,7 +36,7 @@ function create() {
 
     // Create Doro button
     doroButton = this.add.image(
-        0, // X will be set in update()
+        0, // X will be set later
         100,
         'doro'
     )
@@ -47,7 +47,7 @@ function create() {
         updateScore();
     });
 
-    // Auto-clicker system
+    // Auto-clicker system (Keep this!)
     this.time.addEvent({
         delay: 1000,
         callback: () => {
@@ -57,7 +57,7 @@ function create() {
         loop: true
     });
 
-    // Setup store buttons
+    // Setup store buttons (Keep this!)
     const autoClickerButton = document.getElementById('auto-clicker');
     const clickMultiplierButton = document.getElementById('click-multiplier');
 
@@ -71,31 +71,35 @@ function create() {
         updateScore();
     });
 
+    // Get references
     scoreTextValue = document.getElementById('score-value');
     scoreDisplay = document.getElementById('score-display');
 
-    updateScore();
-    update(); // Initial positioning
+     // *** Key Change: Use an event listener to wait for the image to load ***
+    this.load.on('filecomplete-image-doro', () => {
+        // *Now* we know the image is loaded and the button has its final size.
+        updateScore(); // Initial score update
+        update();      // Initial positioning
+    });
+    this.load.start(); // Start loading immediately
 }
+
 function update() {
-    if (doroButton && scoreDisplay && game.canvas) {
+  if (doroButton && scoreDisplay && game.canvas) {
         // --- Doro Button Alignment ---
         doroButton.x = game.config.width / 2;
 
-        // --- Vertical and Horizontal Score Positioning (Combined and Corrected) ---
-        requestAnimationFrame(() => {
-            // Use getBounds() for the most accurate position and size.
-            const doroBounds = doroButton.getBounds();
+        // --- Score Positioning (Simplified and Robust) ---
+        // Use getBounds() for the *most accurate* position, even after scaling.
+        const doroBounds = doroButton.getBounds();
 
-            // Position the score display.
-            scoreDisplay.style.position = 'absolute'; // Set position: absolute in JS
-            scoreDisplay.style.top = `${doroBounds.bottom + 20}px`; // Position below Doro
-            scoreDisplay.style.left = `${doroBounds.centerX - scoreDisplay.offsetWidth / 2}px`; // Center
-            scoreDisplay.style.zIndex = '101';     // Ensure it's on top
-            scoreDisplay.style.padding = '8px 16px'; // Add padding in JS
+        // Position the #score-display *directly* using style properties.
+        scoreDisplay.style.position = 'absolute'; // MUST be absolute
+        scoreDisplay.style.top = `${doroBounds.bottom + 20}px`; // Below Doro
+        scoreDisplay.style.left = `${doroBounds.centerX - (scoreDisplay.offsetWidth / 2)}px`; // Centered
+        scoreDisplay.style.zIndex = '101';      // Ensure it's on top
+        scoreDisplay.style.padding = '8px 16px'; //Consistent padding
 
-            // Optional: Remove the extensive debugging logs now, or keep them for a bit longer.
-        });
     }
 }
 
