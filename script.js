@@ -1,6 +1,7 @@
+// Import statements are CRUCIAL for modules.  Make SURE these are correct.
 import { GameState, purchaseAutoClicker, purchaseClickMultiplier } from './src/game.js';
 
-const gameState = new GameState();
+const gameState = new GameState(); // Keep this for your button updates.
 let scoreTextValue = null;
 let doroButton = null;
 let scoreDisplay = null;
@@ -15,7 +16,7 @@ const config = {
     scene: {
         preload: preload,
         create: create,
-        update: update,
+        update: update, // Make SURE this is included.
     },
     scale: {
         mode: Phaser.Scale.FIT,
@@ -33,19 +34,18 @@ function preload() {
 
 function create() {
     this.children.removeAll();
-
-    // Create Doro button
+    // doro button
     doroButton = this.add.image(
         0, // X will be set in update()
         100,
         'doro'
     )
-    .setInteractive({ cursor: 'pointer' })
-    .setScale(0.18)
-    .on('pointerdown', () => {
-        gameState.doros += gameState.clickMultiplier;
-        updateScore();
-    });
+        .setInteractive({ cursor: 'pointer' })
+        .setScale(0.18)
+        .on('pointerdown', () => {
+            gameState.doros += gameState.clickMultiplier;
+            updateScore();
+        });
 
     // Auto-clicker system
     this.time.addEvent({
@@ -57,8 +57,8 @@ function create() {
         loop: true
     });
 
-    // Setup store buttons
-    const autoClickerButton = document.getElementById('auto-clicker');
+     // Setup store buttons (Keep this!)
+     const autoClickerButton = document.getElementById('auto-clicker');
     const clickMultiplierButton = document.getElementById('click-multiplier');
 
     autoClickerButton.addEventListener('click', () => {
@@ -71,32 +71,40 @@ function create() {
         updateScore();
     });
 
+
+    // Get references
     scoreTextValue = document.getElementById('score-value');
     scoreDisplay = document.getElementById('score-display');
+    if (!scoreDisplay) {
+        console.error("ERROR: #score-display element not found!");
+    } else {
+        console.log("#score-display found:", scoreDisplay);
+    }
 
-    updateScore();
-    update(); // Initial positioning
+    updateScore(); // updates the score
+    update(); // calls the update method
 }
 
 function update() {
+    console.log("update() called"); // See if this appears in the console.
+
     if (doroButton && scoreDisplay && game.canvas) {
         // --- Doro Button Alignment ---
         doroButton.x = game.canvas.width / 2;
 
         // --- Vertical and Horizontal Score Positioning (Combined and Corrected) ---
-        // 1. Get Doro button's *center* X and bottom Y.
         const doroCenterX = doroButton.x;
         const doroBottomY = doroButton.y + (doroButton.displayHeight / 2);
 
-        // 2.  Wait for scoreDisplay to have its *final* size before positioning.
         requestAnimationFrame(() => {
-            // 3. Calculate the *center* X of the score display.
             const scoreDisplayCenterX = scoreDisplay.offsetWidth / 2;
 
-            // 4. Position the score display.
-            scoreDisplay.style.top = `${doroBottomY + 20}px`; // Vertical offset
-            scoreDisplay.style.left = `${doroCenterX - scoreDisplayCenterX}px`; // Center horizontally
+            scoreDisplay.style.top = `${doroBottomY + 20}px`;
+            scoreDisplay.style.left = `${doroCenterX - scoreDisplayCenterX}px`;
+            console.log("Score display positioned:", scoreDisplay.style.top, scoreDisplay.style.left);
         });
+    } else {
+        console.warn("update(): doroButton, scoreDisplay, or game.canvas is null/undefined");
     }
 }
 
@@ -104,16 +112,16 @@ function updateScore() {
     if (scoreTextValue) {
         scoreTextValue.textContent = gameState.doros;
     }
-    updateButtons();
+    updateButtons(); // Ensure buttons get updated
 }
 
 function updateButtons() {
-    const autoClickerButton = document.getElementById('auto-clicker');
-    const clickMultiplierButton = document.getElementById('click-multiplier');
+  const autoClickerButton = document.getElementById('auto-clicker');
+  const clickMultiplierButton = document.getElementById('click-multiplier');
 
-    autoClickerButton.disabled = gameState.doros < gameState.autoClickerCost;
-    clickMultiplierButton.disabled = gameState.doros < gameState.multiplierCost;
+  autoClickerButton.disabled = gameState.doros < gameState.autoClickerCost;
+  clickMultiplierButton.disabled = gameState.doros < gameState.multiplierCost;
 
-    autoClickerButton.textContent = `Auto Clicker (${gameState.autoClickerCount}) - Cost: ${gameState.autoClickerCost} Doros`;
-    clickMultiplierButton.textContent = `Click Multiplier (x${gameState.clickMultiplier}) - Cost: ${gameState.multiplierCost} Doros`;
+  autoClickerButton.textContent = `Auto Clicker (${gameState.autoClickerCount}) - Cost: ${gameState.autoClickerCost} Doros`;
+  clickMultiplierButton.textContent = `Click Multiplier (x${gameState.clickMultiplier}) - Cost: ${gameState.multiplierCost} Doros`;
 }
