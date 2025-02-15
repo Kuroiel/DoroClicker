@@ -10,14 +10,6 @@ body {
   height: 100%;
 }
 
-#svelte-ui {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  pointer-events: none;
-}
-
 .score-display {
   position: absolute;
   top: 20px;
@@ -26,5 +18,5 @@ body {
   background: rgba(255, 255, 255, 0.9);
   padding: 10px 20px;
   border-radius: 5px;
-  pointer-events: auto;
+  z-index: 100;
 }
