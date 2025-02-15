@@ -4,32 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Doro Clicker</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
-  <!-- Svelte will mount here -->
   <div id="svelte-ui"></div>
-
-  <!-- Phaser container remains -->
-  <div class="title-container">
-    <h1 class="main-title">Doro Clicker</h1>
-  </div>
-  <div class="main-container">
-    <div class="sidebar">
-      <h2>Helper Doros</h2>
-      <div class="helper-doros-container">
-        <!-- Buttons will be moved to Svelte component -->
-      </div>
-    </div>
-    <div class="game-container" id="game-container">
-      <!-- Phaser canvas will be inserted here -->
-    </div>
-  </div>
-
-  <!-- Phaser from CDN (we'll switch to npm package later) -->
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
-  
-  <!-- Change to Vite-based entry point -->
+  <div id="game-container"></div>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>
