@@ -8,7 +8,6 @@ on:
 
 jobs:
   unit-tests:
-    name: "🔬 Unit Tests"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,43 +15,19 @@ jobs:
         with:
           node-version: 20.x
           cache: 'npm'
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
       - run: npm run test:unit
 
   e2e-tests:
-    name: "🚦 E2E Tests"
     needs: unit-tests
     runs-on: ubuntu-latest
-    services:
-      # Required for Chrome to run in CI
-      selenium:
-        image: selenium/standalone-chrome
-        ports:
-          - 4444:4444
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
           cache: 'npm'
-      
-      - name: "📦 Install dependencies"
-        run: npm ci
-
-      - name: "🛠️ Install Chrome dependencies"
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-
-      - name: "🔧 Configure Chrome for CI"
-        run: |
-          # Disable sandboxing for Chrome in CI
-          echo 'export CHROME_BIN=/usr/bin/google-chrome-stable' >> $GITHUB_ENV
-          echo 'export DISPLAY=:99' >> $GITHUB_ENV
-
-      - name: "🧪 Run E2E tests"
-        run: npm run test:e2e
+      - run: npm ci --legacy-peer-deps
+      - run: npx playwright install --with-deps
+      - run: npm run build
+      - run: npx playwright test
