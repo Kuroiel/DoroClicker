@@ -1,7 +1,9 @@
 export default {
   testEnvironment: 'jsdom',
-  testMatch: ['**/tests/unit/**/*.test.js'],
   transform: {
-    '^.+\\.[jt]sx?$': 'babel-jest'
-  }
+    '^.+\\.svelte$': 'svelte-jester',
+    '^.+\\.js$': 'babel-jest',
+  },
+  moduleFileExtensions: ['js', 'svelte'],
+  setupFilesAfterEnv: ['<rootDir>/tests/setupTests.js'],
 };

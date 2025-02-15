@@ -7,6 +7,10 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Svelte will mount here -->
+  <div id="svelte-ui"></div>
+
+  <!-- Phaser container remains -->
   <div class="title-container">
     <h1 class="main-title">Doro Clicker</h1>
   </div>
@@ -14,17 +18,18 @@
     <div class="sidebar">
       <h2>Helper Doros</h2>
       <div class="helper-doros-container">
-        <button id="auto-clicker" disabled>Auto Clicker (Cost: 10 Doros)</button>
-        <button id="click-multiplier" disabled>Click Multiplier (Cost: 50 Doros)</button>
+        <!-- Buttons will be moved to Svelte component -->
       </div>
     </div>
     <div class="game-container" id="game-container">
-        <!--  NO outer score-container div at all! -->
-        <div id="score-display">Doros: <span id="score-value">0</span></div>
+      <!-- Phaser canvas will be inserted here -->
     </div>
   </div>
 
+  <!-- Phaser from CDN (we'll switch to npm package later) -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
-  <script type="module" src="script.js"></script>
+  
+  <!-- Change to Vite-based entry point -->
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>

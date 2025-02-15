@@ -1,86 +1,41 @@
 const { Builder, By, until } = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
-const httpServer = require('http-server');
+const { expect } = require('chai');
 const portfinder = require('portfinder');
+const { exec } = require('child_process');
 
-describe('Doro Clicker E2E Tests', function() {
-  this.timeout(40000);
-  let server;
+describe('Score Updates', function() {
   let driver;
-  let port;
-
-  before(async () => {
-    // ... (rest of the before block is the same) ...
-    try {
-      port = await portfinder.getPortPromise();
-
-      // Start HTTP server with proper initialization
-      server = httpServer.createServer({
-        root: './',
-        cors: true,
-        cache: -1  // Disable caching for tests
-      });
-
-      // Start server with Promise wrapper
-      await new Promise((resolve, reject) => {
-        server.server.listen(port, (err) => {
-          if (err) return reject(err);
-          console.log(`Server running on port ${port}`);
-          resolve();
-        });
-      });
-
-      // Configure Chrome driver
-      driver = await new Builder()
-        .forBrowser('chrome')
-        .setChromeOptions(new chrome.Options()
-          .addArguments(
-            '--headless=new',
-            '--no-sandbox',
-            '--disable-dev-shm-usage',
-            '--window-size=1280,720'
-          )
-        )
-        .build();
-
-    } catch (error) {
-      console.error('Test setup failed:', error);
-      if (server) server.close();
-      throw error;
-    }
-  });
-
-  after(async () => {
-   // ... (rest of after block is the same)
-    try {
-      if (driver) {
-        await driver.quit();
-      }
-      if (server) {
-        await new Promise(resolve => {
-          server.server.close(() => {
-            console.log('Server stopped');
-            resolve();
-          });
-        });
-      }
-    } catch (error) {
-      console.error('Test teardown error:', error);
-    }
-  });
-
-  it('should verify initial game score', async () => {
+  let server;
+  
+  before(async function() {
+    const port = await portfinder.getPortPromise();
+    process.env.PORT = port;
+    server = exec('npm run dev');
+    
+    driver = await new Builder()
+      .forBrowser('chrome')
+      .build();
+    
     await driver.get(`http://localhost:${port}`);
-    const scoreElement = await driver.wait(
-        until.elementLocated(By.id('score-value')), //  Use the correct ID!
-        10000
-    );
-    const score = await scoreElement.getText();
-    //  Check for an empty string or null, then default to 0
-    const scoreValue = score === '' || score === null ? 0 : parseInt(score, 10);
+  });
 
-    if (scoreValue !== 0) {
-        throw new Error(`Expected initial score 0, got ${scoreValue}`);
-    }
+  after(async function() {
+    await driver.quit();
+    server.kill();
+  });
+
+  it('should increment score when clicking doro', async function() {
+    const initialScore = await driver.findElement(By.css('.score-display')).getText();
+    
+    // Click the game canvas at coordinates where doro exists
+    const canvas = await driver.findElement(By.css('canvas'));
+    const actions = driver.actions({ async: true });
+    await actions.move({ origin: canvas, x: 400, y: 100 }).click().perform();
+    
+    await driver.wait(until.elementTextMatches(
+      By.css('.score-display'),
+      /Doros: 1.00/),
+      5000
+    );
   });
 });
