@@ -3,10 +3,10 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 
 export default defineConfig({
   plugins: [svelte()],
-  publicDir: 'public',
+  base: './',
   build: {
-    target: 'esnext',
-    emptyOutDir: true,
+    outDir: 'dist',
+    assetsInlineLimit: 0,
     rollupOptions: {
       input: {
         main: './index.html'
