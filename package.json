@@ -18,11 +18,14 @@
     "mocha": "^10.4.0",
     "portfinder": "^1.0.32",
     "selenium-webdriver": "^4.21.0",
-    "svelte": "^4.2.17",
-    "vite": "^5.2.11",
-    "vite-plugin-static-copy": "^0.18.0",
-    "@testing-library/svelte": "^4.0.0",
-    "svelte-jester": "^3.0.0"
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "svelte": "^4.2.7",
+    "vite": "^5.1.4",
+    "@playwright/test": "^1.43.1",
+    "@testing-library/svelte": "^4.0.3",
+    "svelte-jester": "^3.0.0",
+    "svelte-check": "^3.6.9",
+    "@sveltejs/adapter-static": "^3.0.2"
   },
   "dependencies": {
     "decimal.js": "^10.4.3",
