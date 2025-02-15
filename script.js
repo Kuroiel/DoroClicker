@@ -29,16 +29,27 @@ const config = {
 const game = new Phaser.Game(config);
 
 function preload() {
+    // Load image with error handling
     this.load.image('doro', 'assets/doro.png')
+        .on('filecomplete', () => {
+            isDoroReady = true;
+            console.log('Doro image loaded successfully');
+        })
         .on('loaderror', () => {
-            console.error('Doro image failed to load! Verify path: assets/doro.png');
+            console.error('Failed to load doro.png! Verify file exists at assets/doro.png');
         });
 }
 
 function create() {
+    // Safety check for texture existence
+    if (!this.textures.exists('doro')) {
+        console.error('Doro texture not loaded!');
+        return;
+    }
+
     this.children.removeAll();
 
-    // Create Doro button with safe initialization
+    // Create Doro button with explicit position
     doroButton = this.add.image(
         this.cameras.main.centerX,
         100,
@@ -51,20 +62,7 @@ function create() {
         updateScore();
     });
 
-    // Set ready state after button creation
-    isDoroReady = true;
-
-    // Auto-clicker system
-    this.time.addEvent({
-        delay: 1000,
-        callback: () => {
-            gameState.doros += gameState.autoClickerCount;
-            updateScore();
-        },
-        loop: true
-    });
-
-    // Setup store buttons
+    // Initialize store buttons
     const autoClickerButton = document.getElementById('auto-clicker');
     const clickMultiplierButton = document.getElementById('click-multiplier');
 
@@ -82,33 +80,39 @@ function create() {
     scoreTextValue = document.getElementById('score-value');
     scoreDisplay = document.getElementById('score-display');
 
+    // Auto-clicker system
+    this.time.addEvent({
+        delay: 1000,
+        callback: () => {
+            gameState.doros += gameState.autoClickerCount;
+            updateScore();
+        },
+        loop: true
+    });
+
     // Initial score update
     updateScore();
 }
 
 function update() {
-    if (!isDoroReady || !scoreDisplay || !game.canvas) return;
+    // Enhanced safety checks
+    if (!isDoroReady || !doroButton || !scoreDisplay || !game?.scale) return;
 
-    // Get accurate button position using Phaser's world transform
+    // Get display metrics with null checks
+    const scale = game.scale.displayScale || { x: 1, y: 1 };
+    const offset = game.scale.displayBounds || { x: 0, y: 0 };
+
+    // Get button bounds safely
     const bounds = doroButton.getBounds();
-    
-    // Calculate screen position considering scaling
-    const scaleX = game.scale.displayScale.x;
-    const scaleY = game.scale.displayScale.y;
-    const offsetX = game.scale.displayBounds.x;
-    const offsetY = game.scale.displayBounds.y;
+    if (!bounds) return;
 
-    // Convert game coordinates to screen coordinates
-    const buttonScreenX = (bounds.x + bounds.width/2) * scaleX + offsetX;
-    const buttonScreenY = bounds.y * scaleY + offsetY;
-    const buttonHeight = bounds.height * scaleY;
+    // Calculate screen position
+    const buttonCenterX = (bounds.x + bounds.width/2) * scale.x + offset.x;
+    const buttonBottom = (bounds.y + bounds.height) * scale.y + offset.y;
 
-    // Position score display under the button
-    scoreDisplay.style.top = `${buttonScreenY + buttonHeight + 20}px`;
-    scoreDisplay.style.left = `${buttonScreenX - scoreDisplay.offsetWidth/2}px`;
-
-    // Force layout recalculation for accurate positioning
-    void scoreDisplay.offsetWidth;
+    // Position score display
+    scoreDisplay.style.top = `${buttonBottom + 20}px`;
+    scoreDisplay.style.left = `${buttonCenterX - scoreDisplay.offsetWidth/2}px`;
 }
 
 function updateScore() {
