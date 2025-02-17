@@ -1,4 +1,3 @@
-// Game state
 const gameState = {
     doros: new Decimal(0),
     autoClickerCount: 0,
@@ -7,15 +6,13 @@ const gameState = {
     multiplierCost: new Decimal(50)
   };
   
-  // Phaser config
   const config = {
     type: Phaser.AUTO,
     parent: 'game-container',
     backgroundColor: '#e9ecef',
     scene: {
       preload: preload,
-      create: create,
-      update: update
+      create: create
     },
     scale: {
       mode: Phaser.Scale.FIT,
@@ -25,31 +22,21 @@ const gameState = {
     }
   };
   
-  let game;
-  let scoreDisplay;
+  let doroSprite;
   
   function preload() {
     this.load.image('doro', 'assets/doro.png');
   }
   
   function create() {
-    game = this;
-    
-    // Create doro button
-    const doro = this.add.image(400, 300, 'doro')
+    // Create doro sprite
+    doroSprite = this.add.image(400, 300, 'doro')
       .setInteractive()
       .setScale(0.18)
       .on('pointerdown', () => {
         gameState.doros = gameState.doros.add(gameState.clickMultiplier);
         updateUI();
       });
-  
-    // Create UI
-    scoreDisplay = this.add.dom(400, 50).createFromCache(`
-      <div class="score-display">
-        Doros: ${gameState.doros.toFixed(2)}
-      </div>
-    `);
   
     // Auto-clicker loop
     this.time.addEvent({
@@ -60,26 +47,26 @@ const gameState = {
       },
       loop: true
     });
-  }
   
-  function update() {
-    // Update UI position if needed
+    // Initial UI update
+    updateUI();
   }
   
   function updateUI() {
-    scoreDisplay.node.innerHTML = `
-      Doros: ${gameState.doros.toFixed(2)}
-      <br>
-      <button onclick="purchaseAutoClicker()" ${gameState.doros.lt(gameState.autoClickerCost) ? 'disabled' : ''}>
-        Auto Clicker (${gameState.autoClickerCount}) - Cost: ${gameState.autoClickerCost.toFixed()}
-      </button>
-      <button onclick="purchaseClickMultiplier()" ${gameState.doros.lt(gameState.multiplierCost) ? 'disabled' : ''}>
-        Multiplier (x${gameState.clickMultiplier.toFixed(1)}) - Cost: ${gameState.multiplierCost.toFixed()}
-      </button>
-    `;
+    document.getElementById('score-display').textContent = 
+      `Doros: ${gameState.doros.toDecimalPlaces(2).toString()}`;
+    
+    const autoClickerBtn = document.getElementById('auto-clicker-btn');
+    autoClickerBtn.textContent = 
+      `Auto Clicker (${gameState.autoClickerCount}) - Cost: ${gameState.autoClickerCost.toFixed()}`;
+    autoClickerBtn.disabled = gameState.doros.lt(gameState.autoClickerCost);
+  
+    const multiplierBtn = document.getElementById('multiplier-btn');
+    multiplierBtn.textContent = 
+      `Multiplier (x${gameState.clickMultiplier.toFixed(1)}) - Cost: ${gameState.multiplierCost.toFixed()}`;
+    multiplierBtn.disabled = gameState.doros.lt(gameState.multiplierCost);
   }
   
-  // Purchase functions
   window.purchaseAutoClicker = () => {
     if (gameState.doros.gte(gameState.autoClickerCost)) {
       gameState.doros = gameState.doros.sub(gameState.autoClickerCost);
@@ -98,5 +85,5 @@ const gameState = {
     }
   };
   
-  // Start game
+  // Start the game
   new Phaser.Game(config);

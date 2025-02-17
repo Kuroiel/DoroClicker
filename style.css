@@ -10,13 +10,24 @@ body {
   height: 100%;
 }
 
-.score-display {
+#game-ui {
   position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: 20px;
+  pointer-events: none;
+}
+
+#score-display {
   background: rgba(255, 255, 255, 0.9);
   padding: 10px 20px;
   border-radius: 5px;
-  z-index: 100;
+  margin-bottom: 10px;
+}
+
+#store button {
+  display: block;
+  margin: 5px 0;
+  pointer-events: auto;
 }
