@@ -12,7 +12,8 @@ const gameState = {
     backgroundColor: '#e9ecef',
     scene: {
       preload: preload,
-      create: create
+      create: create,
+      update: update
     },
     scale: {
       mode: Phaser.Scale.FIT,
@@ -22,6 +23,7 @@ const gameState = {
     }
   };
   
+  let game;
   let doroSprite;
   let scoreDisplay;
   
@@ -30,62 +32,57 @@ const gameState = {
   }
   
   function create() {
-    // Create doro sprite
-    doroSprite = this.add.image(400, 300, 'doro')
-      .setInteractive()
-      .setScale(0.18)
-      .on('pointerdown', () => {
-        gameState.doros = gameState.doros.add(gameState.clickMultiplier);
-        updateUI();
-      });
-
-      // Create score display
-      scoreDisplay = document.getElementById('score-display');
+    game = this;
+    
+    // Center doro button
+    doroSprite = this.add.image(
+      this.cameras.main.centerX,
+      this.cameras.main.centerY - 100, // Position higher for score below
+      'doro'
+    )
+    .setInteractive()
+    .setScale(0.18)
+    .on('pointerdown', () => {
+      gameState.doros = gameState.doros.add(gameState.clickMultiplier);
+      updateUI();
+    });
   
-    // Position score under doro button
-    this.scale.on('resize', updateScorePosition);
-    updateScorePosition();
+    // Initialize UI elements
+    scoreDisplay = document.getElementById('score-display');
+    updateUI();
   
     // Auto-clicker loop
     this.time.addEvent({
-        delay: 1000,
-        callback: () => {
-          gameState.doros = gameState.doros.add(gameState.autoClickerCount);
-          updateUI();
-        },
-        loop: true
-      });
-  
-    // Initial UI update
-    updateUI();
+      delay: 1000,
+      callback: () => {
+        gameState.doros = gameState.doros.add(gameState.autoClickerCount);
+        updateUI();
+      },
+      loop: true
+    });
   }
-
-  function updateScorePosition() {
-    if (!doroSprite) return;
-    
-    const bounds = doroSprite.getBounds();
-    const scale = game.scale.displayScale;
-    const offset = game.scale.displayBounds;
-    
-    const buttonCenterX = (bounds.x + bounds.width/2) * scale.x + offset.x;
-    const buttonBottom = (bounds.y + bounds.height) * scale.y + offset.y;
-    
-    scoreDisplay.node.style.top = `${buttonBottom + 20}px`;
-    scoreDisplay.node.style.left = `${buttonCenterX - scoreDisplay.node.offsetWidth/2}px`;
+  
+  function update() {
+    // Update score position relative to doro button
+    if (doroSprite) {
+      const bounds = doroSprite.getBounds();
+      const yPos = bounds.y + bounds.height + 20;
+      document.getElementById('score-display-container').style.top = `${yPos}px`;
+    }
   }
   
   function updateUI() {
     scoreDisplay.textContent = `Doros: ${gameState.doros.toDecimalPlaces(2)}`;
-  
+    
     const autoClickerBtn = document.getElementById('auto-clicker-btn');
     autoClickerBtn.textContent = 
       `Auto Clicker (${gameState.autoClickerCount}) - Cost: ${gameState.autoClickerCost.toFixed()}`;
-    autoClickerBtn.disabled = gameState.doros.lt(gameState.autoClickerCost);
+    autoClickerBtn.disabled = !gameState.doros.gte(gameState.autoClickerCost);
   
     const multiplierBtn = document.getElementById('multiplier-btn');
     multiplierBtn.textContent = 
       `Multiplier (x${gameState.clickMultiplier.toFixed(1)}) - Cost: ${gameState.multiplierCost.toFixed()}`;
-    multiplierBtn.disabled = gameState.doros.lt(gameState.multiplierCost);
+    multiplierBtn.disabled = !gameState.doros.gte(gameState.multiplierCost);
   }
   
   window.purchaseAutoClicker = () => {
@@ -106,9 +103,5 @@ const gameState = {
     }
   };
   
-  // Start the game
+  // Initialize the game
   new Phaser.Game(config);
-
-  function update() {
-    updateScorePosition();
-  }

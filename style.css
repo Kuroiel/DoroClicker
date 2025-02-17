@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #e9ecef; /* Match Phaser background */
+  background-color: #e9ecef;
 }
 
 .title-container {
@@ -16,9 +16,13 @@ body {
 
 .sidebar {
   width: 250px;
-  background-color: #e9ecef; /* Match main background */
+  background-color: #e9ecef;
   padding: 20px;
-  border-right: none;
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-top: 0;
 }
 
 .helper-doros-container {
@@ -33,6 +37,7 @@ button {
   border: 1px solid #ced4da;
   border-radius: 4px;
   cursor: pointer;
+  width: 100%;
 }
 
 button:disabled {
@@ -48,7 +53,7 @@ button:disabled {
 #score-display-container {
   position: absolute;
   width: 100%;
-  top: 150px; /* Adjust based on your doro button position */
+  top: 300px; /* Adjusted to position below doro button */
   text-align: center;
   pointer-events: none;
   z-index: 100;
