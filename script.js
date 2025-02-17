@@ -24,27 +24,44 @@ const gameState = {
   };
   
   let game;
-  let doroSprite;
+  let doroSprite = null; // Explicit null initialization
   
   function preload() {
-    this.load.image('doro', 'assets/doro.png');
+    this.load.image('doro', 'assets/doro.png')
+      .on('loaderror', () => {
+        console.error('Doro image failed to load!');
+        // Create red fallback rectangle
+        const graphics = this.make.graphics();
+        graphics.fillStyle(0xff0000, 1);
+        graphics.fillRect(0, 0, 100, 100);
+        graphics.generateTexture('doro', 100, 100);
+        graphics.destroy();
+      });
   }
   
   function create() {
     game = this;
     
-    doroSprite = this.add.image(
-      this.cameras.main.centerX,
-      this.cameras.main.centerY - 50,
-      'doro'
-    )
-    .setInteractive()
-    .setScale(0.18)
-    .on('pointerdown', () => {
-      gameState.doros = gameState.doros.plus(gameState.clickMultiplier);
-      updateUI();
-    });
+    // Create doro with position validation
+    if (this.textures.exists('doro')) {
+      doroSprite = this.add.image(
+        this.cameras.main.centerX,
+        this.cameras.main.centerY - 50,
+        'doro'
+      )
+      .setInteractive()
+      .setScale(0.18)
+      .on('pointerdown', () => {
+        gameState.doros = gameState.doros.plus(gameState.clickMultiplier);
+        updateUI();
+      });
+    } else {
+      console.error('Doro texture not available!');
+    }
   
+    // Force initial UI update
+    updateUI();
+    
     // Auto-clicker loop
     this.time.addEvent({
       delay: 1000,
@@ -54,23 +71,30 @@ const gameState = {
       },
       loop: true
     });
-  
-    updateUI();
   }
   
   function update() {
-    if (!doroSprite) return;
-  
+    // Safety checks
+    if (!game?.scale || !doroSprite?.body) return;
+    
+    // Get positioning metrics
     const canvas = game.scale.canvas;
     const scale = game.scale.displayScale;
     const offset = game.scale.displayBounds;
-  
+    
+    // Get doro position
     const bounds = doroSprite.getBounds();
     const doroBottom = (bounds.y + bounds.height) * scale.y + offset.y;
     
+    // Position score display
     const scoreContainer = document.getElementById('score-display-container');
-    scoreContainer.style.top = `${doroBottom + 20}px`;
+    if (scoreContainer) {
+      scoreContainer.style.top = `${doroBottom + 20}px`;
+      scoreContainer.style.left = `${bounds.centerX * scale.x + offset.x}px`;
+    }
   }
+  
+  // ... rest of existing code ...
   
   function updateUI() {
     document.getElementById('score-display').textContent = 
