@@ -40,8 +40,7 @@ const gameState = {
       });
 
       // Create score display
-  scoreDisplay = this.add.dom(0, 0).createFromCache('<div id="score-display"></div>');
-  updateUI();
+      scoreDisplay = document.getElementById('score-display');
   
     // Position score under doro button
     this.scale.on('resize', updateScorePosition);
@@ -49,13 +48,13 @@ const gameState = {
   
     // Auto-clicker loop
     this.time.addEvent({
-      delay: 1000,
-      callback: () => {
-        gameState.doros = gameState.doros.add(gameState.autoClickerCount);
-        updateUI();
-      },
-      loop: true
-    });
+        delay: 1000,
+        callback: () => {
+          gameState.doros = gameState.doros.add(gameState.autoClickerCount);
+          updateUI();
+        },
+        loop: true
+      });
   
     // Initial UI update
     updateUI();
@@ -76,10 +75,8 @@ const gameState = {
   }
   
   function updateUI() {
-    scoreDisplay.node.textContent = `Doros: ${gameState.doros.toDecimalPlaces(2)}`;
-    document.getElementById('score-display').textContent = 
-      `Doros: ${gameState.doros.toDecimalPlaces(2).toString()}`;
-    
+    scoreDisplay.textContent = `Doros: ${gameState.doros.toDecimalPlaces(2)}`;
+  
     const autoClickerBtn = document.getElementById('auto-clicker-btn');
     autoClickerBtn.textContent = 
       `Auto Clicker (${gameState.autoClickerCount}) - Cost: ${gameState.autoClickerCost.toFixed()}`;

@@ -18,7 +18,7 @@ body {
   width: 250px;
   background-color: #e9ecef; /* Match main background */
   padding: 20px;
-  border-right: 2px solid #dee2e6;
+  border-right: none;
 }
 
 .helper-doros-container {
@@ -45,12 +45,19 @@ button:disabled {
   position: relative;
 }
 
-#score-display {
+#score-display-container {
   position: absolute;
+  width: 100%;
+  top: 150px; /* Adjust based on your doro button position */
+  text-align: center;
+  pointer-events: none;
+  z-index: 100;
+}
+
+#score-display {
+  display: inline-block;
   background: rgba(255, 255, 255, 0.9);
   padding: 10px 20px;
   border-radius: 5px;
   font-size: 1.2em;
-  z-index: 100;
-  pointer-events: none;
 }
