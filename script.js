@@ -23,6 +23,7 @@ const gameState = {
   };
   
   let doroSprite;
+  let scoreDisplay;
   
   function preload() {
     this.load.image('doro', 'assets/doro.png');
@@ -37,6 +38,14 @@ const gameState = {
         gameState.doros = gameState.doros.add(gameState.clickMultiplier);
         updateUI();
       });
+
+      // Create score display
+  scoreDisplay = this.add.dom(0, 0).createFromCache('<div id="score-display"></div>');
+  updateUI();
+  
+    // Position score under doro button
+    this.scale.on('resize', updateScorePosition);
+    updateScorePosition();
   
     // Auto-clicker loop
     this.time.addEvent({
@@ -51,8 +60,23 @@ const gameState = {
     // Initial UI update
     updateUI();
   }
+
+  function updateScorePosition() {
+    if (!doroSprite) return;
+    
+    const bounds = doroSprite.getBounds();
+    const scale = game.scale.displayScale;
+    const offset = game.scale.displayBounds;
+    
+    const buttonCenterX = (bounds.x + bounds.width/2) * scale.x + offset.x;
+    const buttonBottom = (bounds.y + bounds.height) * scale.y + offset.y;
+    
+    scoreDisplay.node.style.top = `${buttonBottom + 20}px`;
+    scoreDisplay.node.style.left = `${buttonCenterX - scoreDisplay.node.offsetWidth/2}px`;
+  }
   
   function updateUI() {
+    scoreDisplay.node.textContent = `Doros: ${gameState.doros.toDecimalPlaces(2)}`;
     document.getElementById('score-display').textContent = 
       `Doros: ${gameState.doros.toDecimalPlaces(2).toString()}`;
     
@@ -87,3 +111,7 @@ const gameState = {
   
   // Start the game
   new Phaser.Game(config);
+
+  function update() {
+    updateScorePosition();
+  }

@@ -1,33 +1,56 @@
 body {
   margin: 0;
-  overflow: hidden;
   font-family: Arial, sans-serif;
+  background-color: #e9ecef; /* Match Phaser background */
+}
+
+.title-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.main-container {
+  display: flex;
+  height: calc(100vh - 80px);
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #e9ecef; /* Match main background */
+  padding: 20px;
+  border-right: 2px solid #dee2e6;
+}
+
+.helper-doros-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+button {
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #e9ecef;
+  cursor: not-allowed;
 }
 
 #game-container {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-#game-ui {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  padding: 20px;
-  pointer-events: none;
+  flex: 1;
+  position: relative;
 }
 
 #score-display {
+  position: absolute;
   background: rgba(255, 255, 255, 0.9);
   padding: 10px 20px;
   border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-#store button {
-  display: block;
-  margin: 5px 0;
-  pointer-events: auto;
+  font-size: 1.2em;
+  z-index: 100;
+  pointer-events: none;
 }

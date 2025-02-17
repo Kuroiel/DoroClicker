@@ -5,19 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Doro Clicker</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:,"> <!-- Fix favicon error -->
+  <link rel="icon" href="data:,">
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.4.3/decimal.min.js"></script>
 </head>
 <body>
-  <div id="game-container"></div>
-  <div id="game-ui">
-    <div id="score-display">Doros: 0</div>
-    <div id="store">
-      <button id="auto-clicker-btn" onclick="purchaseAutoClicker()">Auto Clicker (0) - Cost: 10</button>
-      <button id="multiplier-btn" onclick="purchaseClickMultiplier()">Multiplier (x1) - Cost: 50</button>
-    </div>
+  <div class="title-container">
+    <h1 class="main-title">Doro Clicker</h1>
   </div>
+  <div class="main-container">
+    <div class="sidebar">
+      <h2>Helper Doros</h2>
+      <div class="helper-doros-container">
+        <button id="auto-clicker-btn" onclick="purchaseAutoClicker()">Auto Clicker (0) - Cost: 10</button>
+        <button id="multiplier-btn" onclick="purchaseClickMultiplier()">Multiplier (x1) - Cost: 50</button>
+      </div>
+    </div>
+    <div id="game-container"></div>
+  </div>
+  <div id="score-display">Doros: 0</div>
   <script src="script.js"></script>
 </body>
 </html>
