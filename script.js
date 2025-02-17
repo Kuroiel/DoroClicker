@@ -25,7 +25,6 @@ const gameState = {
   
   let game;
   let doroSprite;
-  let scoreDisplay;
   
   function preload() {
     this.load.image('doro', 'assets/doro.png');
@@ -34,46 +33,49 @@ const gameState = {
   function create() {
     game = this;
     
-    // Center doro button
     doroSprite = this.add.image(
       this.cameras.main.centerX,
-      this.cameras.main.centerY - 100, // Position higher for score below
+      this.cameras.main.centerY - 50,
       'doro'
     )
     .setInteractive()
     .setScale(0.18)
     .on('pointerdown', () => {
-      gameState.doros = gameState.doros.add(gameState.clickMultiplier);
+      gameState.doros = gameState.doros.plus(gameState.clickMultiplier);
       updateUI();
     });
-  
-    // Initialize UI elements
-    scoreDisplay = document.getElementById('score-display');
-    updateUI();
   
     // Auto-clicker loop
     this.time.addEvent({
       delay: 1000,
       callback: () => {
-        gameState.doros = gameState.doros.add(gameState.autoClickerCount);
+        gameState.doros = gameState.doros.plus(gameState.autoClickerCount);
         updateUI();
       },
       loop: true
     });
+  
+    updateUI();
   }
   
   function update() {
-    // Update score position relative to doro button
-    if (doroSprite) {
-      const bounds = doroSprite.getBounds();
-      const yPos = bounds.y + bounds.height + 20;
-      document.getElementById('score-display-container').style.top = `${yPos}px`;
-    }
+    if (!doroSprite) return;
+  
+    const canvas = game.scale.canvas;
+    const scale = game.scale.displayScale;
+    const offset = game.scale.displayBounds;
+  
+    const bounds = doroSprite.getBounds();
+    const doroBottom = (bounds.y + bounds.height) * scale.y + offset.y;
+    
+    const scoreContainer = document.getElementById('score-display-container');
+    scoreContainer.style.top = `${doroBottom + 20}px`;
   }
   
   function updateUI() {
-    scoreDisplay.textContent = `Doros: ${gameState.doros.toDecimalPlaces(2)}`;
-    
+    document.getElementById('score-display').textContent = 
+      `Doros: ${gameState.doros.toDecimalPlaces(2)}`;
+  
     const autoClickerBtn = document.getElementById('auto-clicker-btn');
     autoClickerBtn.textContent = 
       `Auto Clicker (${gameState.autoClickerCount}) - Cost: ${gameState.autoClickerCost.toFixed()}`;
@@ -87,8 +89,8 @@ const gameState = {
   
   window.purchaseAutoClicker = () => {
     if (gameState.doros.gte(gameState.autoClickerCost)) {
-      gameState.doros = gameState.doros.sub(gameState.autoClickerCost);
-      gameState.autoClickerCount++;
+      gameState.doros = gameState.doros.minus(gameState.autoClickerCost);
+      gameState.autoClickerCount += 1;
       gameState.autoClickerCost = gameState.autoClickerCost.times(1.15).ceil();
       updateUI();
     }
@@ -96,12 +98,11 @@ const gameState = {
   
   window.purchaseClickMultiplier = () => {
     if (gameState.doros.gte(gameState.multiplierCost)) {
-      gameState.doros = gameState.doros.sub(gameState.multiplierCost);
+      gameState.doros = gameState.doros.minus(gameState.multiplierCost);
       gameState.clickMultiplier = gameState.clickMultiplier.times(1.5);
       gameState.multiplierCost = gameState.multiplierCost.times(2.5).ceil();
       updateUI();
     }
   };
   
-  // Initialize the game
   new Phaser.Game(config);

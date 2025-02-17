@@ -51,9 +51,8 @@ button:disabled {
 }
 
 #score-display-container {
-  position: absolute;
+  position: fixed;
   width: 100%;
-  top: 300px; /* Adjusted to position below doro button */
   text-align: center;
   pointer-events: none;
   z-index: 100;
