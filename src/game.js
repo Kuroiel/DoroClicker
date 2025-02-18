@@ -31,15 +31,36 @@ export class Game extends Phaser.Scene {
     this.time.addEvent({
       delay: 1000,
       callback: () => {
-        gameState.update(state => ({
-          ...state,
-          doros: state.doros.plus(state.autoClickerCount)
-        }));
+        gameState.update(state => {
+          if (state.autoClickerCount > 0) {
+            const autoGain = state.clickMultiplier.mul(state.autoClickerCount);
+            return { ...state, doros: state.doros.add(autoGain) };
+          }
+          return state;
+        });
       },
       loop: true
     });
   }
+    // Add this update() method to the Game class
+update() {
+  if (this.doroButton) {
+    const scoreDisplay = document.querySelector('.score-display');
+    if (scoreDisplay) {
+      const bounds = this.doroButton.getBounds();
+      const canvasRect = this.game.canvas.getBoundingClientRect();
+      
+      // Convert Phaser coordinates to screen coordinates
+      const doroBottomScreen = canvasRect.top + bounds.bottom;
+      const doroCenterXScreen = canvasRect.left + bounds.centerX;
+      
+      scoreDisplay.style.top = `${doroBottomScreen + 20}px`;
+      scoreDisplay.style.left = `${doroCenterXScreen}px`;
+    }
+  }
 }
+  }
+
 
 export function initializePhaserGame() {
   const config = {

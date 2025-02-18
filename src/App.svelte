@@ -23,25 +23,25 @@
   <div class="sidebar">
     <h2>Helper Doros</h2>
     <div class="helper-doros-container">
-      <button 
-        on:click={purchaseAutoClicker}
-        disabled={$gameState.doros.lt($gameState.autoClickerCost)}
-      >
-        Auto Clicker ({autoClickerCount}) - Cost: {autoClickerCost.toFixed()} Doros
-      </button>
-      
-      <button 
-        on:click={purchaseClickMultiplier}
-        disabled={$gameState.doros.lt($gameState.multiplierCost)}
-      >
-        Click Multiplier (x{clickMultiplier.toFixed(1)}) - Cost: {multiplierCost.toFixed()} Doros
-      </button>
+<button 
+  on:click={purchaseAutoClicker}
+  disabled={!doros.gte(autoClickerCost)}
+>
+  Auto Clicker ({autoClickerCount}) - Cost: {autoClickerCost.toFixed()} Doros
+</button>
+
+<button 
+  on:click={purchaseClickMultiplier}
+  disabled={!doros.gte(multiplierCost)}
+>
+  Click Multiplier (x{clickMultiplier.toDecimalPlaces(1).toString()}) - Cost: {multiplierCost.toFixed()} Doros
+</button>
     </div>
   </div>
 
-  <div class="score-display">
-    Doros: {doros.toFixed(2)}
-  </div>
+<div class="score-display" style="transform: translateX(-50%)">
+  Doros: {doros.toDecimalPlaces(2).toString()}
+</div>
 </div>
 
 <style>

@@ -10,14 +10,19 @@ export const gameState = writable({
 });
 
 // Game logic functions
+// Add safety checks in purchase functions
 export function purchaseAutoClicker() {
   gameState.update(state => {
     if (state.doros.gte(state.autoClickerCost)) {
       return {
         ...state,
-        doros: state.doros.minus(state.autoClickerCost),
+        doros: Decimal.isDecimal(state.doros) 
+          ? state.doros.minus(state.autoClickerCost)
+          : new Decimal(state.doros).minus(state.autoClickerCost),
         autoClickerCount: state.autoClickerCount + 1,
-        autoClickerCost: state.autoClickerCost.times(1.15).ceil(),
+        autoClickerCost: Decimal.isDecimal(state.autoClickerCost)
+          ? state.autoClickerCost.times(1.15).ceil()
+          : new Decimal(state.autoClickerCost).times(1.15).ceil()
       };
     }
     return state;
