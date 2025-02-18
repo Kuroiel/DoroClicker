@@ -69,11 +69,12 @@ export function initializePhaserGame() {
     backgroundColor: '#e9ecef',
     scene: [Game],
     scale: {
-      mode: Phaser.Scale.FIT,
+      mode: Phaser.Scale.RESIZE, // Changed from FIT to RESIZE
       autoCenter: Phaser.Scale.CENTER_BOTH,
       width: 800,
       height: 600
     },
+    transparent: true // Add this to see through phaser canvas
   };
 
   return new Phaser.Game(config);

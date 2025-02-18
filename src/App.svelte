@@ -25,22 +25,25 @@
     <div class="helper-doros-container">
 <button 
   on:click={purchaseAutoClicker}
-  disabled={!doros.gte(autoClickerCost)}
+  disabled={!$gameState.doros.gte($gameState.autoClickerCost)}
 >
-  Auto Clicker ({autoClickerCount}) - Cost: {autoClickerCost.toFixed()} Doros
+  Auto Clicker ({$gameState.autoClickerCount}) - Cost: {$gameState.autoClickerCost.toFixed()}
 </button>
 
 <button 
   on:click={purchaseClickMultiplier}
-  disabled={!doros.gte(multiplierCost)}
+  disabled={!$gameState.doros.gte($gameState.multiplierCost)}
 >
-  Click Multiplier (x{clickMultiplier.toDecimalPlaces(1).toString()}) - Cost: {multiplierCost.toFixed()} Doros
+  Multiplier (x{$gameState.clickMultiplier.toFixed(1)}) - Cost: {$gameState.multiplierCost.toFixed()}
 </button>
     </div>
   </div>
 
 <div class="score-display" style="transform: translateX(-50%)">
   Doros: {doros.toDecimalPlaces(2).toString()}
+    DEBUG: {JSON.stringify($gameState, (key, value) => 
+    typeof value === 'bigint' ? value.toString() : value
+  )}
 </div>
 </div>
 
@@ -52,6 +55,8 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
+      z-index: 1000;
+  pointer-events: none;
   }
 
   .score-display, .sidebar {
@@ -64,5 +69,17 @@
     padding: 10px;
     border-radius: 5px;
     font-size: 1.2em;
+      /* Ensure visibility */
+  opacity: 1 !important;
+  visibility: visible !important;
+  /* Initial positioning */
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   }
+
+  #game-container {
+  position: relative;
+  z-index: 1;
+}
 </style>

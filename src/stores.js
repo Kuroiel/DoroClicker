@@ -13,32 +13,49 @@ export const gameState = writable({
 // Add safety checks in purchase functions
 export function purchaseAutoClicker() {
   gameState.update(state => {
-    if (state.doros.gte(state.autoClickerCost)) {
+    // Convert all values to Decimal explicitly
+    const currentDoros = new Decimal(state.doros);
+    const currentCost = new Decimal(state.autoClickerCost);
+
+    if (currentDoros.gte(currentCost)) {
       return {
         ...state,
-        doros: Decimal.isDecimal(state.doros) 
-          ? state.doros.minus(state.autoClickerCost)
-          : new Decimal(state.doros).minus(state.autoClickerCost),
+        doros: currentDoros.minus(currentCost),
         autoClickerCount: state.autoClickerCount + 1,
-        autoClickerCost: Decimal.isDecimal(state.autoClickerCost)
-          ? state.autoClickerCost.times(1.15).ceil()
-          : new Decimal(state.autoClickerCost).times(1.15).ceil()
+        autoClickerCost: currentCost.times(1.15).ceil()
       };
     }
     return state;
   });
+  console.log('Attempting purchase. Current doros:', state.doros.toString());
+console.log('Cost:', currentCost.toString());
+console.log('Can purchase:', currentDoros.gte(currentCost));
 }
 
 export function purchaseClickMultiplier() {
   gameState.update(state => {
-    if (state.doros.gte(state.multiplierCost)) {
+    const currentDoros = new Decimal(state.doros);
+    const currentCost = new Decimal(state.multiplierCost);
+
+    if (currentDoros.gte(currentCost)) {
       return {
         ...state,
-        doros: state.doros.minus(state.multiplierCost),
-        clickMultiplier: state.clickMultiplier.times(1.5),
-        multiplierCost: state.multiplierCost.times(2.5).ceil(),
+        doros: currentDoros.minus(currentCost),
+        clickMultiplier: new Decimal(state.clickMultiplier).times(1.5),
+        multiplierCost: currentCost.times(2.5).ceil()
       };
     }
     return state;
   });
+  console.log('Attempting purchase. Current doros:', state.doros.toString());
+console.log('Cost:', currentCost.toString());
+console.log('Can purchase:', currentDoros.gte(currentCost));
 }
+
+// Add to stores.js
+export const gameState = writable(initial, () => {
+  return () => {} // Cleanup
+}, (key, value) => {
+  if (Decimal.isDecimal(value)) return value.toString();
+  return value;
+});
